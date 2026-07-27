@@ -1,0 +1,1837 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>SADEEM — Autonomous Service Robot</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;0,6..72,600;0,6..72,700;0,6..72,800;1,6..72,400&family=Geist:wght@300;400;500;600;700&family=Geist+Mono:wght@400;500&family=Noto+Naskh+Arabic:wght@400;500;600;700&family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --cream: #f6f1e7;
+    --cream-2: #efe7d6;
+    --paper: #faf6ec;
+    --ink: #1d1814;
+    --ink-2: #2a231d;
+    --rust: #7a3a16;
+    --rust-2: #9a4a1a;
+    --wood: #d4a373;
+    --wood-light: #e9cfa8;
+    --glow: #ffb866;
+    --rule: rgba(29,24,20,0.18);
+    --rule-soft: rgba(29,24,20,0.08);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { background: var(--cream); color: var(--ink); }
+  body {
+    font-family: 'Geist', system-ui, sans-serif;
+    font-size: 16px;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+  .serif { font-family: 'Newsreader', serif; font-weight: 500; letter-spacing: -0.01em; }
+  .mono { font-family: 'Geist Mono', monospace; }
+  .eyebrow {
+    font-family: 'Geist Mono', monospace;
+    text-transform: uppercase;
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    color: var(--rust);
+    font-weight: 500;
+  }
+  a { color: inherit; text-decoration: none; }
+
+  /* ===== NAV ===== */
+  .nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 50;
+    backdrop-filter: blur(14px);
+    background: rgba(246,241,231,0.78);
+    border-bottom: 1px solid var(--rule-soft);
+  }
+  .nav-inner {
+    max-width: 1440px; margin: 0 auto;
+    padding: 18px 40px;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .brand { display: flex; align-items: center; gap: 12px; }
+  .brand img { height: 36px; width: auto; }
+  .brand-name {
+    font-family: 'Newsreader', serif;
+    font-weight: 600;
+    font-size: 22px;
+    color: var(--rust);
+    letter-spacing: 0.04em;
+  }
+  .nav-links { display: flex; gap: 36px; }
+  .nav-links a {
+    font-size: 13px; letter-spacing: 0.02em;
+    color: var(--ink-2);
+    transition: color .2s;
+  }
+  .nav-links a:hover { color: var(--rust); }
+  .nav-cta {
+    font-family: 'Geist Mono', monospace;
+    font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase;
+    background: var(--ink);
+    color: var(--cream);
+    padding: 12px 22px;
+    border-radius: 999px;
+    transition: background .2s, transform .2s;
+  }
+  .nav-cta:hover { background: var(--rust); transform: translateY(-1px); }
+
+  /* ===== LANG TOGGLE ===== */
+  .lang-toggle {
+    display: inline-flex;
+    align-items: center;
+    background: rgba(29,24,20,0.05);
+    border: 1px solid var(--rule-soft);
+    border-radius: 999px;
+    padding: 4px;
+    margin-right: 18px;
+    font-family: 'Geist Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    position: relative;
+  }
+  .lang-toggle button {
+    background: transparent;
+    border: none;
+    color: var(--ink-2);
+    padding: 7px 14px;
+    border-radius: 999px;
+    cursor: pointer;
+    font: inherit;
+    letter-spacing: inherit;
+    text-transform: inherit;
+    transition: color .35s;
+    position: relative;
+    z-index: 2;
+  }
+  .lang-toggle button.active { color: var(--cream); }
+  .lang-toggle .lang-thumb {
+    position: absolute;
+    top: 4px; bottom: 4px;
+    width: calc(50% - 4px);
+    background: var(--ink);
+    border-radius: 999px;
+    transition: transform .45s cubic-bezier(.7,0,.15,1);
+    z-index: 1;
+  }
+  html[lang="ar"] .lang-toggle .lang-thumb { transform: translateX(100%); }
+
+  /* smooth direction + content transition */
+  body { transition: opacity .35s ease; }
+  body.lang-swapping { opacity: 0; }
+
+  /* RTL adjustments */
+  html[lang="ar"] body { font-family: 'Noto Naskh Arabic', 'Newsreader', serif; }
+  html[lang="ar"] .serif,
+  html[lang="ar"] h1.headline,
+  html[lang="ar"] .section-head h2,
+  html[lang="ar"] .anatomy-head h2,
+  html[lang="ar"] .dash-text h2,
+  html[lang="ar"] .cta-text h2,
+  html[lang="ar"] blockquote,
+  html[lang="ar"] .cap h3,
+  html[lang="ar"] .uc h3,
+  html[lang="ar"] .anatomy-item h4,
+  html[lang="ar"] .tl-step h4,
+  html[lang="ar"] .show-card-label .val,
+  html[lang="ar"] .specs-row .val,
+  html[lang="ar"] .stat-num,
+  html[lang="ar"] .showcase-caption,
+  html[lang="ar"] .brand-name,
+  html[lang="ar"] .dash-side .logo-mini,
+  html[lang="ar"] .dash-main-head .title {
+    font-family: 'Noto Naskh Arabic', 'Newsreader', serif;
+    letter-spacing: 0;
+  }
+  html[lang="ar"] h1.headline em,
+  html[lang="ar"] h1.headline .stroke,
+  html[lang="ar"] .section-head h2 em,
+  html[lang="ar"] .anatomy-head h2 em,
+  html[lang="ar"] .dash-text h2 em,
+  html[lang="ar"] .cta-text h2 em,
+  html[lang="ar"] blockquote em {
+    font-style: normal;
+  }
+  html[lang="ar"] h1.headline .stroke {
+    -webkit-text-stroke: 0;
+    color: var(--ink);
+    opacity: 0.55;
+  }
+  html[lang="ar"] .eyebrow,
+  html[lang="ar"] .nav-cta,
+  html[lang="ar"] .stat-label,
+  html[lang="ar"] .cap-num,
+  html[lang="ar"] .uc-stat,
+  html[lang="ar"] .anatomy-item .num,
+  html[lang="ar"] .show-card-label .lbl,
+  html[lang="ar"] .specs-row .key,
+  html[lang="ar"] .hero-tag .lbl,
+  html[lang="ar"] .showcase-tag,
+  html[lang="ar"] .dash-pill,
+  html[lang="ar"] .dash-task .tstat,
+  html[lang="ar"] .quote-cite,
+  html[lang="ar"] .foot-col h5,
+  html[lang="ar"] .foot-base,
+  html[lang="ar"] .cta-form label,
+  html[lang="ar"] .cta-contact {
+    text-transform: none;
+    letter-spacing: 0;
+    font-family: 'Noto Naskh Arabic', 'Geist Mono', monospace;
+  }
+  html[lang="ar"] .marquee-item { font-style: normal; }
+  html[lang="ar"] .btn-primary svg,
+  html[lang="ar"] .nav-cta + a svg,
+  html[lang="ar"] .cta-btn svg { transform: scaleX(-1); }
+  html[lang="ar"] .btn-primary:hover svg { transform: scaleX(-1) translateX(4px); }
+  html[lang="ar"] .dash-bullets li::before { content: '←'; }
+
+  /* ===== HERO ===== */
+  .hero {
+    position: relative;
+    padding: 140px 40px 80px;
+    max-width: 1440px;
+    margin: 0 auto;
+    overflow: hidden;
+  }
+  .hero-grid {
+    display: grid;
+    grid-template-columns: 1.05fr 0.95fr;
+    gap: 60px;
+    align-items: center;
+  }
+  .hero-text { position: relative; z-index: 2; }
+  .hero-meta {
+    display: flex; align-items: center; gap: 14px; margin-bottom: 36px;
+  }
+  .hero-meta .dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: #2e8b3e; box-shadow: 0 0 0 4px rgba(46,139,62,0.18);
+    animation: pulse 2s ease-in-out infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { box-shadow: 0 0 0 4px rgba(46,139,62,0.18); }
+    50% { box-shadow: 0 0 0 8px rgba(46,139,62,0); }
+  }
+  h1.headline {
+    font-family: 'Newsreader', serif;
+    font-weight: 500;
+    font-size: clamp(56px, 7.6vw, 124px);
+    line-height: 0.92;
+    letter-spacing: -0.035em;
+    color: var(--ink);
+    margin-bottom: 32px;
+  }
+  h1.headline em {
+    font-style: italic;
+    color: var(--rust);
+    font-weight: 400;
+  }
+  h1.headline .stroke {
+    -webkit-text-stroke: 1.5px var(--ink);
+    color: transparent;
+    font-style: italic;
+    font-weight: 400;
+  }
+  .hero-sub {
+    font-size: 19px;
+    line-height: 1.5;
+    color: var(--ink-2);
+    max-width: 520px;
+    margin-bottom: 44px;
+    text-wrap: pretty;
+  }
+  .hero-cta-row {
+    display: flex; align-items: center; gap: 20px; margin-bottom: 56px;
+  }
+  .btn-primary {
+    display: inline-flex; align-items: center; gap: 10px;
+    background: var(--ink);
+    color: var(--cream);
+    padding: 18px 30px;
+    border-radius: 999px;
+    font-size: 14px; font-weight: 500;
+    letter-spacing: 0.02em;
+    transition: all .25s;
+  }
+  .btn-primary:hover { background: var(--rust); transform: translateY(-2px); }
+  .btn-primary svg { transition: transform .25s; }
+  .btn-primary:hover svg { transform: translateX(4px); }
+  .btn-ghost {
+    display: inline-flex; align-items: center; gap: 10px;
+    color: var(--ink); font-size: 14px; font-weight: 500;
+    padding: 18px 4px;
+    border-bottom: 1px solid var(--ink);
+  }
+  .hero-stats {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 32px;
+    padding-top: 32px;
+    border-top: 1px solid var(--rule);
+    max-width: 540px;
+  }
+  .stat-num {
+    font-family: 'Newsreader', serif;
+    font-size: 44px; font-weight: 500;
+    line-height: 1; letter-spacing: -0.02em;
+    color: var(--ink);
+  }
+  .stat-num sup { font-size: 18px; vertical-align: top; color: var(--rust); }
+  .stat-label {
+    font-family: 'Geist Mono', monospace;
+    font-size: 11px; text-transform: uppercase; letter-spacing: 0.12em;
+    color: var(--ink-2); margin-top: 8px;
+  }
+
+  /* ===== HERO IMAGE ===== */
+  .hero-visual {
+    position: relative;
+    aspect-ratio: 4/5;
+    width: 100%;
+  }
+  .hero-bg-circle {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at 50% 45%, var(--wood-light) 0%, var(--cream-2) 45%, var(--cream) 75%);
+    border-radius: 50%;
+    filter: blur(2px);
+  }
+  .hero-glow {
+    position: absolute;
+    inset: 8% 12%;
+    background: radial-gradient(circle at 50% 50%, rgba(255,184,102,0.45) 0%, rgba(255,184,102,0) 60%);
+    filter: blur(20px);
+    animation: breathe 4s ease-in-out infinite;
+  }
+  @keyframes breathe {
+    0%, 100% { opacity: 0.7; transform: scale(1); }
+    50% { opacity: 1; transform: scale(1.05); }
+  }
+  .hero-robot {
+    position: absolute;
+    inset: 0;
+    background: url('assets/robot-front.jpg') center 30% / cover no-repeat;
+    -webkit-mask: radial-gradient(ellipse 65% 80% at 50% 50%, black 50%, transparent 78%);
+            mask: radial-gradient(ellipse 65% 80% at 50% 50%, black 50%, transparent 78%);
+    filter: contrast(1.05) saturate(1.05);
+  }
+  .hero-tag {
+    position: absolute;
+    background: var(--paper);
+    border: 1px solid var(--rule);
+    border-radius: 12px;
+    padding: 14px 18px;
+    box-shadow: 0 10px 30px rgba(29,24,20,0.08);
+    backdrop-filter: blur(10px);
+    z-index: 3;
+  }
+  .hero-tag .lbl {
+    font-family: 'Geist Mono', monospace;
+    font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--rust);
+    margin-bottom: 4px;
+  }
+  .hero-tag .val { font-size: 14px; font-weight: 500; color: var(--ink); }
+  .tag-1 { top: 12%; left: -4%; }
+  .tag-2 { top: 38%; right: -2%; }
+  .tag-3 { bottom: 14%; left: 4%; }
+
+  /* ===== MARQUEE ===== */
+  .marquee {
+    border-top: 1px solid var(--rule);
+    border-bottom: 1px solid var(--rule);
+    padding: 28px 0;
+    overflow: hidden;
+    background: var(--paper);
+  }
+  .marquee-track {
+    display: flex; gap: 80px;
+    width: max-content;
+    animation: scroll 38s linear infinite;
+    align-items: center;
+  }
+  @keyframes scroll {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+  .marquee-item {
+    font-family: 'Newsreader', serif;
+    font-size: 28px; font-style: italic; font-weight: 400;
+    color: var(--ink-2);
+    white-space: nowrap;
+    display: flex; align-items: center; gap: 80px;
+  }
+  .marquee-item::after {
+    content: '✦';
+    color: var(--rust);
+    font-style: normal;
+    font-size: 18px;
+  }
+
+  /* ===== SECTIONS ===== */
+  section { padding: 120px 40px; max-width: 1440px; margin: 0 auto; }
+  .section-head {
+    display: grid; grid-template-columns: 1fr 2fr;
+    gap: 60px; margin-bottom: 80px;
+    align-items: end;
+  }
+  .section-head h2 {
+    font-family: 'Newsreader', serif;
+    font-weight: 500;
+    font-size: clamp(40px, 5vw, 76px);
+    line-height: 0.96;
+    letter-spacing: -0.03em;
+  }
+  .section-head h2 em { font-style: italic; color: var(--rust); }
+  .section-head p {
+    font-size: 17px; line-height: 1.55; color: var(--ink-2);
+    max-width: 480px; text-wrap: pretty;
+  }
+
+  /* ===== CAPABILITIES ===== */
+  .caps {
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    border-top: 1px solid var(--rule);
+  }
+  .cap {
+    padding: 36px 28px 36px 0;
+    border-right: 1px solid var(--rule);
+    position: relative;
+  }
+  .cap:last-child { border-right: none; padding-right: 0; }
+  .cap:not(:first-child) { padding-left: 28px; }
+  .cap-num {
+    font-family: 'Geist Mono', monospace;
+    font-size: 11px; letter-spacing: 0.14em;
+    color: var(--rust); margin-bottom: 80px;
+  }
+  .cap-icon {
+    width: 56px; height: 56px;
+    border: 1.5px solid var(--ink);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    margin-bottom: 24px;
+    color: var(--ink);
+  }
+  .cap h3 {
+    font-family: 'Newsreader', serif;
+    font-weight: 500;
+    font-size: 26px; line-height: 1.1;
+    letter-spacing: -0.02em;
+    margin-bottom: 12px;
+  }
+  .cap p { font-size: 14px; line-height: 1.55; color: var(--ink-2); }
+
+  /* ===== SHOWCASE: video + product views ===== */
+  .showcase {
+    display: grid;
+    grid-template-columns: 1.3fr 1fr;
+    gap: 32px;
+  }
+  .showcase-main {
+    position: relative;
+    aspect-ratio: 4/5;
+    background: var(--ink);
+    border-radius: 24px;
+    overflow: hidden;
+  }
+  .showcase-main video {
+    width: 100%; height: 100%; object-fit: cover;
+    display: block;
+  }
+  .showcase-overlay {
+    position: absolute; inset: 0;
+    background: linear-gradient(to top, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0) 50%);
+    display: flex; flex-direction: column; justify-content: space-between;
+    padding: 28px;
+    pointer-events: none;
+  }
+  .showcase-tag {
+    align-self: flex-start;
+    display: inline-flex; align-items: center; gap: 8px;
+    background: rgba(246,241,231,0.92);
+    backdrop-filter: blur(10px);
+    padding: 10px 16px;
+    border-radius: 999px;
+    color: var(--ink);
+    font-family: 'Geist Mono', monospace;
+    font-size: 11px; text-transform: uppercase; letter-spacing: 0.14em;
+  }
+  .showcase-tag::before {
+    content: ''; width: 8px; height: 8px; border-radius: 50%;
+    background: #e74c3c; animation: pulse-red 1.4s ease infinite;
+  }
+  @keyframes pulse-red {
+    0%, 100% { opacity: 1; } 50% { opacity: 0.4; }
+  }
+  .showcase-caption {
+    color: var(--cream);
+    font-family: 'Newsreader', serif;
+    font-size: 32px; line-height: 1.1; font-weight: 500;
+    letter-spacing: -0.02em;
+    max-width: 80%;
+  }
+  .showcase-side {
+    display: grid; grid-template-rows: 1fr 1fr;
+    gap: 32px;
+  }
+  .show-card {
+    position: relative;
+    border-radius: 24px;
+    overflow: hidden;
+    background: var(--paper);
+    border: 1px solid var(--rule);
+  }
+  .show-card img {
+    width: 100%; height: 100%; object-fit: cover; display: block;
+  }
+  .show-card-label {
+    position: absolute; bottom: 0; left: 0; right: 0;
+    padding: 24px;
+    background: linear-gradient(to top, rgba(0,0,0,0.5), transparent);
+    color: var(--cream);
+  }
+  .show-card-label .lbl {
+    font-family: 'Geist Mono', monospace;
+    font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase;
+    opacity: 0.85; margin-bottom: 4px;
+  }
+  .show-card-label .val {
+    font-family: 'Newsreader', serif;
+    font-size: 22px; font-weight: 500;
+  }
+
+  /* ===== ANATOMY ===== */
+  .anatomy-section {
+    background: var(--ink);
+    color: var(--cream);
+    margin: 0; padding: 140px 40px;
+    max-width: none;
+    border-top: 1px solid rgba(255,255,255,0.05);
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+  }
+  .anatomy-inner { max-width: 1440px; margin: 0 auto; }
+  .anatomy-head {
+    display: flex; justify-content: space-between; align-items: end;
+    margin-bottom: 80px;
+    gap: 40px;
+  }
+  .anatomy-head h2 {
+    font-family: 'Newsreader', serif;
+    font-weight: 500;
+    font-size: clamp(40px, 5vw, 76px);
+    line-height: 0.96;
+    letter-spacing: -0.03em;
+  }
+  .anatomy-head h2 em { font-style: italic; color: var(--wood); }
+  .anatomy-head .eyebrow { color: var(--wood); }
+  .anatomy-stage {
+    display: grid;
+    grid-template-columns: 1fr 1.4fr 1fr;
+    gap: 48px;
+    align-items: center;
+  }
+  .anatomy-col { display: flex; flex-direction: column; gap: 36px; }
+  .anatomy-col.left { align-items: flex-end; text-align: right; }
+  .anatomy-item .num {
+    font-family: 'Geist Mono', monospace;
+    font-size: 11px; letter-spacing: 0.14em;
+    color: var(--wood); margin-bottom: 6px;
+  }
+  .anatomy-item h4 {
+    font-family: 'Newsreader', serif;
+    font-weight: 500; font-size: 22px;
+    margin-bottom: 8px; letter-spacing: -0.01em;
+  }
+  .anatomy-item p {
+    font-size: 13px; line-height: 1.55;
+    color: rgba(246,241,231,0.65);
+    max-width: 240px;
+  }
+  .anatomy-col.left .anatomy-item p { margin-left: auto; }
+  .anatomy-image {
+    position: relative;
+    aspect-ratio: 3/4;
+    background: radial-gradient(circle at 50% 40%, rgba(212,163,115,0.22) 0%, transparent 70%);
+  }
+  .anatomy-image::before {
+    content: '';
+    position: absolute;
+    inset: 5% 15%;
+    background: url('assets/robot-front.jpg') center 30% / cover no-repeat;
+    -webkit-mask: radial-gradient(ellipse 60% 75% at 50% 50%, black 55%, transparent 80%);
+            mask: radial-gradient(ellipse 60% 75% at 50% 50%, black 55%, transparent 80%);
+    filter: contrast(1.08);
+  }
+  .anatomy-image .ring {
+    position: absolute;
+    border: 1px dashed rgba(212,163,115,0.4);
+    border-radius: 50%;
+    inset: 12% 22%;
+    animation: spin 30s linear infinite;
+  }
+  .anatomy-image .ring.r2 {
+    inset: 4% 14%;
+    animation: spin 50s linear infinite reverse;
+    border-color: rgba(212,163,115,0.2);
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* ===== USE CASES ===== */
+  .use-cases {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+  }
+  .uc {
+    background: var(--paper);
+    border: 1px solid var(--rule-soft);
+    border-radius: 20px;
+    padding: 32px;
+    transition: all .3s;
+    position: relative;
+    overflow: hidden;
+  }
+  .uc:hover {
+    transform: translateY(-4px);
+    border-color: var(--rust);
+    background: var(--cream-2);
+  }
+  .uc-icon {
+    width: 52px; height: 52px;
+    border-radius: 14px;
+    background: var(--cream-2);
+    display: flex; align-items: center; justify-content: center;
+    color: var(--rust);
+    margin-bottom: 28px;
+    transition: background .3s;
+  }
+  .uc:hover .uc-icon { background: var(--paper); }
+  .uc h3 {
+    font-family: 'Newsreader', serif;
+    font-weight: 500;
+    font-size: 26px;
+    margin-bottom: 12px;
+    letter-spacing: -0.01em;
+  }
+  .uc p {
+    font-size: 14px; color: var(--ink-2); line-height: 1.55;
+    margin-bottom: 24px;
+  }
+  .uc-stat {
+    font-family: 'Geist Mono', monospace;
+    font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--rust);
+    padding-top: 16px;
+    border-top: 1px solid var(--rule-soft);
+  }
+
+  /* ===== SPECS ===== */
+  .specs-section {
+    display: block;
+  }
+  .specs-table { display: flex; flex-direction: column; }
+  .specs-row {
+    display: grid; grid-template-columns: 0.8fr 1.2fr;
+    padding: 22px 0;
+    border-bottom: 1px solid var(--rule);
+    align-items: center;
+  }
+  .specs-row:first-child { border-top: 1px solid var(--rule); }
+  .specs-row .key {
+    font-family: 'Geist Mono', monospace;
+    font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--ink-2);
+  }
+  .specs-row .val {
+    font-family: 'Newsreader', serif;
+    font-size: 22px; font-weight: 500;
+    color: var(--ink);
+    letter-spacing: -0.01em;
+  }
+  .specs-row .val .unit {
+    font-family: 'Geist', sans-serif;
+    font-size: 13px;
+    font-weight: 400;
+    color: var(--ink-2);
+    margin-left: 4px;
+  }
+
+  /* ===== DASHBOARD ===== */
+  .dash-section {
+    background: var(--paper);
+    margin: 0; padding: 140px 40px;
+    max-width: none;
+    border-top: 1px solid var(--rule);
+    border-bottom: 1px solid var(--rule);
+  }
+  .dash-inner {
+    max-width: 1440px; margin: 0 auto;
+    display: grid; grid-template-columns: 1fr 1.3fr;
+    gap: 64px; align-items: center;
+  }
+  .dash-text h2 {
+    font-family: 'Newsreader', serif;
+    font-weight: 500;
+    font-size: clamp(44px, 5.4vw, 80px);
+    line-height: 0.96;
+    letter-spacing: -0.03em;
+    margin: 28px 0 28px;
+  }
+  .dash-text h2 em { font-style: italic; color: var(--rust); }
+  .dash-text p {
+    font-size: 17px; line-height: 1.55; color: var(--ink-2);
+    max-width: 460px; text-wrap: pretty;
+    margin-bottom: 32px;
+  }
+  .dash-bullets { list-style: none; }
+  .dash-bullets li {
+    padding: 14px 0;
+    border-top: 1px solid var(--rule-soft);
+    display: flex; align-items: center; gap: 14px;
+    font-size: 15px;
+  }
+  .dash-bullets li:last-child { border-bottom: 1px solid var(--rule-soft); }
+  .dash-bullets li::before {
+    content: '→';
+    color: var(--rust); font-weight: 500;
+  }
+
+  /* MOCK DASHBOARD UI */
+  .dash-mock {
+    background: var(--cream);
+    border: 1px solid var(--rule);
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 30px 60px rgba(29,24,20,0.08);
+    font-size: 12px;
+  }
+  .dash-bar {
+    background: var(--paper);
+    border-bottom: 1px solid var(--rule);
+    padding: 12px 16px;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .dash-dots { display: flex; gap: 6px; }
+  .dash-dots span {
+    width: 10px; height: 10px; border-radius: 50%;
+    background: var(--rule);
+  }
+  .dash-dots span:first-child { background: #e76f51; }
+  .dash-dots span:nth-child(2) { background: #e9c46a; }
+  .dash-dots span:nth-child(3) { background: #2a9d8f; }
+  .dash-body {
+    display: grid; grid-template-columns: 180px 1fr;
+    min-height: 380px;
+  }
+  .dash-side {
+    background: var(--paper);
+    border-right: 1px solid var(--rule);
+    padding: 16px;
+  }
+  .dash-side .logo-mini {
+    font-family: 'Newsreader', serif;
+    font-weight: 600;
+    color: var(--rust);
+    font-size: 16px;
+    letter-spacing: 0.04em;
+    padding-bottom: 14px;
+    border-bottom: 1px solid var(--rule-soft);
+    margin-bottom: 14px;
+  }
+  .dash-side ul { list-style: none; display: flex; flex-direction: column; gap: 4px; }
+  .dash-side ul li {
+    padding: 8px 10px;
+    border-radius: 6px;
+    color: var(--ink-2);
+    font-size: 12px;
+    cursor: pointer;
+  }
+  .dash-side ul li.active { background: var(--ink); color: var(--cream); }
+  .dash-main { padding: 18px; }
+  .dash-main-head {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-bottom: 14px;
+  }
+  .dash-main-head .title {
+    font-family: 'Newsreader', serif; font-size: 16px; font-weight: 500;
+  }
+  .dash-pill {
+    font-family: 'Geist Mono', monospace;
+    font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase;
+    background: var(--cream-2); color: var(--rust);
+    padding: 5px 10px; border-radius: 999px;
+  }
+  .dash-map {
+    position: relative;
+    height: 200px;
+    background: var(--paper);
+    border: 1px solid var(--rule-soft);
+    border-radius: 8px;
+    background-image:
+      linear-gradient(var(--rule-soft) 1px, transparent 1px),
+      linear-gradient(90deg, var(--rule-soft) 1px, transparent 1px);
+    background-size: 24px 24px;
+    overflow: hidden;
+  }
+  .dash-map svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .dash-bot {
+    position: absolute;
+    width: 14px; height: 14px;
+    background: var(--rust);
+    border-radius: 50%;
+    box-shadow: 0 0 0 4px rgba(122,58,22,0.2), 0 0 0 10px rgba(122,58,22,0.08);
+    top: 60%; left: 30%;
+    animation: roam 8s ease-in-out infinite;
+  }
+  @keyframes roam {
+    0%, 100% { top: 60%; left: 30%; }
+    25% { top: 30%; left: 50%; }
+    50% { top: 40%; left: 75%; }
+    75% { top: 70%; left: 60%; }
+  }
+  .dash-tasks {
+    margin-top: 12px;
+    display: flex; flex-direction: column; gap: 6px;
+  }
+  .dash-task {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 10px 12px;
+    background: var(--paper);
+    border: 1px solid var(--rule-soft);
+    border-radius: 8px;
+    font-size: 11px;
+  }
+  .dash-task .tname { color: var(--ink); font-weight: 500; }
+  .dash-task .tstat {
+    font-family: 'Geist Mono', monospace; font-size: 9px;
+    text-transform: uppercase; letter-spacing: 0.1em;
+  }
+  .ts-prog { color: #2e8b3e; }
+  .ts-sched { color: var(--ink-2); }
+  .ts-pend { color: var(--rust); }
+
+  /* ===== TIMELINE ===== */
+  .timeline {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0;
+    border-top: 1px solid var(--rule);
+    border-bottom: 1px solid var(--rule);
+  }
+  .tl-step {
+    padding: 40px 28px;
+    border-right: 1px solid var(--rule);
+    position: relative;
+  }
+  .tl-step:last-child { border-right: none; }
+  .tl-step .num {
+    font-family: 'Newsreader', serif;
+    font-style: italic;
+    font-size: 64px; font-weight: 400;
+    color: var(--rust);
+    letter-spacing: -0.04em;
+    line-height: 1;
+    margin-bottom: 32px;
+  }
+  .tl-step h4 {
+    font-family: 'Newsreader', serif;
+    font-weight: 500; font-size: 22px;
+    margin-bottom: 8px; letter-spacing: -0.01em;
+  }
+  .tl-step p { font-size: 13px; line-height: 1.55; color: var(--ink-2); }
+
+  /* ===== TESTIMONIAL / CTA ===== */
+  .quote-section {
+    padding: 160px 40px;
+    text-align: center;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+  .quote-mark {
+    font-family: 'Newsreader', serif;
+    font-size: 120px; line-height: 0.5;
+    color: var(--rust);
+    margin-bottom: 24px;
+  }
+  blockquote {
+    font-family: 'Newsreader', serif;
+    font-weight: 400;
+    font-size: clamp(32px, 4vw, 56px);
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+    text-wrap: balance;
+    margin-bottom: 36px;
+  }
+  blockquote em { font-style: italic; color: var(--rust); }
+  .quote-cite {
+    font-family: 'Geist Mono', monospace;
+    font-size: 12px; text-transform: uppercase; letter-spacing: 0.16em;
+    color: var(--ink-2);
+  }
+
+  /* ===== CTA ===== */
+  .cta-section {
+    background: var(--ink);
+    color: var(--cream);
+    margin: 0; padding: 140px 40px;
+    max-width: none;
+    position: relative;
+    overflow: hidden;
+  }
+  .cta-glow {
+    position: absolute;
+    top: 50%; left: 50%; transform: translate(-50%, -50%);
+    width: 800px; height: 800px;
+    background: radial-gradient(circle, rgba(255,184,102,0.15) 0%, transparent 60%);
+    pointer-events: none;
+  }
+  .cta-inner {
+    max-width: 1440px; margin: 0 auto;
+    display: grid; grid-template-columns: 1.4fr 1fr;
+    gap: 60px; align-items: end;
+    position: relative;
+    z-index: 2;
+  }
+  .cta-text h2 {
+    font-family: 'Newsreader', serif;
+    font-weight: 400;
+    font-size: clamp(60px, 8vw, 140px);
+    line-height: 0.9;
+    letter-spacing: -0.04em;
+    margin: 32px 0;
+  }
+  .cta-text h2 em { font-style: italic; color: var(--wood); font-weight: 500; }
+  .cta-text .eyebrow { color: var(--wood); }
+  .cta-text p {
+    font-size: 18px; line-height: 1.5;
+    color: rgba(246,241,231,0.7);
+    max-width: 540px;
+    margin-bottom: 40px;
+  }
+  .cta-btn {
+    display: inline-flex; align-items: center; gap: 12px;
+    background: var(--cream);
+    color: var(--ink);
+    padding: 22px 36px;
+    border-radius: 999px;
+    font-size: 15px; font-weight: 500;
+    letter-spacing: 0.02em;
+    transition: all .25s;
+  }
+  .cta-btn:hover { background: var(--wood); transform: translateY(-2px); }
+  .cta-form {
+    display: flex; flex-direction: column; gap: 20px;
+    padding: 32px;
+    border: 1px solid rgba(246,241,231,0.15);
+    border-radius: 20px;
+    background: rgba(246,241,231,0.02);
+  }
+  .cta-form-row {
+    display: flex; flex-direction: column; gap: 6px;
+  }
+  .cta-form label {
+    font-family: 'Geist Mono', monospace;
+    font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--wood);
+  }
+  .cta-form input, .cta-form select {
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid rgba(246,241,231,0.25);
+    color: var(--cream);
+    padding: 10px 0;
+    font-family: inherit;
+    font-size: 16px;
+    outline: none;
+  }
+  .cta-form input::placeholder { color: rgba(246,241,231,0.4); }
+  .cta-form input:focus, .cta-form select:focus {
+    border-bottom-color: var(--wood);
+  }
+  .cta-form select option { background: var(--ink); }
+  .cta-contact {
+    display: flex; gap: 32px;
+    margin-top: 24px;
+    font-family: 'Geist Mono', monospace;
+    font-size: 12px;
+    color: rgba(246,241,231,0.5);
+  }
+
+  /* ===== FOOTER ===== */
+  footer {
+    background: var(--paper);
+    padding: 60px 40px 40px;
+    border-top: 1px solid var(--rule);
+  }
+  .foot-inner {
+    max-width: 1440px; margin: 0 auto;
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 60px;
+    margin-bottom: 60px;
+  }
+  .foot-brand img { height: 48px; margin-bottom: 16px; }
+  .foot-brand p {
+    font-size: 14px; color: var(--ink-2); line-height: 1.55;
+    max-width: 320px;
+  }
+  .foot-col h5 {
+    font-family: 'Geist Mono', monospace;
+    font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--rust); margin-bottom: 18px;
+  }
+  .foot-col ul { list-style: none; }
+  .foot-col ul li { margin-bottom: 10px; font-size: 14px; }
+  .foot-col ul li a { color: var(--ink-2); transition: color .2s; }
+  .foot-col ul li a:hover { color: var(--ink); }
+  .foot-base {
+    max-width: 1440px; margin: 0 auto;
+    padding-top: 32px;
+    border-top: 1px solid var(--rule-soft);
+    display: flex; justify-content: space-between;
+    font-family: 'Geist Mono', monospace;
+    font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--ink-2);
+  }
+
+  @media (max-width: 1024px) {
+    .hero-grid, .specs-section, .dash-inner, .cta-inner, .anatomy-stage, .section-head { grid-template-columns: 1fr; }
+    .caps, .timeline { grid-template-columns: repeat(2, 1fr); }
+    .use-cases { grid-template-columns: 1fr 1fr; }
+    .showcase { grid-template-columns: 1fr; }
+    .nav-links { display: none; }
+    .foot-inner { grid-template-columns: 1fr 1fr; }
+  }
+  @media (max-width: 640px) {
+    .caps, .timeline, .use-cases { grid-template-columns: 1fr; }
+    section, .anatomy-section, .dash-section, .cta-section { padding: 80px 20px; }
+    .hero { padding: 110px 20px 60px; }
+    .nav-inner { padding: 14px 20px; }
+    .foot-inner { grid-template-columns: 1fr; gap: 36px; }
+    .foot-base { flex-direction: column; gap: 8px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ===== NAV ===== -->
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="#" class="brand">
+      <img src="assets/logo.png" alt="Sadeem" />
+      <span class="brand-name">SADEEM</span>
+    </a>
+    <div class="nav-links">
+      <a href="#capabilities">Capabilities</a>
+      <a href="#showcase">In Action</a>
+      <a href="#anatomy">Anatomy</a>
+      <a href="#dashboard">Fleet</a>
+      <a href="#specs">Specs</a>
+    </div>
+    <a href="#contact" class="nav-cta" data-i18n="nav.cta">Book a demo</a>
+    <div class="lang-toggle" role="group" aria-label="Language">
+      <span class="lang-thumb"></span>
+      <button type="button" data-lang="en" class="active">EN</button>
+      <button type="button" data-lang="ar">عربي</button>
+    </div>
+  </div>
+</nav>
+
+<!-- ===== HERO ===== -->
+<header class="hero">
+  <div class="hero-grid">
+    <div class="hero-text">
+      <div class="hero-meta">
+        <span class="dot"></span>
+        <span class="eyebrow">Designed &amp; built in Oman · Model 01</span>
+      </div>
+      <h1 class="headline">
+        Always on duty.<br />
+        <em>Ready</em> <span class="stroke">to serve.</span>
+      </h1>
+      <p class="hero-sub">
+        SADEEM is an autonomous service robot that delivers, guides and assists — in hotels, hospitals, museums and beyond. It speaks. It understands. It works on its own.
+      </p>
+      <div class="hero-cta-row">
+        <a href="#contact" class="btn-primary">
+          Book a live demo
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10m0 0L8 3m5 5l-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+        <a href="#showcase" class="btn-ghost">
+          Watch it move
+        </a>
+      </div>
+      <div class="hero-stats">
+        <div>
+          <div class="stat-num">20<span class="mono" style="font-size:18px;color:var(--rust);font-family:'Geist',sans-serif;font-weight:400">kg</span></div>
+          <div class="stat-label">Payload</div>
+        </div>
+        <div>
+          <div class="stat-num">12<sup>h</sup></div>
+          <div class="stat-label">Per charge</div>
+        </div>
+        <div>
+          <div class="stat-num">2<span style="color:var(--rust)">·</span>0</div>
+          <div class="stat-label">Languages</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="hero-visual">
+      <div class="hero-bg-circle"></div>
+      <div class="hero-glow"></div>
+      <div class="hero-robot"></div>
+      <div class="hero-tag tag-1">
+        <div class="lbl">Status</div>
+        <div class="val">On Patrol · Lobby</div>
+      </div>
+      <div class="hero-tag tag-2">
+        <div class="lbl">Battery</div>
+        <div class="val">87 % · 6h 12m</div>
+      </div>
+      <div class="hero-tag tag-3">
+        <div class="lbl">Carrying</div>
+        <div class="val">Room 412 delivery</div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- ===== MARQUEE ===== -->
+<div class="marquee">
+  <div class="marquee-track">
+    <span class="marquee-item">Hotels</span>
+    <span class="marquee-item">Hospitals</span>
+    <span class="marquee-item">Museums</span>
+    <span class="marquee-item">Restaurants</span>
+    <span class="marquee-item">Retail</span>
+    <span class="marquee-item">Offices</span>
+    <span class="marquee-item">Hotels</span>
+    <span class="marquee-item">Hospitals</span>
+    <span class="marquee-item">Museums</span>
+    <span class="marquee-item">Restaurants</span>
+    <span class="marquee-item">Retail</span>
+    <span class="marquee-item">Offices</span>
+  </div>
+</div>
+
+<!-- ===== CAPABILITIES ===== -->
+<section id="capabilities">
+  <div class="section-head">
+    <div>
+      <div class="eyebrow" style="margin-bottom:18px">What it does</div>
+      <h2>Four things,<br /><em>done well.</em></h2>
+    </div>
+    <p>SADEEM isn't trying to be everything. It's built around a small set of jobs that matter to operators every day — and it does each one without supervision.</p>
+  </div>
+
+  <div class="caps">
+    <div class="cap">
+      <div class="cap-num">01 / Endurance</div>
+      <div class="cap-icon">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+      </div>
+      <h3>Runs all day.</h3>
+      <p>A full shift on a single charge. Returns to its dock automatically when it needs power. No babysitting.</p>
+    </div>
+    <div class="cap">
+      <div class="cap-num">02 / Voice</div>
+      <div class="cap-icon">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 5h12a3 3 0 0 1 3 3v6a3 3 0 0 1-3 3H8l-4 3v-3a3 3 0 0 1-1-2V8a3 3 0 0 1 3-3z"/></svg>
+      </div>
+      <h3>Speaks naturally.</h3>
+      <p>Understands plain Arabic and English. Tell it what you need — it listens, replies and gets it done.</p>
+    </div>
+    <div class="cap">
+      <div class="cap-num">03 / Payload</div>
+      <div class="cap-icon">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 7l9-4 9 4v10l-9 4-9-4V7z"/><path d="M3 7l9 4 9-4M12 11v10"/></svg>
+      </div>
+      <h3>Carries the load.</h3>
+      <p>Up to 20 kilograms. Meals, supplies, parcels, documents — anything that needs to move from A to B.</p>
+    </div>
+    <div class="cap">
+      <div class="cap-num">04 / Navigation</div>
+      <div class="cap-icon">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 22s7-7.5 7-13a7 7 0 1 0-14 0c0 5.5 7 13 7 13z"/><circle cx="12" cy="9" r="2.5"/></svg>
+      </div>
+      <h3>Knows its way.</h3>
+      <p>Maps your space, navigates around people and obstacles. No tracks, no markers, no remote control needed.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===== SHOWCASE ===== -->
+<section id="showcase">
+  <div class="section-head">
+    <div>
+      <div class="eyebrow" style="margin-bottom:18px">In the field</div>
+      <h2>See it in <em>motion.</em></h2>
+    </div>
+    <p>Real footage from real floors. SADEEM navigating, greeting and delivering — without a remote, a track, or a person guiding it.</p>
+  </div>
+
+  <div class="showcase">
+    <div class="showcase-main">
+      <video src="assets/robot.mp4" autoplay muted loop playsinline></video>
+      <div class="showcase-overlay">
+        <span class="showcase-tag">Live · Field footage</span>
+        <div class="showcase-caption">Patrolling the lab,<br/><em style="font-style:italic;color:var(--wood-light)">unsupervised.</em></div>
+      </div>
+    </div>
+    <div class="showcase-side">
+      <div class="show-card">
+        <img src="assets/robot-top.jpg" alt="SADEEM top view with screen" />
+        <div class="show-card-label">
+          <div class="lbl">Display</div>
+          <div class="val">Touch &amp; talk</div>
+        </div>
+      </div>
+      <div class="show-card">
+        <img src="assets/robot-back.jpg" alt="SADEEM delivery compartment" />
+        <div class="show-card-label">
+          <div class="lbl">Compartment</div>
+          <div class="val">Secure payload</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== ANATOMY ===== -->
+<section id="anatomy" class="anatomy-section">
+  <div class="anatomy-inner">
+    <div class="anatomy-head">
+      <h2>Engineered <em>down</em><br />to the millimetre.</h2>
+      <div class="eyebrow">// Anatomy</div>
+    </div>
+    <div class="anatomy-stage">
+      <div class="anatomy-col left">
+        <div class="anatomy-item">
+          <div class="num">A 01</div>
+          <h4>HD touchscreen</h4>
+          <p>10.1-inch display with expressive face. Touch to interact, glance to see status.</p>
+        </div>
+        <div class="anatomy-item">
+          <div class="num">A 02</div>
+          <h4>Far-field microphones</h4>
+          <p>Hears you from across the lobby. Filters background noise on the fly.</p>
+        </div>
+        <div class="anatomy-item">
+          <div class="num">A 03</div>
+          <h4>Ambient light strip</h4>
+          <p>Soft amber band signals status — patrolling, paused, low battery.</p>
+        </div>
+      </div>
+
+      <div class="anatomy-image">
+        <div class="ring r2"></div>
+        <div class="ring"></div>
+      </div>
+
+      <div class="anatomy-col">
+        <div class="anatomy-item">
+          <div class="num">B 01</div>
+          <h4>Cargo bay</h4>
+          <p>Single 20 kg compartment with a lockable lid. Configurable for trays, parcels, linens.</p>
+        </div>
+        <div class="anatomy-item">
+          <div class="num">B 02</div>
+          <h4>Multi-sensor LiDAR</h4>
+          <p>360° obstacle detection. Sees stairs, glass walls and the cat under the chair.</p>
+        </div>
+        <div class="anatomy-item">
+          <div class="num">B 03</div>
+          <h4>Auto-dock base</h4>
+          <p>Returns to charge on its own. Four hours to a full battery.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== USE CASES ===== -->
+<section id="use-cases">
+  <div class="section-head">
+    <div>
+      <div class="eyebrow" style="margin-bottom:18px">Where it works</div>
+      <h2>Pick the floor.<br /><em>It'll learn it.</em></h2>
+    </div>
+    <p>Same robot, same dashboard, different uniforms. Roll it out for one venue or twenty — the workflow scales the moment you add another unit.</p>
+  </div>
+
+  <div class="use-cases">
+    <div class="uc">
+      <div class="uc-icon">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M2 21h20M5 21V10l7-5 7 5v11M9 21v-7h6v7"/></svg>
+      </div>
+      <h3>Hotels</h3>
+      <p>Room delivery and concierge tasks, day and night. Late-night towel runs, breakfast trays, key handoffs — without staff leaving the desk.</p>
+      <div class="uc-stat">Room deliveries, day and night</div>
+    </div>
+    <div class="uc">
+      <div class="uc-icon">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 2v20M2 12h20"/><rect x="6" y="6" width="12" height="12" rx="1.5"/></svg>
+      </div>
+      <h3>Healthcare</h3>
+      <p>Item transport between wards, visitor wayfinding, simple patient interactions. Nurses get hours of their day back.</p>
+      <div class="uc-stat">Ward-to-ward transport, hands-free</div>
+    </div>
+    <div class="uc">
+      <div class="uc-icon">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 12c0-5 4-8 9-8s9 3 9 8M3 12h18M5 16h14M7 20h10"/></svg>
+      </div>
+      <h3>Restaurants</h3>
+      <p>Food running on busy floors. Picks up at the pass, drops at the table, returns dirty plates. Servers stay with their guests.</p>
+      <div class="uc-stat">Food running, pass to table</div>
+    </div>
+    <div class="uc">
+      <div class="uc-icon">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 21h18M5 21V8h14v13M3 8l9-5 9 5M9 21v-6h6v6"/></svg>
+      </div>
+      <h3>Museums</h3>
+      <p>An interactive guide that speaks every visitor's language. Tells stories, answers questions, walks small groups through galleries.</p>
+      <div class="uc-stat">Tours in every visitor’s language</div>
+    </div>
+    <div class="uc">
+      <div class="uc-icon">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M5 7h14l-1.5 14h-11L5 7z"/><path d="M9 7V4a3 3 0 0 1 6 0v3"/></svg>
+      </div>
+      <h3>Retail</h3>
+      <p>Wayfinding for big-box floors and malls. Recommends products, guides shoppers, frees staff for actual selling.</p>
+      <div class="uc-stat">Wayfinding across the whole floor</div>
+    </div>
+    <div class="uc">
+      <div class="uc-icon">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="7" width="18" height="13" rx="1.5"/><path d="M9 7V5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2"/></svg>
+      </div>
+      <h3>Offices</h3>
+      <p>Reception, document delivery, visitor escort. Greets clients at the door and walks them straight to the right meeting room.</p>
+      <div class="uc-stat">Every guest greeted at the door</div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== DASHBOARD ===== -->
+<section id="dashboard" class="dash-section">
+  <div class="dash-inner">
+    <div class="dash-text">
+      <div class="eyebrow">// Command center</div>
+      <h2>One robot.<br /><em>Total control.</em></h2>
+      <p>Every SADEEM connects to a single dashboard. Watch where it goes. Send it on tasks. Take the wheel from anywhere in the world.</p>
+      <ul class="dash-bullets">
+        <li>Live map view — see every robot, every floor</li>
+        <li>Manual remote control from phone or browser</li>
+        <li>Schedule routes once, repeat them forever</li>
+        <li>Manage one unit or a fleet of twenty</li>
+      </ul>
+    </div>
+
+    <div class="dash-mock">
+      <div class="dash-bar">
+        <div class="dash-dots"><span></span><span></span><span></span></div>
+        <div class="mono" style="font-size:10px;color:var(--ink-2);letter-spacing:0.1em;text-transform:uppercase">sadeem.io / fleet</div>
+        <div></div>
+      </div>
+      <div class="dash-body">
+        <div class="dash-side">
+          <div class="logo-mini">SADEEM</div>
+          <ul>
+            <li class="active">↺ Live Map</li>
+            <li>◇ Robots (3)</li>
+            <li>≣ Tasks</li>
+            <li>○ Schedule</li>
+            <li>△ Alerts</li>
+            <li>⚙ Settings</li>
+          </ul>
+        </div>
+        <div class="dash-main">
+          <div class="dash-main-head">
+            <div class="title">Floor 2 · East Wing</div>
+            <div class="dash-pill">● 3 online</div>
+          </div>
+          <div class="dash-map">
+            <svg viewBox="0 0 400 200" preserveAspectRatio="none">
+              <path d="M20,20 L380,20 L380,180 L20,180 Z" fill="none" stroke="rgba(122,58,22,0.3)" stroke-width="1.5"/>
+              <path d="M120,20 L120,100 L260,100 L260,180" fill="none" stroke="rgba(122,58,22,0.3)" stroke-width="1.5"/>
+              <path d="M260,100 L380,100" fill="none" stroke="rgba(122,58,22,0.3)" stroke-width="1.5"/>
+              <path d="M50,60 Q150,40 200,90 T350,150" fill="none" stroke="rgba(122,58,22,0.6)" stroke-width="1.5" stroke-dasharray="4 4"/>
+            </svg>
+            <div class="dash-bot"></div>
+          </div>
+          <div class="dash-tasks">
+            <div class="dash-task"><span class="tname">Deliver to Room 101</span><span class="tstat ts-prog">● In progress</span></div>
+            <div class="dash-task"><span class="tname">Patrol Lobby</span><span class="tstat ts-sched">○ Scheduled 14:00</span></div>
+            <div class="dash-task"><span class="tname">Disinfect Zone A</span><span class="tstat ts-pend">◇ Pending</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== HOW IT WORKS / TIMELINE ===== -->
+<section id="how">
+  <div class="section-head">
+    <div>
+      <div class="eyebrow" style="margin-bottom:18px">From box to busy floor</div>
+      <h2>Live in <em>a day.</em></h2>
+    </div>
+    <p>No construction. No tracks taped to the floor. No special hardware to install. SADEEM learns your space the way a new hire would — by walking through it once.</p>
+  </div>
+
+  <div class="timeline">
+    <div class="tl-step">
+      <div class="num">01</div>
+      <h4>Unbox.</h4>
+      <p>Wheel it out. Plug in the dock. Power it on. The robot wakes up and finds your Wi-Fi.</p>
+    </div>
+    <div class="tl-step">
+      <div class="num">02</div>
+      <h4>Walk &amp; map.</h4>
+      <p>Drive it once around the floor with the tablet. It builds a map of every corridor and room as it goes.</p>
+    </div>
+    <div class="tl-step">
+      <div class="num">03</div>
+      <h4>Mark &amp; name.</h4>
+      <p>Drop pins on rooms, exits, the kitchen, the dock. Tag them in your language. Done in twenty minutes.</p>
+    </div>
+    <div class="tl-step">
+      <div class="num">04</div>
+      <h4>Set it loose.</h4>
+      <p>Press start. SADEEM goes to work — and gets better at your floor every day.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===== QUOTE ===== -->
+<section class="quote-section">
+  <div class="quote-mark">"</div>
+  <blockquote>
+    SADEEM Model 01 won the Engineering Gathering Prize at Sultan Qaboos University — and it is measured, not promised: <em>1.55 seconds from voice command to action.</em>
+  </blockquote>
+  <div class="quote-cite">— 16th Engineering Gathering · Sultan Qaboos University</div>
+</section>
+
+<!-- ===== SPECS ===== -->
+<section id="specs">
+  <div class="section-head">
+    <div>
+      <div class="eyebrow" style="margin-bottom:18px">Specifications</div>
+      <h2>The numbers,<br /><em>plainly stated.</em></h2>
+    </div>
+    <p>Commercial-grade hardware. Tested daily. Two-year warranty included. Engineered in Oman, supported on the ground.</p>
+  </div>
+
+  <div class="specs-section">
+    <div class="specs-table">
+      <div class="specs-row"><div class="key">Navigation</div><div class="val">Multi-sensor LiDAR <span class="unit">+ vision</span></div></div>
+      <div class="specs-row"><div class="key">Charging</div><div class="val">Autonomous dock <span class="unit">· 4h full</span></div></div>
+      <div class="specs-row"><div class="key">Payload</div><div class="val">20 <span class="unit">kg / multi-bay</span></div></div>
+      <div class="specs-row"><div class="key">Top speed</div><div class="val">0.8 <span class="unit">m / s</span></div></div>
+      <div class="specs-row"><div class="key">Display</div><div class="val">10.1″ <span class="unit">HD touchscreen</span></div></div>
+      <div class="specs-row"><div class="key">Voice</div><div class="val">Arabic + English <span class="unit">· far-field mics</span></div></div>
+      <div class="specs-row"><div class="key">Connectivity</div><div class="val">Wi-Fi <span class="unit">· Bluetooth</span></div></div>
+      <div class="specs-row"><div class="key">Safety</div><div class="val">360° sensing <span class="unit">· emergency stop</span></div></div>
+      <div class="specs-row"><div class="key">Dimensions</div><div class="val">110 × 45 <span class="unit">cm (H × Ø)</span></div></div>
+      <div class="specs-row"><div class="key">Weight</div><div class="val">39 <span class="unit">kg</span></div></div>
+      <div class="specs-row"><div class="key">Warranty</div><div class="val">2 <span class="unit">years, parts &amp; labour</span></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== CTA ===== -->
+<section id="contact" class="cta-section">
+  <div class="cta-glow"></div>
+  <div class="cta-inner">
+    <div class="cta-text">
+      <div class="eyebrow">// Bring SADEEM to your floor</div>
+      <h2>See it<br /><em>move.</em></h2>
+      <p>Book a live demo at your venue. We'll bring SADEEM, set it up, and let your team try it on your actual floor — no commitment.</p>
+      <a href="mailto:oulla898@gmail.com" class="cta-btn">
+        Schedule a visit
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10m0 0L8 3m5 5l-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+      <div class="cta-contact">
+        <div>✉ oulla898@gmail.com</div>
+        <div>☎ +968 96041234</div>
+      </div>
+    </div>
+
+    <form class="cta-form" onsubmit="event.preventDefault(); this.querySelector('button').textContent='Sent — we\u2019ll be in touch ✓';">
+      <div class="cta-form-row">
+        <label>Name</label>
+        <input type="text" placeholder="Your full name" required />
+      </div>
+      <div class="cta-form-row">
+        <label>Venue type</label>
+        <select>
+          <option>Hotel</option>
+          <option>Hospital / clinic</option>
+          <option>Restaurant</option>
+          <option>Museum / gallery</option>
+          <option>Retail / mall</option>
+          <option>Office / corporate</option>
+          <option>Other</option>
+        </select>
+      </div>
+      <div class="cta-form-row">
+        <label>Email</label>
+        <input type="email" placeholder="you@company.com" required />
+      </div>
+      <div class="cta-form-row">
+        <label>Floor area (sqm)</label>
+        <input type="text" placeholder="approx." />
+      </div>
+      <button type="submit" class="cta-btn" style="margin-top:8px;align-self:flex-start">
+        Request a demo
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10m0 0L8 3m5 5l-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+    </form>
+  </div>
+</section>
+
+<!-- ===== FOOTER ===== -->
+<footer>
+  <div class="foot-inner">
+    <div class="foot-brand">
+      <img src="assets/logo.png" alt="Sadeem" />
+      <p>SADEEM — autonomous service robotics, designed and built in Oman. Engineered for daily use, supported locally.</p>
+    </div>
+    <div class="foot-col">
+      <h5>Product</h5>
+      <ul>
+        <li><a href="#capabilities">Capabilities</a></li>
+        <li><a href="#anatomy">Anatomy</a></li>
+        <li><a href="#specs">Specifications</a></li>
+        <li><a href="#dashboard">Fleet dashboard</a></li>
+      </ul>
+    </div>
+    <div class="foot-col">
+      <h5>Industries</h5>
+      <ul>
+        <li><a href="#use-cases">Hotels</a></li>
+        <li><a href="#use-cases">Healthcare</a></li>
+        <li><a href="#use-cases">Restaurants</a></li>
+        <li><a href="#use-cases">Museums &amp; retail</a></li>
+      </ul>
+    </div>
+    <div class="foot-col">
+      <h5>Company</h5>
+      <ul>
+        <li><a href="#contact">Book a demo</a></li>
+        <li><a href="#">Press kit</a></li>
+        <li><a href="#">Engineering blog</a></li>
+        <li><a href="#">Careers — Muscat</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="foot-base">
+    <div>© 2026 Sadeem Robotics · Muscat, Oman</div>
+    <div>Recipient · Sultan Qaboos University Engineering Gathering Prize</div>
+  </div>
+</footer>
+
+</body>
+<script>
+(() => {
+  const AR = {
+    // nav
+    "Capabilities": "القدرات",
+    "In Action": "أثناء العمل",
+    "Anatomy": "التشريح",
+    "Fleet": "الأسطول",
+    "Specs": "المواصفات",
+    "Book a demo": "احجز عرضاً",
+    // hero
+    "Designed & built in Oman · Model 01": "مصمم ومصنوع في عُمان · النموذج ١",
+    "Always on duty.": "دائماً في الخدمة.",
+    "Ready": "جاهز",
+    "to serve.": "للخدمة.",
+    "SADEEM is an autonomous service robot that delivers, guides and assists — in hotels, hospitals, museums and beyond. It speaks. It understands. It works on its own.":
+      "سديم روبوت خدمة ذاتي يوصِّل ويرشد ويساعد — في الفنادق والمستشفيات والمتاحف وأكثر. يتحدث. يفهم. يعمل وحده.",
+    "Book a live demo": "احجز عرضاً مباشراً",
+    "Watch it move": "شاهده يتحرك",
+    "Payload": "الحمولة",
+    "Per charge": "لكل شحنة",
+    "Languages": "اللغات",
+    // hero tags
+    "Status": "الحالة",
+    "On Patrol · Lobby": "في دورية · البهو",
+    "Battery": "البطارية",
+    "87 % · 6h 12m": "٨٧٪ · ٦س ١٢د",
+    "Carrying": "يحمل",
+    "Room 412 delivery": "توصيل غرفة ٤١٢",
+    // marquee
+    "Hotels": "فنادق",
+    "Hospitals": "مستشفيات",
+    "Museums": "متاحف",
+    "Restaurants": "مطاعم",
+    "Retail": "متاجر",
+    "Offices": "مكاتب",
+    // capabilities
+    "What it does": "ماذا يفعل",
+    "Four things,": "أربعة أمور،",
+    "done well.": "تُنجَز بإتقان.",
+    "SADEEM isn't trying to be everything. It's built around a small set of jobs that matter to operators every day — and it does each one without supervision.":
+      "سديم لا يحاول أن يكون كل شيء. بُني حول مجموعة صغيرة من المهام التي تهمّ المشغّلين كل يوم — ويؤدي كلاً منها دون إشراف.",
+    "01 / Endurance": "٠١ / التحمّل",
+    "02 / Voice": "٠٢ / الصوت",
+    "03 / Payload": "٠٣ / الحمولة",
+    "04 / Navigation": "٠٤ / الملاحة",
+    "Runs all day.": "يعمل طوال اليوم.",
+    "A full shift on a single charge. Returns to its dock automatically when it needs power. No babysitting.":
+      "مناوبة كاملة بشحنة واحدة. يعود إلى محطته تلقائياً عند الحاجة للطاقة. دون إشراف.",
+    "Speaks naturally.": "يتحدث بطلاقة.",
+    "Understands plain Arabic and English. Tell it what you need — it listens, replies and gets it done.":
+      "يفهم العربية والإنجليزية بوضوح. اطلب منه ما تريد — يستمع، يجيب، وينجز.",
+    "Carries the load.": "يحمل العبء.",
+    "Up to 20 kilograms. Meals, supplies, parcels, documents — anything that needs to move from A to B.":
+      "حتى ٢٠ كيلوغراماً. وجبات، مستلزمات، طرود، وثائق — أي شيء يحتاج للتنقل.",
+    "Knows its way.": "يعرف طريقه.",
+    "Maps your space, navigates around people and obstacles. No tracks, no markers, no remote control needed.":
+      "يرسم خريطة لمساحتك، ويتنقل بين الأشخاص والعقبات. دون مسارات أو علامات أو تحكم عن بُعد.",
+    // showcase
+    "In the field": "في الميدان",
+    "See it in": "شاهده",
+    "motion.": "يتحرك.",
+    "Real footage from real floors. SADEEM navigating, greeting and delivering — without a remote, a track, or a person guiding it.":
+      "لقطات حقيقية من أرضية حقيقية. سديم يتنقل ويُرحّب ويوصّل — دون جهاز تحكم أو مسار أو شخص يقوده.",
+    "Live · Field footage": "مباشر · لقطات ميدانية",
+    "Patrolling the lab,": "يتجوّل في المختبر،",
+    "unsupervised.": "دون إشراف.",
+    "Display": "الشاشة",
+    "Touch & talk": "لمس وحديث",
+    "Compartment": "المقصورة",
+    "Secure payload": "حمولة آمنة",
+    // anatomy
+    "Engineered": "مصمَّم",
+    "down": "حتى",
+    "to the millimetre.": "آخر ميلليمتر.",
+    "// Anatomy": "// التشريح",
+    "HD touchscreen": "شاشة لمس عالية الدقة",
+    "10.1-inch display with expressive face. Touch to interact, glance to see status.":
+      "شاشة ١٠٫١ بوصة بوجه تعبيري. المس للتفاعل، انظر لترى الحالة.",
+    "Far-field microphones": "ميكروفونات بعيدة المدى",
+    "Hears you from across the lobby. Filters background noise on the fly.":
+      "يسمعك من الطرف الآخر للبهو. يُصفّي الضجيج فورياً.",
+    "Ambient light strip": "شريط إضاءة محيطية",
+    "Soft amber band signals status — patrolling, paused, low battery.":
+      "شريط كهرماني ناعم يُشير إلى الحالة — تجوّل، توقف، بطارية منخفضة.",
+    "Cargo bay": "مقصورة الشحن",
+    "Single 20 kg compartment with a lockable lid. Configurable for trays, parcels, linens.":
+      "مقصورة واحدة بسعة ٢٠ كغ بغطاء قابل للقفل. تُهيَّأ للأطباق والطرود والأقمشة.",
+    "Multi-sensor LiDAR": "ليدار متعدد الحساسات",
+    "360° obstacle detection. Sees stairs, glass walls and the cat under the chair.":
+      "كشف عقبات ٣٦٠°. يرى السلالم والجدران الزجاجية والقطة تحت الكرسي.",
+    "Auto-dock base": "قاعدة شحن ذاتية",
+    "Returns to charge on its own. Four hours to a full battery.":
+      "يعود للشحن من تلقاء نفسه. أربع ساعات لشحن كامل.",
+    // use cases
+    "Where it works": "أين يعمل",
+    "Pick the floor.": "اختر الأرضية.",
+    "It'll learn it.": "سيتعلّمها.",
+    "Same robot, same dashboard, different uniforms. Roll it out for one venue or twenty — the workflow scales the moment you add another unit.":
+      "نفس الروبوت، نفس اللوحة، أزياء مختلفة. انشره في موقع واحد أو عشرين — يتوسّع سير العمل لحظة إضافة وحدة جديدة.",
+    "Room delivery and concierge tasks, day and night. Late-night towel runs, breakfast trays, key handoffs — without staff leaving the desk.":
+      "توصيل للغرف ومهام الكونسيرج، ليلاً ونهاراً. مناشف في وقت متأخر، صواني فطور، تسليم مفاتيح — دون أن يغادر الموظف مكتبه.",
+    "Room deliveries, day and night": "توصيل للغرف، ليلًا ونهارًا",
+    "Healthcare": "الرعاية الصحية",
+    "Item transport between wards, visitor wayfinding, simple patient interactions. Nurses get hours of their day back.":
+      "نقل المستلزمات بين الأجنحة، إرشاد الزوار، تفاعلات بسيطة مع المرضى. تستعيد الممرضات ساعات من يومهن.",
+    "Ward-to-ward transport, hands-free": "نقل بين الأجنحة دون تدخّل",
+    "Food running on busy floors. Picks up at the pass, drops at the table, returns dirty plates. Servers stay with their guests.":
+      "توصيل الطعام على الطوابق المزدحمة. يلتقطه من المطبخ، يضعه على الطاولة، ويعيد الأطباق. يبقى النادل مع ضيوفه.",
+    "Food running, pass to table": "توصيل الأطباق من المطبخ إلى الطاولة",
+    "An interactive guide that speaks every visitor's language. Tells stories, answers questions, walks small groups through galleries.":
+      "مرشد تفاعلي يتحدث بلغة كل زائر. يروي قصصاً، يجيب على الأسئلة، يصطحب مجموعات صغيرة عبر المعارض.",
+    "Tours in every visitor’s language": "جولات بلغة كل زائر",
+    "Wayfinding for big-box floors and malls. Recommends products, guides shoppers, frees staff for actual selling.":
+      "إرشاد لمحلات كبرى ومجمعات. يوصي بالمنتجات، يرشد المتسوقين، ويحرّر الموظفين للبيع الفعلي.",
+    "Wayfinding across the whole floor": "إرشاد المتسوّقين في كامل الطابق",
+    "Reception, document delivery, visitor escort. Greets clients at the door and walks them straight to the right meeting room.":
+      "استقبال، توصيل وثائق، مرافقة الزوار. يستقبل العملاء عند الباب ويصطحبهم مباشرة إلى غرفة الاجتماع.",
+    "Every guest greeted at the door": "استقبال كل ضيف عند الباب",
+    // dashboard
+    "// Command center": "// مركز التحكم",
+    "One robot.": "روبوت واحد.",
+    "Total control.": "تحكّم كامل.",
+    "Every SADEEM connects to a single dashboard. Watch where it goes. Send it on tasks. Take the wheel from anywhere in the world.":
+      "كل سديم يتصل بلوحة واحدة. راقب أين يذهب. أرسله في مهام. تحكّم به من أي مكان في العالم.",
+    "Live map view — see every robot, every floor": "خريطة حية — شاهد كل روبوت، كل طابق",
+    "Manual remote control from phone or browser": "تحكم يدوي من الهاتف أو المتصفح",
+    "Schedule routes once, repeat them forever": "جدوِل المسارات مرة، وكرّرها للأبد",
+    "Manage one unit or a fleet of twenty": "أدر وحدة واحدة أو أسطولاً من عشرين",
+    "Floor 2 · East Wing": "الطابق ٢ · الجناح الشرقي",
+    "● 3 online": "● ٣ متصلة",
+    "↺ Live Map": "↺ خريطة حية",
+    "◇ Robots (3)": "◇ الروبوتات (٣)",
+    "≣ Tasks": "≣ المهام",
+    "○ Schedule": "○ الجدول",
+    "△ Alerts": "△ التنبيهات",
+    "⚙ Settings": "⚙ الإعدادات",
+    "Deliver to Room 101": "توصيل لغرفة ١٠١",
+    "● In progress": "● قيد التنفيذ",
+    "Patrol Lobby": "تجوّل البهو",
+    "○ Scheduled 14:00": "○ مجدول ١٤:٠٠",
+    "Disinfect Zone A": "تعقيم منطقة أ",
+    "◇ Pending": "◇ معلّق",
+    // timeline
+    "From box to busy floor": "من الصندوق إلى الأرضية",
+    "Live in": "جاهز خلال",
+    "a day.": "يوم واحد.",
+    "No construction. No tracks taped to the floor. No special hardware to install. SADEEM learns your space the way a new hire would — by walking through it once.":
+      "لا إنشاءات. لا مسارات على الأرض. لا أجهزة خاصة. يتعلّم سديم مساحتك كما يفعل موظف جديد — بالمشي فيها مرة.",
+    "Unbox.": "أخرجه من الصندوق.",
+    "Wheel it out. Plug in the dock. Power it on. The robot wakes up and finds your Wi-Fi.":
+      "أخرجه. وصِّل المحطة. شغّله. يستيقظ ويتصل بالواي فاي.",
+    "Walk & map.": "تجوّل وارسم.",
+    "Drive it once around the floor with the tablet. It builds a map of every corridor and room as it goes.":
+      "قُده مرة حول الطابق بالجهاز اللوحي. يبني خريطة لكل ممر وغرفة أثناء سيره.",
+    "Mark & name.": "علِّم وسمِّ.",
+    "Drop pins on rooms, exits, the kitchen, the dock. Tag them in your language. Done in twenty minutes.":
+      "ضع علامات على الغرف والمخارج والمطبخ والمحطة. سمِّها بلغتك. ينتهي في عشرين دقيقة.",
+    "Set it loose.": "أطلقه.",
+    "Press start. SADEEM goes to work — and gets better at your floor every day.":
+      "اضغط ابدأ. يذهب سديم للعمل — ويتحسّن في طابقك كل يوم.",
+    // quote
+    "SADEEM Model 01 won the Engineering Gathering Prize at Sultan Qaboos University — and it is measured, not promised:":
+      "فاز سديم موديل ٠١ بجائزة الملتقى الهندسي في جامعة السلطان قابوس — وهو مُقاس لا موعود:",
+    "1.55 seconds from voice command to action.": "١٫٥٥ ثانية من الأمر الصوتي إلى التنفيذ.",
+    "— 16th Engineering Gathering · Sultan Qaboos University": "— الملتقى الهندسي السادس عشر · جامعة السلطان قابوس",
+    // specs
+    "Specifications": "المواصفات",
+    "The numbers,": "الأرقام،",
+    "plainly stated.": "بصراحة.",
+    "Commercial-grade hardware. Tested daily. Two-year warranty included. Engineered in Oman, supported on the ground.":
+      "عتاد بمستوى تجاري. مُختبَر يومياً. ضمان عامين. مُصمَّم في عُمان ومدعوم محلياً.",
+    "Navigation": "الملاحة",
+    "Charging": "الشحن",
+    "Top speed": "السرعة القصوى",
+    "Voice": "الصوت",
+    "Connectivity": "الاتصال",
+    "Safety": "الأمان",
+    "Dimensions": "الأبعاد",
+    "Weight": "الوزن",
+    "Warranty": "الضمان",
+    // CTA
+    "// Bring SADEEM to your floor": "// أحضر سديم إلى أرضيتك",
+    "See it": "شاهده",
+    "move.": "يتحرك.",
+    "Book a live demo at your venue. We'll bring SADEEM, set it up, and let your team try it on your actual floor — no commitment.":
+      "احجز عرضاً حياً في موقعك. سنُحضر سديم، نُعدّه، ونترك فريقك يُجرّبه على أرضيتك الفعلية — دون التزام.",
+    "Schedule a visit": "احجز زيارة",
+    "Name": "الاسم",
+    "Your full name": "اسمك الكامل",
+    "Venue type": "نوع الموقع",
+    "Hotel": "فندق",
+    "Hospital / clinic": "مستشفى / عيادة",
+    "Restaurant": "مطعم",
+    "Museum / gallery": "متحف / معرض",
+    "Retail / mall": "متجر / مجمع",
+    "Office / corporate": "مكتب / شركة",
+    "Other": "آخر",
+    "Email": "البريد الإلكتروني",
+    "Floor area (sqm)": "مساحة الأرض (م²)",
+    "approx.": "تقريباً",
+    "Request a demo": "اطلب عرضاً",
+    // footer
+    "SADEEM — autonomous service robotics, designed and built in Oman. Engineered for daily use, supported locally.":
+      "سديم — روبوتات خدمة ذاتية، مصممة ومصنوعة في عُمان. مهندسة للاستخدام اليومي، ومدعومة محلياً.",
+    "Product": "المنتج",
+    "Industries": "القطاعات",
+    "Company": "الشركة",
+    "Specifications": "المواصفات",
+    "Fleet dashboard": "لوحة الأسطول",
+    "Healthcare": "الرعاية الصحية",
+    "Restaurants": "مطاعم",
+    "Museums & retail": "متاحف ومتاجر",
+    "Press kit": "ملف صحفي",
+    "Engineering blog": "مدونة الهندسة",
+    "Careers — Muscat": "وظائف — مسقط",
+    "© 2026 Sadeem Robotics · Muscat, Oman": "© ٢٠٢٦ سديم روبوتيكس · مسقط، عُمان",
+    "Recipient · Sultan Qaboos University Engineering Gathering Prize":
+      "الفائز · جائزة ملتقى الهندسة بجامعة السلطان قابوس"
+  };
+
+  // Snapshot all original English text on load so we can swap back & forth
+  const SELECTORS = [
+    '.nav-links a', '.nav-cta', '.brand-name',
+    '.eyebrow', 'h1.headline', 'h1.headline em', 'h1.headline .stroke',
+    '.hero-sub', '.btn-primary', '.btn-ghost', '.stat-label',
+    '.hero-tag .lbl', '.hero-tag .val',
+    '.marquee-item',
+    '.section-head h2', '.section-head h2 em', '.section-head p',
+    '.cap-num', '.cap h3', '.cap p',
+    '.showcase-tag', '.showcase-caption', '.showcase-caption em',
+    '.show-card-label .lbl', '.show-card-label .val',
+    '.anatomy-head h2', '.anatomy-head h2 em', '.anatomy-head .eyebrow',
+    '.anatomy-item h4', '.anatomy-item p',
+    '.uc h3', '.uc p', '.uc-stat',
+    '.dash-text h2', '.dash-text h2 em', '.dash-text p',
+    '.dash-bullets li', '.dash-side .logo-mini', '.dash-side ul li',
+    '.dash-main-head .title', '.dash-pill',
+    '.dash-task .tname', '.dash-task .tstat',
+    '.tl-step h4', '.tl-step p',
+    'blockquote', 'blockquote em', '.quote-cite',
+    '.specs-row .key',
+    '.cta-text h2', '.cta-text h2 em', '.cta-text p',
+    '.cta-btn', '.cta-form label', '.cta-form select option',
+    '.cta-contact div',
+    '.foot-brand p', '.foot-col h5', '.foot-col ul li a',
+    '.foot-base div'
+  ];
+
+  const nodes = [];
+  SELECTORS.forEach(sel => {
+    document.querySelectorAll(sel).forEach(el => {
+      // capture only direct text node content, not children
+      el.childNodes.forEach(n => {
+        if (n.nodeType === 3 && n.textContent.trim()) {
+          nodes.push({ node: n, en: n.textContent });
+        }
+      });
+    });
+  });
+  // also handle inputs (placeholders)
+  const inputs = [];
+  document.querySelectorAll('input[placeholder]').forEach(el => {
+    inputs.push({ el, en: el.getAttribute('placeholder') });
+  });
+
+  function applyLang(lang) {
+    nodes.forEach(({ node, en }) => {
+      const key = en.trim();
+      const trans = lang === 'ar' ? (AR[key] || en) : en;
+      // preserve leading/trailing whitespace
+      node.textContent = en.replace(key, trans);
+    });
+    inputs.forEach(({ el, en }) => {
+      el.setAttribute('placeholder', lang === 'ar' ? (AR[en] || en) : en);
+    });
+    document.documentElement.lang = lang;
+    document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
+  }
+
+  document.querySelectorAll('.lang-toggle button').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const lang = btn.dataset.lang;
+      if (document.documentElement.lang === lang) return;
+      document.querySelectorAll('.lang-toggle button').forEach(b => b.classList.toggle('active', b === btn));
+      document.body.classList.add('lang-swapping');
+      setTimeout(() => {
+        applyLang(lang);
+        requestAnimationFrame(() => document.body.classList.remove('lang-swapping'));
+      }, 350);
+    });
+  });
+})();
+</script>
+</html>
