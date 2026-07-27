@@ -1,0 +1,9 @@
+# Sadeem Robotics
+
+> SADEEM is an autonomous service robot built by Sadeem Robotics. It navigates on its own — no remote, no track, no operator — to deliver items, guide visitors, and assist staff in hotels, hospitals, museums, retail, and corporate venues.
+
+Sadeem Robotics is a real, operating company developing proprietary autonomous mobile robot (AMR) technology. SADEEM has been demonstrated on real venue floors handling delivery, guidance, and greeting tasks without human remote control.
+
+## Contact
+- Email: oulla898@gmail.com
+- Website: https://sadeemrobotics.com/
