@@ -1465,14 +1465,14 @@
       </div>
     </div>
 
-    <form class="cta-form" onsubmit="event.preventDefault(); this.querySelector('button').textContent='Sent — we\u2019ll be in touch ✓';">
+    <form class="cta-form" id="contact-form" data-x="event.preventDefault(); this.querySelector('button').textContent='Sent — we\u2019ll be in touch ✓';">
       <div class="cta-form-row">
         <label>Name</label>
-        <input type="text" placeholder="Your full name" required />
+        <input type="text" name="name" placeholder="Your full name" required />
       </div>
       <div class="cta-form-row">
         <label>Venue type</label>
-        <select>
+        <select name="venueType">
           <option>Hotel</option>
           <option>Hospital / clinic</option>
           <option>Restaurant</option>
@@ -1484,17 +1484,43 @@
       </div>
       <div class="cta-form-row">
         <label>Email</label>
-        <input type="email" placeholder="you@company.com" required />
+        <input type="email" name="email" placeholder="you@company.com" required />
       </div>
       <div class="cta-form-row">
         <label>Floor area (sqm)</label>
-        <input type="text" placeholder="approx." />
+        <input type="text" name="floorArea" placeholder="approx." />
       </div>
+      <input type="text" name="website" style="position:absolute;left:-9999px" tabindex="-1" autocomplete="off" />
       <button type="submit" class="cta-btn" style="margin-top:8px;align-self:flex-start">
         Request a demo
         <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10m0 0L8 3m5 5l-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
       </button>
     </form>
+    <script>
+      document.getElementById('contact-form').addEventListener('submit', async function (e) {
+        e.preventDefault();
+        var form = e.target;
+        var btn = form.querySelector('button');
+        var originalText = btn.textContent;
+        var data = Object.fromEntries(new FormData(form).entries());
+        btn.disabled = true;
+        btn.textContent = 'Sending...';
+        try {
+          var res = await fetch('https://sadeem-contact-api.vercel.app/api/contact', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data),
+          });
+          if (!res.ok) throw new Error('Request failed');
+          btn.textContent = 'Sent — we’ll be in touch ✓';
+          form.reset();
+        } catch (err) {
+          btn.disabled = false;
+          btn.textContent = 'Failed — try again';
+          setTimeout(function () { btn.textContent = originalText; }, 3000);
+        }
+      });
+    </script>
   </div>
 </section>
 
