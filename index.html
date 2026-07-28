@@ -6,6 +6,11 @@
 <title>SADEEM — Autonomous Service Robot | Sadeem Robotics</title>
 <meta name="description" content="SADEEM is an autonomous service robot that delivers, guides and assists in hotels, hospitals, museums and more. Built by Sadeem Robotics — it speaks, understands, and works on its own." />
 <link rel="canonical" href="https://sadeemrobotics.com/" />
+<link rel="icon" href="/favicon.ico" sizes="any" />
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32x32.png" />
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16x16.png" />
+<link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png" />
+<link rel="icon" type="image/png" sizes="192x192" href="/assets/icon-192.png" />
 
 <meta property="og:type" content="website" />
 <meta property="og:site_name" content="Sadeem Robotics" />
@@ -25,7 +30,7 @@
   "@type": "Organization",
   "name": "Sadeem Robotics",
   "url": "https://sadeemrobotics.com/",
-  "logo": "https://sadeemrobotics.com/assets/logo.png",
+  "logo": "https://sadeemrobotics.com/assets/logo-square.png",
   "email": "oulla898@gmail.com",
   "description": "Sadeem Robotics builds SADEEM, an autonomous service robot that delivers, guides and assists in hotels, hospitals, museums and other venues.",
   "sameAs": []
@@ -391,6 +396,7 @@
     padding: 28px 0;
     overflow: hidden;
     background: var(--paper);
+    direction: ltr;
   }
   .marquee-track {
     display: flex; gap: 80px;
@@ -1019,7 +1025,7 @@
     gap: 60px;
     margin-bottom: 60px;
   }
-  .foot-brand img { height: 48px; margin-bottom: 16px; }
+  .foot-brand img { height: 64px; width: auto; margin-bottom: 16px; }
   .foot-brand p {
     font-size: 14px; color: var(--ink-2); line-height: 1.55;
     max-width: 320px;
@@ -1055,7 +1061,11 @@
     .caps, .timeline, .use-cases { grid-template-columns: 1fr; }
     section, .anatomy-section, .dash-section, .cta-section { padding: 80px 20px; }
     .hero { padding: 110px 20px 60px; }
-    .nav-inner { padding: 14px 20px; }
+    .nav-inner { padding: 14px 16px; gap: 10px; }
+    .nav-cta { display: none; }
+    .brand-name { font-size: 18px; }
+    .brand img { height: 30px; }
+    .lang-toggle { margin-right: 0; }
     .foot-inner { grid-template-columns: 1fr; gap: 36px; }
     .foot-base { flex-direction: column; gap: 8px; }
   }
@@ -1570,7 +1580,7 @@
 <footer>
   <div class="foot-inner">
     <div class="foot-brand">
-      <img src="assets/logo.png" alt="Sadeem" />
+      <img src="assets/logo-full.png" alt="Sadeem Robotics" />
       <p>SADEEM — autonomous service robotics, designed and built in Oman. Engineered for daily use, supported locally.</p>
     </div>
     <div class="foot-col">
