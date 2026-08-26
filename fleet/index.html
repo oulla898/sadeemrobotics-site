@@ -2,93 +2,24 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <link rel="icon" type="image/png" href="/Sadeem_logo.png" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>SADEEM AMR Control</title>
-  <base href="https://helix-central-command.web.app/" />
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          fontFamily: {
-            sans: ['Inter', 'sans-serif'],
-          },
-          colors: {
-            brand: {
-              50: '#f0f9ff',
-              100: '#e0f2fe',
-              500: '#0ea5e9',
-              600: '#0284c7',
-              700: '#0369a1',
-              900: '#0c4a6e',
-            },
-            clinical: {
-              bg: '#f8fafc',
-              surface: '#ffffff',
-              border: '#e2e8f0',
-              text: '#1e293b',
-              muted: '#64748b'
-            }
-          },
-          animation: {
-            shine: "shine var(--duration) infinite linear",
-          },
-          keyframes: {
-            shine: {
-              "0%": {
-                "background-position": "0% 0%",
-              },
-              "50%": {
-                "background-position": "100% 100%",
-              },
-              to: {
-                "background-position": "0% 0%",
-              },
-            },
-          },
-        }
-      }
-    }
-  </script>
+  <title>Fleet — SADEEM</title>
   <style>
-    body {
-      background-image: url('/robotBG.jpg');
-      background-size: cover;
-      background-position: center;
-      background-attachment: fixed;
-      color: #1e293b;
-    }
-    ::-webkit-scrollbar {
-      width: 6px;
-      height: 6px;
-    }
-    ::-webkit-scrollbar-track {
-      background: transparent;
-    }
-    ::-webkit-scrollbar-thumb {
-      background: rgba(148, 163, 184, 0.3);
-      border-radius: 9999px;
-    }
-    ::-webkit-scrollbar-thumb:hover {
-      background: rgba(100, 116, 139, 0.55);
-    }
-    ::-webkit-scrollbar-button {
-      display: none;
-      width: 0;
-      height: 0;
-    }
-    * {
-      scrollbar-width: thin;
-      scrollbar-color: rgba(148, 163, 184, 0.3) transparent;
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body { height: 100%; overflow: hidden; background: #0f172a; }
+    iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+      display: block;
     }
   </style>
-  <script type="module" crossorigin src="/assets/index-DzpXkUkc.js"></script>
 </head>
 <body>
-  <div id="root"></div>
+  <iframe
+    src="https://helix-central-command.web.app/#/fleet"
+    title="SADEEM Fleet Dashboard"
+    allow="microphone; camera; geolocation; accelerometer; clipboard-write"
+  ></iframe>
 </body>
 </html>
