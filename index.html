@@ -143,6 +143,10 @@
     letter-spacing: 0.08em;
     text-transform: uppercase;
     position: relative;
+    /* keep button order & thumb position fixed regardless of page direction —
+       otherwise flipping html[dir] to rtl reverses this flex row and the
+       sliding thumb (positioned via translateX) ends up under the wrong button */
+    direction: ltr;
   }
   .lang-toggle button {
     background: transparent;
@@ -1623,18 +1627,18 @@
   const AR = {
     // nav
     "Capabilities": "القدرات",
-    "In Action": "أثناء العمل",
-    "Anatomy": "التشريح",
+    "In Action": "في العمل",
+    "Anatomy": "البنية",
     "Fleet": "الأسطول",
     "Specs": "المواصفات",
     "Book a demo": "احجز عرضاً",
     // hero
-    "Designed & built in Oman · Model 01": "مصمم ومصنوع في عُمان · النموذج ١",
-    "Always on duty.": "دائماً في الخدمة.",
+    "Designed & built in Oman · Model 01": "صناعة عُمانية خالصة · الطراز ٠١",
+    "Always on duty.": "دائم الحضور.",
     "Ready": "جاهز",
-    "to serve.": "للخدمة.",
+    "to serve.": "لخدمتكم.",
     "SADEEM is an autonomous service robot that delivers, guides and assists — in hotels, hospitals, museums and beyond. It speaks. It understands. It works on its own.":
-      "سديم روبوت خدمة ذاتي يوصِّل ويرشد ويساعد — في الفنادق والمستشفيات والمتاحف وأكثر. يتحدث. يفهم. يعمل وحده.",
+      "سديم روبوت خدمة مستقل، يتولى التوصيل والإرشاد والمساعدة في الفنادق والمستشفيات والمتاحف وأماكن أخرى كثيرة. يتحدث، ويفهم، ويعمل من دون توجيه من أحد.",
     "Book a live demo": "احجز عرضاً مباشراً",
     "Watch it move": "شاهده يتحرك",
     "Payload": "الحمولة",
@@ -1645,7 +1649,7 @@
     "On Patrol · Lobby": "في دورية · البهو",
     "Battery": "البطارية",
     "87 % · 6h 12m": "٨٧٪ · ٦س ١٢د",
-    "Carrying": "يحمل",
+    "Carrying": "قيد التوصيل",
     "Room 412 delivery": "توصيل غرفة ٤١٢",
     // marquee
     "Hotels": "فنادق",
@@ -1655,97 +1659,97 @@
     "Retail": "متاجر",
     "Offices": "مكاتب",
     // capabilities
-    "What it does": "ماذا يفعل",
-    "Four things,": "أربعة أمور،",
-    "done well.": "تُنجَز بإتقان.",
+    "What it does": "مهامّه",
+    "Four things,": "أربع مهام،",
+    "done well.": "بإتقان تام.",
     "SADEEM isn't trying to be everything. It's built around a small set of jobs that matter to operators every day — and it does each one without supervision.":
-      "سديم لا يحاول أن يكون كل شيء. بُني حول مجموعة صغيرة من المهام التي تهمّ المشغّلين كل يوم — ويؤدي كلاً منها دون إشراف.",
+      "لم نصمم سديم ليقوم بكل شيء، بل ليتقن ما يهمّ مشغّلي المنشآت فعلاً كل يوم — وينجز كل مهمة من دون أي إشراف.",
     "01 / Endurance": "٠١ / التحمّل",
     "02 / Voice": "٠٢ / الصوت",
     "03 / Payload": "٠٣ / الحمولة",
     "04 / Navigation": "٠٤ / الملاحة",
     "Runs all day.": "يعمل طوال اليوم.",
     "A full shift on a single charge. Returns to its dock automatically when it needs power. No babysitting.":
-      "مناوبة كاملة بشحنة واحدة. يعود إلى محطته تلقائياً عند الحاجة للطاقة. دون إشراف.",
+      "مناوبة كاملة بشحنة واحدة. يعود إلى محطته تلقائياً عند الحاجة للطاقة. لا حاجة لمن يتابعه.",
     "Speaks naturally.": "يتحدث بطلاقة.",
     "Understands plain Arabic and English. Tell it what you need — it listens, replies and gets it done.":
       "يفهم العربية والإنجليزية بوضوح. اطلب منه ما تريد — يستمع، يجيب، وينجز.",
     "Carries the load.": "يحمل العبء.",
     "Up to 20 kilograms. Meals, supplies, parcels, documents — anything that needs to move from A to B.":
-      "حتى ٢٠ كيلوغراماً. وجبات، مستلزمات، طرود، وثائق — أي شيء يحتاج للتنقل.",
+      "حتى ٢٠ كيلوغراماً: وجبات، مستلزمات، طرود، ومستندات — وأي شيء يحتاج إلى الانتقال من نقطة إلى أخرى.",
     "Knows its way.": "يعرف طريقه.",
     "Maps your space, navigates around people and obstacles. No tracks, no markers, no remote control needed.":
-      "يرسم خريطة لمساحتك، ويتنقل بين الأشخاص والعقبات. دون مسارات أو علامات أو تحكم عن بُعد.",
+      "يرسم خريطة مكانك، ويتحرك بذكاء بين الأشخاص والعقبات — من دون مسارات أو علامات أو تحكم عن بُعد.",
     // showcase
     "In the field": "في الميدان",
     "See it in": "شاهده",
-    "motion.": "يتحرك.",
+    "motion.": "وهو يتحرك.",
     "Real footage from real floors. SADEEM navigating, greeting and delivering — without a remote, a track, or a person guiding it.":
-      "لقطات حقيقية من أرضية حقيقية. سديم يتنقل ويُرحّب ويوصّل — دون جهاز تحكم أو مسار أو شخص يقوده.",
+      "لقطات حقيقية من مواقع العمل الفعلية. سديم يتنقل، يُرحّب، ويوصّل — من دون جهاز تحكم، أو مسار، أو شخص يقوده.",
     "Live · Field footage": "مباشر · لقطات ميدانية",
     "Patrolling the lab,": "يتجوّل في المختبر،",
-    "unsupervised.": "دون إشراف.",
+    "unsupervised.": "من دون رقيب.",
     "Display": "الشاشة",
-    "Touch & talk": "لمس وحديث",
+    "Touch & talk": "لمس ومحادثة",
     "Compartment": "المقصورة",
     "Secure payload": "حمولة آمنة",
     // anatomy
     "Engineered": "مصمَّم",
     "down": "حتى",
-    "to the millimetre.": "آخر ميلليمتر.",
-    "// Anatomy": "// التشريح",
+    "to the millimetre.": "آخر مليمتر.",
+    "// Anatomy": "// البنية",
     "HD touchscreen": "شاشة لمس عالية الدقة",
     "10.1-inch display with expressive face. Touch to interact, glance to see status.":
-      "شاشة ١٠٫١ بوصة بوجه تعبيري. المس للتفاعل، انظر لترى الحالة.",
+      "شاشة ١٠٫١ بوصة بوجه تعبيري. المس للتفاعل، وانظر لترى حالته.",
     "Far-field microphones": "ميكروفونات بعيدة المدى",
     "Hears you from across the lobby. Filters background noise on the fly.":
-      "يسمعك من الطرف الآخر للبهو. يُصفّي الضجيج فورياً.",
+      "يسمعك حتى من الطرف الآخر للبهو، ويُصفّي الضوضاء المحيطة لحظياً.",
     "Ambient light strip": "شريط إضاءة محيطية",
     "Soft amber band signals status — patrolling, paused, low battery.":
-      "شريط كهرماني ناعم يُشير إلى الحالة — تجوّل، توقف، بطارية منخفضة.",
+      "شريط ضوئي كهرماني ناعم يعكس حالته — تجوّل، توقف، أو بطارية منخفضة.",
     "Cargo bay": "مقصورة الشحن",
     "Single 20 kg compartment with a lockable lid. Configurable for trays, parcels, linens.":
-      "مقصورة واحدة بسعة ٢٠ كغ بغطاء قابل للقفل. تُهيَّأ للأطباق والطرود والأقمشة.",
+      "مقصورة واحدة بسعة ٢٠ كغ بغطاء قابل للقفل، تُهيَّأ للأطباق والطرود والمفروشات.",
     "Multi-sensor LiDAR": "ليدار متعدد الحساسات",
     "360° obstacle detection. Sees stairs, glass walls and the cat under the chair.":
-      "كشف عقبات ٣٦٠°. يرى السلالم والجدران الزجاجية والقطة تحت الكرسي.",
+      "كشف عقبات بزاوية ٣٦٠°. يرى السلالم والجدران الزجاجية، وحتى القطة تحت الكرسي.",
     "Auto-dock base": "قاعدة شحن ذاتية",
     "Returns to charge on its own. Four hours to a full battery.":
-      "يعود للشحن من تلقاء نفسه. أربع ساعات لشحن كامل.",
+      "يعود للشحن من تلقاء نفسه، وتكفيه أربع ساعات ليمتلئ بالكامل.",
     // use cases
     "Where it works": "أين يعمل",
-    "Pick the floor.": "اختر الأرضية.",
-    "It'll learn it.": "سيتعلّمها.",
+    "Pick the floor.": "اختر الموقع.",
+    "It'll learn it.": "وسيتعلّمه بنفسه.",
     "Same robot, same dashboard, different uniforms. Roll it out for one venue or twenty — the workflow scales the moment you add another unit.":
-      "نفس الروبوت، نفس اللوحة، أزياء مختلفة. انشره في موقع واحد أو عشرين — يتوسّع سير العمل لحظة إضافة وحدة جديدة.",
+      "الروبوت ذاته، واللوحة ذاتها، بأزياء مختلفة فقط. انشره في موقع واحد أو عشرين — ويتوسّع سير العمل تلقائياً مع كل وحدة جديدة تضيفها.",
     "Room delivery and concierge tasks, day and night. Late-night towel runs, breakfast trays, key handoffs — without staff leaving the desk.":
-      "توصيل للغرف ومهام الكونسيرج، ليلاً ونهاراً. مناشف في وقت متأخر، صواني فطور، تسليم مفاتيح — دون أن يغادر الموظف مكتبه.",
-    "Room deliveries, day and night": "توصيل للغرف، ليلًا ونهارًا",
+      "توصيل الغرف ومهام خدمة الضيوف، ليلاً ونهاراً. مناشف في ساعات متأخرة، صواني إفطار، تسليم مفاتيح — من دون أن يغادر الموظف مكتبه.",
+    "Room deliveries, day and night": "توصيل الغرف، ليلاً ونهاراً",
     "Healthcare": "الرعاية الصحية",
     "Item transport between wards, visitor wayfinding, simple patient interactions. Nurses get hours of their day back.":
-      "نقل المستلزمات بين الأجنحة، إرشاد الزوار، تفاعلات بسيطة مع المرضى. تستعيد الممرضات ساعات من يومهن.",
+      "نقل المستلزمات بين الأجنحة، إرشاد الزوار، وتفاعلات بسيطة مع المرضى — لتستعيد الممرضات ساعات ثمينة من يومهنّ.",
     "Ward-to-ward transport, hands-free": "نقل بين الأجنحة دون تدخّل",
     "Food running on busy floors. Picks up at the pass, drops at the table, returns dirty plates. Servers stay with their guests.":
-      "توصيل الطعام على الطوابق المزدحمة. يلتقطه من المطبخ، يضعه على الطاولة، ويعيد الأطباق. يبقى النادل مع ضيوفه.",
-    "Food running, pass to table": "توصيل الأطباق من المطبخ إلى الطاولة",
+      "يوصّل الطلبات في صالة الخدمة المزدحمة: يلتقطها من نافذة المطبخ، يضعها على الطاولة، ويعيد الأطباق الفارغة — ليبقى النادل مع ضيوفه.",
+    "Food running, pass to table": "من نافذة المطبخ إلى الطاولة",
     "An interactive guide that speaks every visitor's language. Tells stories, answers questions, walks small groups through galleries.":
-      "مرشد تفاعلي يتحدث بلغة كل زائر. يروي قصصاً، يجيب على الأسئلة، يصطحب مجموعات صغيرة عبر المعارض.",
+      "مرشد تفاعلي يتحدث بلغة كل زائر. يروي القصص، يجيب عن الأسئلة، ويصطحب مجموعات صغيرة بين أروقة المعرض.",
     "Tours in every visitor’s language": "جولات بلغة كل زائر",
     "Wayfinding for big-box floors and malls. Recommends products, guides shoppers, frees staff for actual selling.":
-      "إرشاد لمحلات كبرى ومجمعات. يوصي بالمنتجات، يرشد المتسوقين، ويحرّر الموظفين للبيع الفعلي.",
+      "يرشد المتسوقين داخل المتاجر الكبرى والمجمعات التجارية، ويقترح عليهم المنتجات المناسبة، ليتفرغ الموظفون للبيع الفعلي.",
     "Wayfinding across the whole floor": "إرشاد المتسوّقين في كامل الطابق",
     "Reception, document delivery, visitor escort. Greets clients at the door and walks them straight to the right meeting room.":
-      "استقبال، توصيل وثائق، مرافقة الزوار. يستقبل العملاء عند الباب ويصطحبهم مباشرة إلى غرفة الاجتماع.",
+      "استقبال، توصيل وثائق، ومرافقة الزوار. يستقبل العملاء عند الباب ويصطحبهم مباشرة إلى قاعة الاجتماع المناسبة.",
     "Every guest greeted at the door": "استقبال كل ضيف عند الباب",
     // dashboard
     "// Command center": "// مركز التحكم",
     "One robot.": "روبوت واحد.",
     "Total control.": "تحكّم كامل.",
     "Every SADEEM connects to a single dashboard. Watch where it goes. Send it on tasks. Take the wheel from anywhere in the world.":
-      "كل سديم يتصل بلوحة واحدة. راقب أين يذهب. أرسله في مهام. تحكّم به من أي مكان في العالم.",
-    "Live map view — see every robot, every floor": "خريطة حية — شاهد كل روبوت، كل طابق",
+      "كل سديم يتصل بلوحة واحدة. راقب أين يذهب. أرسله في مهام. وتحكّم به من أي مكان في العالم.",
+    "Live map view — see every robot, every floor": "خريطة حية — شاهد كل روبوت، في كل طابق",
     "Manual remote control from phone or browser": "تحكم يدوي من الهاتف أو المتصفح",
-    "Schedule routes once, repeat them forever": "جدوِل المسارات مرة، وكرّرها للأبد",
+    "Schedule routes once, repeat them forever": "جدوِل المسارات مرة واحدة، وكرّرها كما تشاء",
     "Manage one unit or a fleet of twenty": "أدر وحدة واحدة أو أسطولاً من عشرين",
     "Floor 2 · East Wing": "الطابق ٢ · الجناح الشرقي",
     "● 3 online": "● ٣ متصلة",
@@ -1762,26 +1766,26 @@
     "Disinfect Zone A": "تعقيم منطقة أ",
     "◇ Pending": "◇ معلّق",
     // timeline
-    "From box to busy floor": "من الصندوق إلى الأرضية",
+    "From box to busy floor": "من الصندوق إلى أرضية العمل",
     "Live in": "جاهز خلال",
     "a day.": "يوم واحد.",
     "No construction. No tracks taped to the floor. No special hardware to install. SADEEM learns your space the way a new hire would — by walking through it once.":
-      "لا إنشاءات. لا مسارات على الأرض. لا أجهزة خاصة. يتعلّم سديم مساحتك كما يفعل موظف جديد — بالمشي فيها مرة.",
+      "لا حاجة لأي إنشاءات، ولا مسارات تُلصق على الأرض، ولا أجهزة خاصة تُركَّب. يتعلّم سديم مكانك تماماً كما يتعلّمه موظف جديد — بجولة واحدة فقط.",
     "Unbox.": "أخرجه من الصندوق.",
     "Wheel it out. Plug in the dock. Power it on. The robot wakes up and finds your Wi-Fi.":
-      "أخرجه. وصِّل المحطة. شغّله. يستيقظ ويتصل بالواي فاي.",
+      "أخرجه. وصِّل المحطة. شغّله. يستيقظ ويتصل بشبكة الواي فاي.",
     "Walk & map.": "تجوّل وارسم.",
     "Drive it once around the floor with the tablet. It builds a map of every corridor and room as it goes.":
-      "قُده مرة حول الطابق بالجهاز اللوحي. يبني خريطة لكل ممر وغرفة أثناء سيره.",
+      "قُده مرة واحدة حول الموقع باستخدام الجهاز اللوحي، ليبني خريطة لكل ممر وغرفة أثناء سيره.",
     "Mark & name.": "علِّم وسمِّ.",
     "Drop pins on rooms, exits, the kitchen, the dock. Tag them in your language. Done in twenty minutes.":
-      "ضع علامات على الغرف والمخارج والمطبخ والمحطة. سمِّها بلغتك. ينتهي في عشرين دقيقة.",
+      "ضع علامات على الغرف والمخارج والمطبخ والمحطة، وسمِّها بلغتك — تنتهي خلال عشرين دقيقة.",
     "Set it loose.": "أطلقه.",
     "Press start. SADEEM goes to work — and gets better at your floor every day.":
-      "اضغط ابدأ. يذهب سديم للعمل — ويتحسّن في طابقك كل يوم.",
+      "اضغط ابدأ. يذهب سديم للعمل، ويزداد إتقاناً لموقعك يوماً بعد يوم.",
     // quote
     "SADEEM Model 01 won the Engineering Gathering Prize at Sultan Qaboos University — and it is measured, not promised:":
-      "فاز سديم موديل ٠١ بجائزة الملتقى الهندسي في جامعة السلطان قابوس — وهو مُقاس لا موعود:",
+      "فاز سديم، الطراز ٠١، بجائزة الملتقى الهندسي في جامعة السلطان قابوس — وهي نتيجة مقاسة لا وعداً:",
     "1.55 seconds from voice command to action.": "١٫٥٥ ثانية من الأمر الصوتي إلى التنفيذ.",
     "— 16th Engineering Gathering · Sultan Qaboos University": "— الملتقى الهندسي السادس عشر · جامعة السلطان قابوس",
     // specs
@@ -1800,11 +1804,11 @@
     "Weight": "الوزن",
     "Warranty": "الضمان",
     // CTA
-    "// Bring SADEEM to your floor": "// أحضر سديم إلى أرضيتك",
+    "// Bring SADEEM to your floor": "// أحضر سديم إلى موقعك",
     "See it": "شاهده",
     "move.": "يتحرك.",
     "Book a live demo at your venue. We'll bring SADEEM, set it up, and let your team try it on your actual floor — no commitment.":
-      "احجز عرضاً حياً في موقعك. سنُحضر سديم، نُعدّه، ونترك فريقك يُجرّبه على أرضيتك الفعلية — دون التزام.",
+      "احجز عرضاً حياً في موقعك. سنُحضر سديم، ونُعدّه، ونترك فريقك يُجرّبه في مكان عملكم الفعلي — من دون أي التزام.",
     "Schedule a visit": "احجز زيارة",
     "Name": "الاسم",
     "Your full name": "اسمك الكامل",
@@ -1817,12 +1821,12 @@
     "Office / corporate": "مكتب / شركة",
     "Other": "آخر",
     "Email": "البريد الإلكتروني",
-    "Floor area (sqm)": "مساحة الأرض (م²)",
+    "Floor area (sqm)": "مساحة الموقع (م²)",
     "approx.": "تقريباً",
     "Request a demo": "اطلب عرضاً",
     // footer
     "SADEEM — autonomous service robotics, designed and built in Oman. Engineered for daily use, supported locally.":
-      "سديم — روبوتات خدمة ذاتية، مصممة ومصنوعة في عُمان. مهندسة للاستخدام اليومي، ومدعومة محلياً.",
+      "سديم — روبوتات خدمة مستقلة، بتصميم وصناعة عُمانية. مهندسة للاستخدام اليومي، ومدعومة محلياً على الأرض.",
     "Product": "المنتج",
     "Industries": "القطاعات",
     "Company": "الشركة",
