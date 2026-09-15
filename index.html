@@ -3,9 +3,13 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>SADEEM — Autonomous Service Robot | Sadeem Robotics</title>
-<meta name="description" content="SADEEM is an autonomous service robot that delivers, guides and assists in hotels, hospitals, museums and more. Built by Sadeem Robotics — it speaks, understands, and works on its own." />
+<title>SADEEM — Autonomous Service Robot | Sadeem Robotics (سديم روبوتكس)</title>
+<meta name="description" content="SADEEM is an autonomous service robot that delivers, guides and assists in hotels, hospitals, museums and more. Built by Sadeem Robotics (سديم روبوتكس / سديم للروبوتات) in Oman — it speaks, understands, and works on its own." />
+<meta name="keywords" content="Sadeem Robotics, SADEEM robot, سديم روبوتكس, سديم للروبوتات, سديم, روبوت سديم, autonomous service robot Oman, روبوت خدمي مستقل" />
 <link rel="canonical" href="https://sadeemrobotics.com/" />
+<link rel="alternate" hreflang="en" href="https://sadeemrobotics.com/" />
+<link rel="alternate" hreflang="ar" href="https://sadeemrobotics.com/?lang=ar" />
+<link rel="alternate" hreflang="x-default" href="https://sadeemrobotics.com/" />
 <link rel="icon" href="/favicon.ico" sizes="any" />
 <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32x32.png" />
 <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16x16.png" />
@@ -29,10 +33,16 @@
   "@context": "https://schema.org",
   "@type": "Organization",
   "name": "Sadeem Robotics",
+  "alternateName": ["سديم روبوتكس", "سديم للروبوتات", "سديم", "Sadeem"],
   "url": "https://sadeemrobotics.com/",
   "logo": "https://sadeemrobotics.com/assets/logo-square.png",
   "email": "hello@sadeemrobotics.com",
-  "description": "Sadeem Robotics builds SADEEM, an autonomous service robot that delivers, guides and assists in hotels, hospitals, museums and other venues.",
+  "description": "Sadeem Robotics (سديم روبوتكس) builds SADEEM, an autonomous service robot that delivers, guides and assists in hotels, hospitals, museums and other venues.",
+  "address": {
+    "@type": "PostalAddress",
+    "addressLocality": "Muscat",
+    "addressCountry": "OM"
+  },
   "sameAs": []
 }
 </script>
@@ -41,7 +51,8 @@
   "@context": "https://schema.org",
   "@type": "Product",
   "name": "SADEEM",
-  "description": "SADEEM is an autonomous service robot that navigates on its own to deliver items, guide visitors and assist staff in hotels, hospitals, museums, retail and corporate venues.",
+  "alternateName": ["سديم"],
+  "description": "SADEEM (سديم) is an autonomous service robot that navigates on its own to deliver items, guide visitors and assist staff in hotels, hospitals, museums, retail and corporate venues.",
   "brand": {
     "@type": "Brand",
     "name": "Sadeem Robotics"
@@ -148,9 +159,10 @@
        sliding thumb (positioned via translateX) ends up under the wrong button */
     direction: ltr;
   }
-  .lang-toggle button {
+  .lang-toggle a {
     background: transparent;
     border: none;
+    display: inline-block;
     color: var(--ink-2);
     padding: 7px 14px;
     border-radius: 999px;
@@ -158,11 +170,12 @@
     font: inherit;
     letter-spacing: inherit;
     text-transform: inherit;
+    text-decoration: none;
     transition: color .35s;
     position: relative;
     z-index: 2;
   }
-  .lang-toggle button.active { color: var(--cream); }
+  .lang-toggle a.active { color: var(--cream); }
   .lang-toggle .lang-thumb {
     position: absolute;
     top: 4px; bottom: 4px;
@@ -1094,8 +1107,8 @@
     <a href="#contact" class="nav-cta" data-i18n="nav.cta">Book a demo</a>
     <div class="lang-toggle" role="group" aria-label="Language">
       <span class="lang-thumb"></span>
-      <button type="button" data-lang="en" class="active">EN</button>
-      <button type="button" data-lang="ar">عربي</button>
+      <a href="/" data-lang="en" class="active">EN</a>
+      <a href="/?lang=ar" data-lang="ar">عربي</a>
     </div>
   </div>
 </nav>
@@ -1902,18 +1915,37 @@
     document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
   }
 
-  document.querySelectorAll('.lang-toggle button').forEach(btn => {
-    btn.addEventListener('click', () => {
+  function setLang(lang, btn) {
+    if (document.documentElement.lang === lang) return;
+    document.querySelectorAll('.lang-toggle a').forEach(b => b.classList.toggle('active', b === btn));
+    document.body.classList.add('lang-swapping');
+    setTimeout(() => {
+      applyLang(lang);
+      requestAnimationFrame(() => document.body.classList.remove('lang-swapping'));
+    }, 350);
+  }
+
+  document.querySelectorAll('.lang-toggle a').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.preventDefault();
       const lang = btn.dataset.lang;
-      if (document.documentElement.lang === lang) return;
-      document.querySelectorAll('.lang-toggle button').forEach(b => b.classList.toggle('active', b === btn));
-      document.body.classList.add('lang-swapping');
-      setTimeout(() => {
-        applyLang(lang);
-        requestAnimationFrame(() => document.body.classList.remove('lang-swapping'));
-      }, 350);
+      try { localStorage.setItem('sadeem-lang', lang); } catch (err) {}
+      const url = lang === 'ar' ? '/?lang=ar' : '/';
+      history.replaceState(null, '', url);
+      setLang(lang, btn);
     });
   });
+
+  // Honor ?lang=ar (crawlable, bookmarkable) or a previously saved preference.
+  let initialLang = new URLSearchParams(location.search).get('lang');
+  if (initialLang !== 'ar' && initialLang !== 'en') {
+    try { initialLang = localStorage.getItem('sadeem-lang'); } catch (err) { initialLang = null; }
+  }
+  if (initialLang === 'ar') {
+    const arBtn = document.querySelector('.lang-toggle a[data-lang="ar"]');
+    document.querySelectorAll('.lang-toggle a').forEach(b => b.classList.toggle('active', b === arBtn));
+    applyLang('ar');
+  }
 })();
 </script>
 </html>

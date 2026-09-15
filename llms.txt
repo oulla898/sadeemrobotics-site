@@ -1,8 +1,10 @@
-# Sadeem Robotics
+# Sadeem Robotics (سديم روبوتكس / سديم للروبوتات)
 
-> SADEEM is an autonomous service robot built by Sadeem Robotics. It navigates on its own — no remote, no track, no operator — to deliver items, guide visitors, and assist staff in hotels, hospitals, museums, retail, and corporate venues.
+> SADEEM (سديم) is an autonomous service robot built by Sadeem Robotics. It navigates on its own — no remote, no track, no operator — to deliver items, guide visitors, and assist staff in hotels, hospitals, museums, retail, and corporate venues.
 
-Sadeem Robotics is a real, operating company developing proprietary autonomous mobile robot (AMR) technology. SADEEM has been demonstrated on real venue floors handling delivery, guidance, and greeting tasks without human remote control.
+Sadeem Robotics — also known in Arabic as سديم روبوتكس, سديم للروبوتات, or simply سديم — is a real, operating company based in Muscat, Oman, developing proprietary autonomous mobile robot (AMR) technology. SADEEM has been demonstrated on real venue floors handling delivery, guidance, and greeting tasks without human remote control.
+
+An Arabic-language version of the site is available at https://sadeemrobotics.com/?lang=ar
 
 ## Contact
 - Email: hello@sadeemrobotics.com
