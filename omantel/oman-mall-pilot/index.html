@@ -166,6 +166,27 @@ h1 b,h2 b{font-weight:500;background:linear-gradient(90deg,#b9b0ff,#d7e2ff);-web
 #s-ask .contact{margin-top:60px;display:flex;align-items:center;gap:30px;font-size:22px;color:var(--mute)}
 #s-ask .contact img{height:32px}
 
+
+/* make it yours */
+#s-yours .yours{display:grid;grid-template-columns:1.25fr 1fr;gap:70px;margin-top:80px}
+#s-yours .tag{margin-bottom:16px}
+#s-yours .vgrid{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+#s-yours .vgrid.three{grid-template-columns:repeat(3,1fr)}
+.vbtn{all:unset;box-sizing:border-box;cursor:pointer;display:flex;align-items:center;gap:20px;padding:30px 26px;border-radius:18px;border:1px solid var(--line);background:var(--glass);transition:background .25s,border-color .25s}
+.vbtn:hover{border-color:rgba(109,92,255,.8);background:rgba(45,19,234,.3)}
+.vbtn .pl{flex:none;width:52px;height:52px;border-radius:50%;border:1.5px solid var(--orange);display:grid;place-items:center;color:var(--orange);font-size:18px}
+.vbtn h4{font-size:24px;font-weight:500;line-height:1.2}.vbtn p{font-size:17px;color:var(--mute);margin-top:3px}
+.vgrid.three .vbtn{padding:26px 18px;gap:14px}.vgrid.three .vbtn .pl{width:44px;height:44px;font-size:15px}
+.vbtn.playing{border-color:var(--orange);background:rgba(255,120,0,.12)}.vbtn.playing .pl{background:var(--orange);color:#06042a}
+.vbtn .pl i{display:none;gap:4px;align-items:center;height:20px}.vbtn.playing .pl i{display:flex}.vbtn.playing .pl b{display:none}
+.vbtn .pl i span{width:4px;height:100%;background:#06042a;border-radius:2px;animation:eq .9s infinite ease-in-out}
+.vbtn .pl i span:nth-child(2){animation-delay:.15s}.vbtn .pl i span:nth-child(3){animation-delay:.3s}
+@keyframes eq{0%,100%{transform:scaleY(.35)}50%{transform:scaleY(1)}}
+#s-yours .funs{display:flex;flex-direction:column;gap:18px}
+#s-yours .fcard{display:grid;grid-template-columns:54px 1fr;gap:20px;align-items:center;padding:30px 28px;border-radius:18px;border:1px solid var(--line);background:var(--glass)}
+#s-yours .fcard .ico{margin:0}
+#s-yours .fcard h4{font-size:25px;font-weight:500}
+#s-yours .fcard p{font-size:18px;color:var(--mute);line-height:1.4;margin-top:4px}
 /* ---------------- email version */
 #s-who .autobar{margin-top:60px;width:420px;height:3px;border-radius:2px;background:rgba(215,226,255,.15);overflow:hidden}
 #s-who .autobar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--violet),var(--orange))}
@@ -231,7 +252,7 @@ h1 b,h2 b{font-weight:500;background:linear-gradient(90deg,#b9b0ff,#d7e2ff);-web
     <div class="tile in d4"><video muted playsinline loop data-src="assets/exeed-showroom.mp4"></video>
       <div class="cap"><b>In action</b>At the EXEED showroom</div></div>
   </div>
-  <div class="foot"><span class="lg"><img src="assets/sadeem-logo-w.png" alt=""></span><span>2 / 8</span></div>
+  <div class="foot"><span class="lg"><img src="assets/sadeem-logo-w.png" alt=""></span><span>2 / 9</span></div>
 </section>
 
 <!-- 3 ------------------------------------------------------------------ -->
@@ -249,7 +270,7 @@ h1 b,h2 b{font-weight:500;background:linear-gradient(90deg,#b9b0ff,#d7e2ff);-web
   </div>
   <figure class="rep in d3"><img src="assets/exeed-report-fog.jpg" alt=""><figcaption>The robot's real week-1 report to EXEED</figcaption></figure>
   <img class="phone in d4" src="assets/phone-now.png" alt="">
-  <div class="foot"><span class="lg"><img src="assets/sadeem-logo-w.png" alt=""></span><span>3 / 8</span></div>
+  <div class="foot"><span class="lg"><img src="assets/sadeem-logo-w.png" alt=""></span><span>3 / 9</span></div>
 </section>
 
 <!-- 4 ------------------------------------------------------------------ -->
@@ -265,7 +286,7 @@ h1 b,h2 b{font-weight:500;background:linear-gradient(90deg,#b9b0ff,#d7e2ff);-web
     <div class="pipe in d4"><i></i><i></i><i></i></div>
     <div class="node in d4"><div class="card"><h4>People</h4><p>Staff phones, managers, weekly reports</p></div></div>
   </div>
-  <div class="foot"><span class="lg"><img src="assets/sadeem-logo-w.png" alt=""></span><span>4 / 8</span></div>
+  <div class="foot"><span class="lg"><img src="assets/sadeem-logo-w.png" alt=""></span><span>4 / 9</span></div>
 </section>
 
 <!-- 5 ------------------------------------------------------------------ -->
@@ -283,7 +304,7 @@ h1 b,h2 b{font-weight:500;background:linear-gradient(90deg,#b9b0ff,#d7e2ff);-web
       <p>Omani engineers, our own software, same-day local support. Not a box imported and left alone.</p>
       <div class="gain">An Omani AI company, grown with Omantel</div></div>
   </div>
-  <div class="foot"><span class="lg"><img src="assets/sadeem-logo-w.png" alt=""></span><span>5 / 8</span></div>
+  <div class="foot"><span class="lg"><img src="assets/sadeem-logo-w.png" alt=""></span><span>5 / 9</span></div>
 </section>
 
 <!-- 5b ----------------------------------------------------------------- -->
@@ -296,7 +317,40 @@ h1 b,h2 b{font-weight:500;background:linear-gradient(90deg,#b9b0ff,#d7e2ff);-web
     <figure class="in d3"><img src="assets/mall-shelf-om.jpg" alt=""><figcaption><h4>Multi-shelf robot</h4><span>Carry · deliver to desks</span></figcaption></figure>
     <figure class="in d4"><img src="assets/mall-tablet-om.jpg" alt=""><figcaption><h4>Compact screen robot</h4><span>Talk · show on screen</span></figcaption></figure>
   </div>
-  <div class="foot"><span class="lg"><img src="assets/sadeem-logo-w.png" alt=""></span><span>Concept image · branding shown is a visual concept</span><span>6 / 8</span></div>
+  <div class="foot"><span class="lg"><img src="assets/sadeem-logo-w.png" alt=""></span><span>Concept image · branding shown is a visual concept</span><span>6 / 9</span></div>
+</section>
+
+<!-- 6b make it yours -->
+<section class="slide" id="s-yours" data-scene="none" data-glow="-20,10">
+  <div class="kick in">Make it yours</div>
+  <h2 class="in d1">Your team decides <b>how it sounds.</b></h2>
+  <div class="yours">
+    <div>
+      <div class="tag in d2">Its voice in Omani Arabic · tap to listen</div>
+      <div class="vgrid in d2">
+        <button class="vbtn" type="button" data-sample="assets/voices/female-1.mp3"><span class="pl"><b>▶</b><i><span></span><span></span><span></span></i></span><span><h4>Female · Warm</h4><p>Gentle and calm</p></span></button>
+        <button class="vbtn" type="button" data-sample="assets/voices/female-2.mp3"><span class="pl"><b>▶</b><i><span></span><span></span><span></span></i></span><span><h4>Female · Polished</h4><p>Confident and clear</p></span></button>
+        <button class="vbtn" type="button" data-sample="assets/voices/male-1.mp3"><span class="pl"><b>▶</b><i><span></span><span></span><span></span></i></span><span><h4>Male · Friendly</h4><p>Courteous and relaxed</p></span></button>
+        <button class="vbtn" type="button" data-sample="assets/voices/male-2.mp3"><span class="pl"><b>▶</b><i><span></span><span></span><span></span></i></span><span><h4>Male · Lively</h4><p>Upbeat, with a smile</p></span></button>
+      </div>
+      <div class="tag in d3" style="margin-top:56px">Its English accent</div>
+      <div class="vgrid three in d3">
+        <button class="vbtn" type="button" data-sample="assets/voices/accent-gulf.mp3"><span class="pl"><b>▶</b><i><span></span><span></span><span></span></i></span><span><h4>Gulf</h4><p>Local and familiar</p></span></button>
+        <button class="vbtn" type="button" data-sample="assets/voices/accent-british.mp3"><span class="pl"><b>▶</b><i><span></span><span></span><span></span></i></span><span><h4>British</h4><p>Soft and classic</p></span></button>
+        <button class="vbtn" type="button" data-sample="assets/voices/accent-american.mp3"><span class="pl"><b>▶</b><i><span></span><span></span><span></span></i></span><span><h4>American</h4><p>Easy and friendly</p></span></button>
+      </div>
+    </div>
+    <div>
+      <div class="tag in d4">And a few fun ones</div>
+      <div class="funs in d4">
+        <div class="fcard"><div class="ico"><svg viewBox="0 0 24 24"><path d="M4 7h16M4 12h10M4 17h7"/><path d="M17 14l3 3-3 3"/></svg></div><div><h4>Its name</h4><p>One your customers remember, and ask for by name.</p></div></div>
+        <div class="fcard"><div class="ico"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M8.5 14.5c1 1.2 2.1 1.8 3.5 1.8s2.5-.6 3.5-1.8"/><path d="M9 9.5h.01M15 9.5h.01"/></svg></div><div><h4>Its personality</h4><p>Calm and polite, or cheerful with a light touch of humour.</p></div></div>
+        <div class="fcard"><div class="ico"><svg viewBox="0 0 24 24"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M9 8h6M9 12h6M9 16h3"/></svg></div><div><h4>Its screen</h4><p>Omantel colours, your AI assistant, this month's offers.</p></div></div>
+        <div class="fcard"><div class="ico"><svg viewBox="0 0 24 24"><path d="M12 3l2.6 5.4 5.9.8-4.3 4.1 1 5.8L12 16.4 6.8 19.1l1-5.8L3.5 9.2l5.9-.8z"/></svg></div><div><h4>Special days</h4><p>Its own greetings for Eid, National Day and launch nights.</p></div></div>
+      </div>
+    </div>
+  </div>
+  <div class="foot"><span class="lg"><img src="assets/sadeem-logo-w.png" alt=""></span><span>Your choices, changed any time from the staff app</span><span>7 / 9</span></div>
 </section>
 
 <!-- 6 ------------------------------------------------------------------ -->
@@ -318,7 +372,7 @@ h1 b,h2 b{font-weight:500;background:linear-gradient(90deg,#b9b0ff,#d7e2ff);-web
     <div class="pick"><h4>A day on the store floor. <b>Tap a moment.</b></h4>
       <div class="moments"><button data-m="ticket"><i>1</i>A counter visit by voice<span class="finger" aria-hidden="true"><svg viewBox="0 0 64 64"><path d="M26 34V12a5 5 0 0 1 10 0v16l12 3a6 6 0 0 1 4.5 7l-2.5 13a8 8 0 0 1-8 6H31a8 8 0 0 1-6.4-3.2L14 40a4.5 4.5 0 0 1 6.6-6z"/></svg></span></button><button data-m="iphone"><i>2</i>The burgundy iPhone 18 Pro</button><button data-m="bill"><i>3</i>Paying a bill</button><button data-m="tourist"><i>4</i>Tourist SIM</button><button data-m="fibre"><i>5</i>“Is fibre in my area?”</button><button data-m="report"><i>6</i>The branch report</button></div></div>
   </div>
-  <div class="foot"><span class="lg"><img src="assets/sadeem-logo-w.png" alt=""></span><span>7 / 8</span></div>
+  <div class="foot"><span class="lg"><img src="assets/sadeem-logo-w.png" alt=""></span><span>8 / 9</span></div>
 </section>
 
 <!-- 7 ------------------------------------------------------------------ -->
@@ -365,7 +419,7 @@ function go(i) {
   Particles.to(s.dataset.scene);
   Demo.active(s.id === 's-pilot');
   try { history.replaceState(null, '', '#' + (i + 1)); } catch (_) {}
-  Auto.on(s);
+  Auto.on(s); if (typeof stopSample === 'function') stopSample();
   $('prev').disabled = i === 0; $('next').disabled = i === slides.length - 1;
 }
 
@@ -384,6 +438,16 @@ stage.addEventListener('click', e => {
   if (e.target.closest('button,video,a,#demoWrap')) return;
   const r = stage.getBoundingClientRect(); go(e.clientX > r.left + r.width / 2 ? cur + 1 : cur - 1);
 });
+
+
+/* ------------------------------------------------------------------ voice samples on "Make it yours" */
+let sample = null;
+function stopSample() { if (sample) { sample.pause(); sample = null; } document.querySelectorAll('.vbtn.playing').forEach(b => b.classList.remove('playing')); }
+document.querySelectorAll('.vbtn').forEach(b => b.addEventListener('click', () => {
+  const was = b.classList.contains('playing'); stopSample(); if (was) return;
+  sample = new Audio(b.dataset.sample); b.classList.add('playing'); sample.play().catch(() => {});
+  sample.onended = () => b.classList.remove('playing');
+}));
 
 /* ------------------------------------------------------------------ "Live today" moves on by itself: 7 s the first time, 5 s after */
 const Auto = (() => {
