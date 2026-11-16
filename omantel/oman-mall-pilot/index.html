@@ -1,0 +1,541 @@
+<!doctype html>
+<html lang="en" translate="no">
+<head>
+<meta charset="utf-8">
+<meta name="google" content="notranslate">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Sadeem × Omantel · Oman Mall pilot</title>
+<meta name="robots" content="noindex,nofollow">
+<meta property="og:title" content="Sadeem × Omantel · A pilot at Oman Mall">
+<meta property="og:description" content="AI your customers can meet, on the floor of your Oman Mall store.">
+<style>
+@font-face{font-family:"Sora";font-weight:400;src:url("assets/Sora-Regular.woff2") format("woff2")}
+@font-face{font-family:"Sora";font-weight:500;src:url("assets/Sora-Medium.woff2") format("woff2")}
+:root{--navy:#06042a;--ink:#0e0b45;--indigo:#2d13ea;--violet:#6d5cff;--lav:#d7e2ff;--fg:#f4f5ff;--mute:#9aa3cf;
+  --line:rgba(215,226,255,.16);--glass:rgba(20,16,80,.55);--orange:#ff7800;--ease:cubic-bezier(.2,.7,.2,1)}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;background:#02011a;overflow:hidden}
+body{font-family:"Sora","Segoe UI",sans-serif;font-weight:400;color:var(--fg);-webkit-font-smoothing:antialiased;user-select:none}
+#stage{position:absolute;left:50%;top:50%;width:1920px;height:1080px;transform-origin:center;background:var(--navy);overflow:hidden}
+/* glow: deep navy with a large indigo light that moves between slides */
+#glow{position:absolute;inset:-20%;pointer-events:none;transition:transform 1.4s var(--ease),opacity 1.4s var(--ease);
+  background:radial-gradient(42% 38% at 50% 100%,#3a22ff 0%,#2d13ea 30%,rgba(45,19,234,.35) 55%,rgba(6,4,42,0) 75%)}
+#bg{position:absolute;inset:0;width:1920px;height:1080px}
+.slide{position:absolute;inset:0;padding:110px 130px 120px;opacity:0;pointer-events:none;transition:opacity .6s var(--ease)}
+.slide.on{opacity:1;pointer-events:auto}
+.kick{font-size:20px;font-weight:500;color:var(--lav);letter-spacing:.3em;text-transform:uppercase;margin-bottom:26px;display:flex;align-items:center;gap:14px}
+.kick::before{content:"";width:10px;height:10px;border-radius:50%;background:var(--orange)}
+h1{font-size:96px;font-weight:500;line-height:1.05;letter-spacing:-.02em}
+h2{font-size:64px;font-weight:500;line-height:1.1;letter-spacing:-.015em}
+h1 b,h2 b{font-weight:500;background:linear-gradient(90deg,#b9b0ff,#d7e2ff);-webkit-background-clip:text;background-clip:text;color:transparent}
+.lead{font-size:29px;color:#c3c9ec;line-height:1.55;margin-top:26px;max-width:1000px}
+.foot{position:absolute;bottom:44px;left:130px;right:130px;display:flex;justify-content:space-between;align-items:center;font-size:17px;color:var(--mute);letter-spacing:.08em}
+.foot .lg{display:flex;align-items:center;gap:18px}.foot img{height:20px;opacity:.8}
+.card{background:var(--glass);border:1px solid var(--line);border-radius:22px;padding:34px 36px;backdrop-filter:blur(8px)}
+.card h4{font-size:32px;font-weight:500;line-height:1.25}
+.card p{font-size:22px;color:var(--mute);line-height:1.5;margin-top:12px}
+.ico{width:54px;height:54px;border-radius:16px;background:rgba(109,92,255,.18);display:grid;place-items:center;margin-bottom:22px}
+.ico svg{width:30px;height:30px;stroke:var(--lav);fill:none;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.chip{display:inline-flex;align-items:center;gap:10px;padding:13px 26px;border:1px solid var(--line);font-size:22px;background:var(--glass);border-radius:40px}
+.tag{font-size:16px;color:var(--mute);letter-spacing:.16em;text-transform:uppercase}
+.in{opacity:0;transform:translateY(18px);transition:opacity .7s var(--ease),transform .7s var(--ease)}
+.slide.on .in{opacity:1;transform:none}
+.slide.on .d1{transition-delay:.12s}.slide.on .d2{transition-delay:.24s}.slide.on .d3{transition-delay:.36s}
+.slide.on .d4{transition-delay:.48s}.slide.on .d5{transition-delay:.6s}.slide.on .d6{transition-delay:.72s}
+#progress{position:absolute;left:0;bottom:0;height:3px;background:linear-gradient(90deg,var(--indigo),var(--violet));transition:width .5s var(--ease);z-index:5}
+
+/* 1 title */
+#s-title .logos{display:flex;align-items:center;gap:34px;margin:30px 0 110px}
+#s-title .logos img.sd{height:40px}#s-title .logos img.ot{height:44px}
+#s-title .logos .x{font-size:30px;color:var(--mute)}
+#s-title .logos .om{font-size:44px;font-weight:500;letter-spacing:-.01em;line-height:1}
+.notes{display:none}
+
+/* 3 measured proof */
+#s-proof .left{width:820px}
+#s-proof .big{font-size:170px;font-weight:500;line-height:1;margin-top:40px;letter-spacing:-.03em;background:linear-gradient(90deg,#b9b0ff,#d7e2ff);-webkit-background-clip:text;background-clip:text;color:transparent}
+#s-proof .big small{font-size:70px;margin-left:8px}
+#s-proof .bigcap{font-size:24px;color:#c3c9ec;margin-top:6px;max-width:640px;line-height:1.45}
+#s-proof .pts{margin-top:34px;display:flex;flex-direction:column}
+#s-proof .pt{display:grid;grid-template-columns:70px 1fr;padding:15px 0;border-top:1px solid var(--line);font-size:25px;line-height:1.35}
+#s-proof .pt span{color:var(--orange);font-size:19px;letter-spacing:.14em;padding-top:5px}
+#s-proof .pt em{font-style:normal;color:var(--mute);display:block;font-size:19px}
+#s-proof .rep{position:absolute;left:1000px;top:120px;width:640px}
+#s-proof .rep img{width:640px;border-radius:22px;display:block;box-shadow:0 40px 90px rgba(0,0,0,.5)}
+#s-proof .rep figcaption{margin-top:16px;font-size:17px;color:var(--mute);letter-spacing:.06em}
+#s-proof .phone{position:absolute;left:1520px;top:420px;width:260px;border-radius:28px;border:5px solid #1d1a52;box-shadow:0 40px 90px rgba(0,0,0,.6)}
+#s-ask .ask.main{border-color:var(--orange);background:rgba(255,120,0,.1)}
+#s-ask .ask.main .k{color:var(--orange)}
+#s-title h1{max-width:960px}
+#s-title .lead{max-width:860px}
+#s-title .when{margin-top:70px;display:flex;gap:16px}
+
+/* 2 who we are */
+#s-who{display:grid;grid-template-columns:1fr 1.15fr;gap:70px;align-items:center}
+#s-who .facts{display:flex;flex-direction:column;gap:22px;margin-top:50px}
+#s-who .fact{display:flex;gap:18px;align-items:baseline;font-size:26px;color:#d5daf5}
+#s-who .fact span{color:var(--orange);font-size:22px}
+#s-who .tiles{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;height:820px}
+.tile{position:relative;border-radius:24px;overflow:hidden;border:1px solid var(--line);background:#0b0840}
+.tile img,.tile video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.tile .cap{position:absolute;left:0;right:0;bottom:0;padding:70px 22px 22px;background:linear-gradient(transparent,rgba(4,3,30,.92));font-size:19px;line-height:1.4}
+.tile .cap b{display:block;font-weight:500;font-size:22px;margin-bottom:4px}
+.tile .live{position:absolute;top:18px;left:18px;font-size:14px;letter-spacing:.14em;padding:7px 14px;border-radius:20px;background:rgba(6,4,42,.7);border:1px solid var(--line)}
+.tile .live::before{content:"";display:inline-block;width:8px;height:8px;border-radius:50%;background:#50d88d;margin-right:8px;vertical-align:1px}
+
+/* 3 inside one robot */
+#s-inside .rows{margin-top:46px;display:flex;flex-direction:column;gap:14px;width:860px}
+#s-inside .row{display:grid;grid-template-columns:64px 230px 1fr;align-items:center;gap:8px;padding:16px 22px;border-radius:18px;border:1px solid transparent;transition:background .4s,border-color .4s}
+#s-inside .row.hl{background:var(--glass);border-color:var(--line)}
+#s-inside .row .ico{margin:0;width:48px;height:48px}
+#s-inside .row h4{font-size:27px;font-weight:500}
+#s-inside .row p{font-size:21px;color:var(--mute);line-height:1.4}
+#s-inside .phone{position:absolute;right:120px;top:150px;width:330px;border-radius:34px;border:6px solid #1d1a52;box-shadow:0 40px 90px rgba(0,0,0,.5)}
+#s-inside .phcap{position:absolute;right:120px;top:880px;width:330px;font-size:17px;color:var(--mute);text-align:center;line-height:1.4}
+#s-inside .cloudtag{position:absolute;left:1040px;top:132px;font-size:18px;color:var(--lav);letter-spacing:.14em}
+
+/* 4 three wins */
+#s-wins .cards{display:grid;grid-template-columns:repeat(3,1fr);gap:26px;margin-top:56px;width:1150px}
+#s-wins .card{min-height:430px;display:flex;flex-direction:column}
+#s-wins .card .n{font-size:18px;color:var(--orange);letter-spacing:.2em;margin-bottom:18px}
+#s-wins .card .gain{margin-top:auto;padding-top:22px;border-top:1px solid var(--line);font-size:20px;color:var(--lav);line-height:1.45}
+#s-wins .plus{margin-top:30px;font-size:23px;color:var(--mute);width:1150px}
+/* 5b robot options at Omantel HQ */
+#s-opts .pair{display:grid;grid-template-columns:repeat(3,1fr);gap:28px;margin-top:46px}
+#s-opts figure{border-radius:24px;overflow:hidden;border:1px solid var(--line);background:var(--glass)}
+#s-opts figure img{display:block;width:100%;aspect-ratio:3/2;object-fit:cover}
+#s-opts figcaption{padding:20px 26px;display:flex;flex-direction:column;gap:6px}
+#s-opts figcaption h4{font-size:30px;font-weight:500}
+#s-opts figcaption span{font-size:20px;color:var(--mute)}
+
+/* 4b robot options in their lobby */
+#s-opts .pair{display:grid;grid-template-columns:repeat(3,1fr);gap:28px;margin-top:46px}
+#s-opts figure{border-radius:24px;overflow:hidden;border:1px solid var(--line);background:var(--glass)}
+#s-opts figure img{display:block;width:100%;aspect-ratio:3/2;object-fit:cover}
+#s-opts figcaption{padding:20px 26px;display:flex;flex-direction:column;gap:6px}
+#s-opts figcaption h4{font-size:30px;font-weight:500}
+#s-opts figcaption span{font-size:20px;color:var(--mute)}
+
+/* 5 pilot at KOM4 */
+#s-pilot{display:grid;grid-template-columns:720px 1fr;gap:50px}
+#s-pilot .steps{margin-top:46px;position:relative;display:flex;flex-direction:column;gap:34px}
+#s-pilot .steps::before{content:"";position:absolute;left:21px;top:22px;bottom:22px;width:2px;background:linear-gradient(var(--lav),#FF7800);opacity:.55}
+#s-pilot .st{position:relative;display:grid;grid-template-columns:44px 1fr;gap:26px;align-items:center;font-size:24px;line-height:1.35}
+#s-pilot .st span{width:44px;height:44px;border-radius:50%;display:grid;place-items:center;font-size:17px;font-weight:500;color:var(--lav);background:#0b0840;border:2px solid rgba(215,226,255,.45);box-shadow:0 0 0 6px #06042a}
+#s-pilot .st:last-child span{color:#fff;background:#FF7800;border-color:#FF7800;box-shadow:0 0 0 6px #06042a,0 0 22px rgba(255,120,0,.45)}
+#s-pilot .st em{font-style:normal;color:var(--mute);display:block;font-size:19px}
+#s-pilot .free{margin-top:48px;display:flex;gap:14px;flex-wrap:wrap}
+#demoWrap{position:relative;height:850px;border-radius:28px;overflow:hidden;border:1px solid var(--line);background:#0a0738}
+#demoWrap>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 30%}
+#demoWrap .shade{position:absolute;inset:0;background:linear-gradient(180deg,rgba(6,4,42,0) 30%,rgba(6,4,42,.82) 56%,rgba(6,4,42,.97) 100%)}
+#demoWrap .top{position:absolute;left:30px;top:28px}
+#demoWrap .top .chip{font-size:17px;padding:9px 18px;background:rgba(6,4,42,.6);backdrop-filter:blur(6px)}
+#demoWrap .pick{position:absolute;left:34px;right:34px;bottom:30px}
+#demoWrap .pick h4{font-size:30px;font-weight:400;margin-bottom:18px}
+#demoWrap .pick h4 b{font-weight:500;color:var(--orange)}
+#demoWrap .moments{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+#demoWrap .moments button{all:unset;cursor:pointer;display:flex;align-items:center;gap:14px;padding:11px 16px;border-radius:14px;border:1px solid var(--line);background:rgba(20,16,80,.55);font-size:19px;color:var(--fg);transition:background .2s,border-color .2s}
+#demoWrap .moments button:hover{background:rgba(45,19,234,.45);border-color:rgba(109,92,255,.8)}
+#demoWrap .moments button i{font-style:normal;font-size:15px;color:var(--orange);width:22px;text-align:right}
+#demoLayer{position:fixed;inset:0;z-index:50;background:#06042a;opacity:0;pointer-events:none;transition:opacity .35s}
+#demoLayer.on{opacity:1;pointer-events:auto}
+#demoLayer iframe{width:100%;height:100%;border:0;display:block}
+
+/* 4 connected device */
+#s-built .flow{display:grid;grid-template-columns:1fr 120px 1.3fr 120px 1fr;align-items:center;margin-top:60px}
+#s-built .node{text-align:center}
+#s-built .node .card{padding:30px 26px}
+#s-built .node .card h4{font-size:28px}
+#s-built .oc{border-color:rgba(109,92,255,.6);background:rgba(45,19,234,.22)}
+#s-built .oc .svc{display:flex;flex-direction:column;gap:12px;margin-top:20px}
+#s-built .oc .svc div{font-size:21px;padding:12px;border-radius:12px;background:rgba(6,4,42,.5);border:1px solid var(--line)}
+#s-built .pipe{position:relative;height:2px;background:rgba(215,226,255,.25)}
+#s-built .pipe i{position:absolute;top:-4px;width:10px;height:10px;border-radius:50%;background:var(--orange);box-shadow:0 0 14px var(--orange);animation:flow 1.8s linear infinite}
+#s-built .pipe i:nth-child(2){animation-delay:.6s}#s-built .pipe i:nth-child(3){animation-delay:1.2s}
+@keyframes flow{from{left:0;opacity:0}15%{opacity:1}85%{opacity:1}to{left:100%;opacity:0}}
+#s-built .qs{margin-top:56px}
+#s-built .qs .tag{margin-bottom:18px}
+#s-built .qs .chips{display:flex;flex-wrap:wrap;gap:14px}
+
+/* 7 the ask */
+#s-ask .asks{display:grid;grid-template-columns:repeat(2,1fr);gap:24px;margin-top:56px;width:1250px}
+#s-ask .ask{display:grid;grid-template-columns:80px 1fr;gap:8px;align-items:start}
+#s-ask .ask .k{font-size:54px;font-weight:500;color:var(--violet);line-height:1}
+#s-ask .ask h4{font-size:30px}
+#s-ask .ask p{font-size:20px}
+#s-ask .contact{margin-top:60px;display:flex;align-items:center;gap:30px;font-size:22px;color:var(--mute)}
+#s-ask .contact img{height:32px}
+
+/* ---------------- email version */
+#s-who .autobar{margin-top:60px;width:420px;height:3px;border-radius:2px;background:rgba(215,226,255,.15);overflow:hidden}
+#s-who .autobar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--violet),var(--orange))}
+#s-who.on .autobar i{animation:fillbar var(--auto,7s) linear forwards}
+@keyframes fillbar{to{width:100%}}
+#s-built .lead,#s-opts .lead{margin-top:18px;max-width:1300px}
+#s-built .flow{margin-top:80px}
+#s-opts .pair{margin-top:40px}
+#demoWrap .moments button{position:relative}
+.finger{position:absolute;right:10px;top:12px;display:flex;align-items:center;gap:10px;pointer-events:none;z-index:3;animation:tap 1.6s var(--ease) infinite}
+.finger svg{width:58px;height:58px;fill:#fff;stroke:#06042a;stroke-width:2.5;stroke-linejoin:round;filter:drop-shadow(0 6px 14px rgba(0,0,0,.5))}
+.finger em{font-style:normal;font-size:17px;font-weight:500;color:#06042a;background:var(--orange);padding:7px 14px;border-radius:20px;white-space:nowrap}
+.finger::before{content:"";position:absolute;left:14px;top:-4px;width:30px;height:30px;border-radius:50%;border:3px solid var(--orange);animation:ring 1.6s ease-out infinite}
+@keyframes tap{0%,100%{transform:translate(0,0)}45%{transform:translate(-6px,-10px)}60%{transform:translate(0,0) scale(.94)}}
+@keyframes ring{0%,55%{opacity:0;transform:scale(.4)}65%{opacity:1}100%{opacity:0;transform:scale(1.8)}}
+#demoWrap.tried .finger{display:none}
+#demoWrap:not(.tried) .moments button[data-m="ticket"]{border-color:var(--orange);background:rgba(255,120,0,.16)}
+#s-ask .path{position:relative;display:grid;grid-template-columns:repeat(3,1fr);gap:40px;margin-top:70px;width:1500px}
+#s-ask .path::before{content:"";position:absolute;left:28px;right:calc(33.3% - 28px);top:27px;height:2px;background:linear-gradient(90deg,var(--lav),var(--orange));opacity:.6}
+#s-ask .pp span{position:relative;width:56px;height:56px;border-radius:50%;display:grid;place-items:center;font-size:21px;font-weight:500;color:var(--lav);background:#0b0840;border:2px solid rgba(215,226,255,.45);box-shadow:0 0 0 8px var(--navy)}
+#s-ask .pp:last-child span{color:#fff;background:var(--orange);border-color:var(--orange);box-shadow:0 0 0 8px var(--navy),0 0 26px rgba(255,120,0,.5)}
+#s-ask .pp h4{font-size:32px;font-weight:500;margin-top:30px}
+#s-ask .pp p{font-size:22px;color:var(--mute);line-height:1.5;margin-top:10px;max-width:420px}
+#s-ask .cta{margin-top:80px;font-size:34px;line-height:1.35}
+#s-ask .cta b{font-weight:500;color:var(--orange)}
+#s-ask .contact{margin-top:40px}
+/* web reader: arrows + rotate hint */
+#nav{position:fixed;right:22px;top:18px;display:flex;gap:10px;z-index:40}
+#nav button{all:unset;cursor:pointer;width:46px;height:46px;border-radius:50%;display:grid;place-items:center;background:rgba(20,16,80,.75);border:1px solid rgba(215,226,255,.25);color:#f4f5ff;font:24px/1 "Segoe UI",sans-serif}
+#nav button:hover{background:rgba(45,19,234,.7)}
+#nav button:disabled{opacity:.3;cursor:default}
+#rot{display:none;position:fixed;left:0;right:0;bottom:22px;text-align:center;z-index:41;font:15px/1.4 "Segoe UI",sans-serif;color:#d7e2ff}
+#rot span{background:rgba(20,16,80,.85);border:1px solid rgba(215,226,255,.25);padding:8px 16px;border-radius:20px}
+@media (orientation:portrait) and (max-width:900px){#rot{display:block}}
+</style>
+</head>
+<body>
+<div id="stage">
+<div id="glow"></div>
+<canvas id="bg" width="1920" height="1080"></canvas>
+
+<!-- 1 ------------------------------------------------------------------ -->
+<section class="slide" id="s-title" data-scene="title" data-glow="0,0">
+  <div class="logos in"><img class="sd" src="assets/sadeem-logo-w.png" alt="Sadeem"><span class="x">×</span><span class="om">Omantel</span></div>
+  <div class="kick in d1">Everyone AI · in person</div>
+  <h1 class="in d2">AI your customers<br>can <b>meet.</b></h1>
+  <p class="lead in d3">Omani-built service robots: live today, connected to Omantel, made for Oman.</p>
+  <div class="when in d4"><span class="chip">Sadeem Robotics</span><span class="chip">Muscat · November 2026</span></div>
+</section>
+
+<!-- 2 ------------------------------------------------------------------ -->
+<section class="slide" id="s-who" data-scene="field" data-glow="-30,10">
+  <div>
+    <div class="kick in">Live today</div>
+    <h2 class="in d1">Already working <b>in public spaces.</b></h2>
+    <div class="autobar in d2"><i></i></div>
+  </div>
+  <div class="tiles">
+    <div class="tile in d2"><img src="assets/photo-exeed.jpg" alt=""><span class="live">LIVE</span>
+      <div class="cap"><b>EXEED showroom</b>Greets buyers, walks them to the car, calls a consultant</div></div>
+    <div class="tile in d3"><img src="assets/photo-mtcit.jpg" alt="">
+      <div class="cap"><b>MTCIT</b>Project in progress</div></div>
+    <div class="tile in d4"><video muted playsinline loop data-src="assets/exeed-showroom.mp4"></video>
+      <div class="cap"><b>In action</b>At the EXEED showroom</div></div>
+  </div>
+  <div class="foot"><span class="lg"><img src="assets/sadeem-logo-w.png" alt=""></span><span>2 / 8</span></div>
+</section>
+
+<!-- 3 ------------------------------------------------------------------ -->
+<section class="slide" id="s-proof" data-scene="none" data-glow="25,0">
+  <div class="left">
+    <div class="kick in">Measured, not a gimmick</div>
+    <h2 class="in d1">Every robot <b>reports back.</b></h2>
+    <div class="big in d2">12.6<small>h</small></div>
+    <p class="bigcap in d2">of front-door work a week handled by the robot at EXEED, so staff spend that time with the buyers</p>
+    <div class="pts">
+      <div class="pt in d3"><span>01</span><div>Every visitor is met<em>No one waits unnoticed at the door</em></div></div>
+      <div class="pt in d4"><span>02</span><div>Buyers go straight to staff<em>A phone alert: who is waiting and what they want</em></div></div>
+      <div class="pt in d5"><span>03</span><div>A weekly report for the manager<em>What customers asked, when they came, what to change</em></div></div>
+    </div>
+  </div>
+  <figure class="rep in d3"><img src="assets/exeed-report-fog.jpg" alt=""><figcaption>The robot's real week-1 report to EXEED</figcaption></figure>
+  <img class="phone in d4" src="assets/phone-now.png" alt="">
+  <div class="foot"><span class="lg"><img src="assets/sadeem-logo-w.png" alt=""></span><span>3 / 8</span></div>
+</section>
+
+<!-- 4 ------------------------------------------------------------------ -->
+<section class="slide" id="s-built" data-scene="hub" data-glow="0,-10">
+  <div class="kick in">Inside one robot</div>
+  <h2 class="in d1">A technology company <b>customers can meet.</b></h2>
+  <p class="lead in d1">Omantel runs the network, the cloud and the AI. A robot in your store puts all three in front of customers, at work.</p>
+  <div class="flow">
+    <div class="node in d2"><div class="card"><h4>Robot</h4><p>Sees people, talks, guides, alerts staff</p></div></div>
+    <div class="pipe in d3"><i></i><i></i><i></i></div>
+    <div class="node in d3"><div class="card oc"><h4>Omantel</h4>
+      <div class="svc"><div>5G connectivity, a line per robot</div><div>Cloud in Oman: data stays in the country</div><div>AI voice and conversation</div></div></div></div>
+    <div class="pipe in d4"><i></i><i></i><i></i></div>
+    <div class="node in d4"><div class="card"><h4>People</h4><p>Staff phones, managers, weekly reports</p></div></div>
+  </div>
+  <div class="foot"><span class="lg"><img src="assets/sadeem-logo-w.png" alt=""></span><span>4 / 8</span></div>
+</section>
+
+<!-- 5 ------------------------------------------------------------------ -->
+<section class="slide" id="s-wins" data-scene="orbit" data-glow="30,-5">
+  <div class="kick in">Why Omantel</div>
+  <h2 class="in d1">Three wins for <b>Omantel.</b></h2>
+  <div class="cards">
+    <div class="card in d2"><div class="n">01 · SHOWCASE</div><h4>Everyone AI, in a form people can meet</h4>
+      <p>A robot in an Omantel hall greets customers in Omani Arabic and English, on your network.</p>
+      <div class="gain">Your AI strategy, visible to every visitor</div></div>
+    <div class="card in d3"><div class="n">02 · NEW PRODUCT</div><h4>Robots as a connected service</h4>
+      <p>Showrooms, ministries, banks and hotels pay monthly. Omantel can offer it to its business customers.</p>
+      <div class="gain">Recurring revenue on lines, cloud and AI</div></div>
+    <div class="card in d4"><div class="n">03 · OMANI</div><h4>Built and run in Oman</h4>
+      <p>Omani engineers, our own software, same-day local support. Not a box imported and left alone.</p>
+      <div class="gain">An Omani AI company, grown with Omantel</div></div>
+  </div>
+  <div class="foot"><span class="lg"><img src="assets/sadeem-logo-w.png" alt=""></span><span>5 / 8</span></div>
+</section>
+
+<!-- 5b ----------------------------------------------------------------- -->
+<section class="slide" id="s-opts" data-scene="none" data-glow="0,15">
+  <div class="kick in">Robot options</div>
+  <h2 class="in d1">Three robots, <b>in your Oman Mall store.</b></h2>
+  <p class="lead in d1">Form factor is your call: the shape, the colours, the finish and your logo.</p>
+  <div class="pair">
+    <figure class="in d2"><img src="assets/mall-model01-om.jpg" alt=""><figcaption><h4>Sadeem Model 01</h4><span>Welcome · guide · talk</span></figcaption></figure>
+    <figure class="in d3"><img src="assets/mall-shelf-om.jpg" alt=""><figcaption><h4>Multi-shelf robot</h4><span>Carry · deliver to desks</span></figcaption></figure>
+    <figure class="in d4"><img src="assets/mall-tablet-om.jpg" alt=""><figcaption><h4>Compact screen robot</h4><span>Talk · show on screen</span></figcaption></figure>
+  </div>
+  <div class="foot"><span class="lg"><img src="assets/sadeem-logo-w.png" alt=""></span><span>Concept image · branding shown is a visual concept</span><span>6 / 8</span></div>
+</section>
+
+<!-- 6 ------------------------------------------------------------------ -->
+<section class="slide" id="s-pilot" data-scene="none" data-glow="-35,20">
+  <div>
+    <div class="kick in">The pilot</div>
+    <h2 class="in d1">A pilot at <b>your Oman Mall store.</b></h2>
+    <div class="steps">
+      <div class="st in d2"><span>1</span><div>Map the store with your team<em>One morning, before opening</em></div></div>
+      <div class="st in d3"><span>2</span><div>Your team sets it up<em>From the staff app: services, prices on or off, language</em></div></div>
+      <div class="st in d4"><span>3</span><div>Live with customers<em>Greets, gives tickets, guides, calls staff</em></div></div>
+      <div class="st in d5"><span>4</span><div>A branch report<em>What customers asked, and what to change</em></div></div>
+    </div>
+  </div>
+  <div id="demoWrap" class="in d2">
+    <img src="assets/mall-model01-om.jpg" alt="">
+    <div class="shade"></div>
+    <div class="top"><span class="chip">Oman Mall store · concept image</span></div>
+    <div class="pick"><h4>A day on the store floor. <b>Tap a moment.</b></h4>
+      <div class="moments"><button data-m="ticket"><i>1</i>A counter visit by voice<span class="finger" aria-hidden="true"><svg viewBox="0 0 64 64"><path d="M26 34V12a5 5 0 0 1 10 0v16l12 3a6 6 0 0 1 4.5 7l-2.5 13a8 8 0 0 1-8 6H31a8 8 0 0 1-6.4-3.2L14 40a4.5 4.5 0 0 1 6.6-6z"/></svg></span></button><button data-m="iphone"><i>2</i>The burgundy iPhone 18 Pro</button><button data-m="bill"><i>3</i>Paying a bill</button><button data-m="tourist"><i>4</i>Tourist SIM</button><button data-m="fibre"><i>5</i>“Is fibre in my area?”</button><button data-m="report"><i>6</i>The branch report</button></div></div>
+  </div>
+  <div class="foot"><span class="lg"><img src="assets/sadeem-logo-w.png" alt=""></span><span>7 / 8</span></div>
+</section>
+
+<!-- 7 ------------------------------------------------------------------ -->
+<section class="slide" id="s-ask" data-scene="globe" data-glow="20,0">
+  <div class="kick in">Next step</div>
+  <h2 class="in d1">Everyone AI, on the floor <b>of Oman Mall.</b></h2>
+  <p class="lead in d1">One yes, and your customers meet Omantel's AI in person.</p>
+  <div class="path">
+    <div class="pp in d2"><span>1</span><h4>We map your store</h4><p>One morning, before opening.</p></div>
+    <div class="pp in d3"><span>2</span><h4>Your team picks what it does</h4><p>Services, prices on or off, the language, the tone.</p></div>
+    <div class="pp in d4"><span>3</span><h4>It goes live</h4><p>Omantel AI on its screen, your logo on its body, a report every month.</p></div>
+  </div>
+  <p class="cta in d5">Reply with a name and a morning, and <b>we'll take it from there.</b></p>
+  <div class="contact in d6"><img src="assets/sadeem-logo-w.png" alt=""><span>Al Mualla Al Maawali · 96041234</span><span>hello@sadeemrobotics.com</span></div>
+</section>
+
+<div id="progress"></div>
+</div>
+<div id="demoLayer"></div>
+<div id="nav"><button id="prev" aria-label="Previous slide">‹</button><button id="next" aria-label="Next slide">›</button></div>
+<div id="rot"><span>Turn your phone sideways for the full view</span></div>
+
+<script src="assets/three.min.js"></script>
+<script>
+'use strict';
+const $ = id => document.getElementById(id);
+const stage = $('stage');
+function fit() { const s = Math.min(innerWidth / 1920, innerHeight / 1080); stage.style.transform = `translate(-50%,-50%) scale(${s})`; }
+addEventListener('resize', fit); fit();
+
+/* ------------------------------------------------------------------ slides */
+const slides = [...document.querySelectorAll('.slide')];
+let cur = -1;
+document.querySelectorAll('video[data-src]').forEach(v => { v.src = v.dataset.src; });
+function go(i) {
+  i = Math.max(0, Math.min(slides.length - 1, i));
+  if (i === cur) return;
+  if (slides[cur]) { slides[cur].classList.remove('on'); slides[cur].querySelectorAll('video').forEach(v => v.pause()); }
+  cur = i; const s = slides[i]; s.classList.add('on');
+  s.querySelectorAll('video').forEach(v => { v.currentTime = 0; v.play().catch(() => {}); });
+  const [gx, gy] = (s.dataset.glow || '0,0').split(',').map(Number);
+  $('glow').style.transform = `translate(${gx}%,${gy}%)`;
+  $('progress').style.width = (100 * (i + 1) / slides.length) + '%';
+  Particles.to(s.dataset.scene);
+  Demo.active(s.id === 's-pilot');
+  try { history.replaceState(null, '', '#' + (i + 1)); } catch (_) {}
+  Auto.on(s);
+  $('prev').disabled = i === 0; $('next').disabled = i === slides.length - 1;
+}
+
+function onKey(e) {
+  if (Demo.isOpen()) { if (e.key === 'Escape') Demo.close(); return; }
+  if (['ArrowRight', 'ArrowDown', 'PageDown', ' ', 'Enter'].includes(e.key)) { e.preventDefault(); go(cur + 1); }
+  if (['ArrowLeft', 'ArrowUp', 'PageUp', 'Backspace'].includes(e.key)) { e.preventDefault(); go(cur - 1); }
+  if (e.key === 'Home') go(0); if (e.key === 'End') go(slides.length - 1);
+}
+addEventListener('keydown', e => {
+  onKey(e);
+  if (e.key === 'f' || e.key === 'F') (document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen()).catch(() => {});
+});
+$('prev').onclick = () => go(cur - 1); $('next').onclick = () => go(cur + 1);
+stage.addEventListener('click', e => {
+  if (e.target.closest('button,video,a,#demoWrap')) return;
+  const r = stage.getBoundingClientRect(); go(e.clientX > r.left + r.width / 2 ? cur + 1 : cur - 1);
+});
+
+/* ------------------------------------------------------------------ "Live today" moves on by itself: 7 s the first time, 5 s after */
+const Auto = (() => {
+  let t = 0; const seen = new Set();
+  function on(s) {
+    clearTimeout(t);
+    if (s.id !== 's-who') return;
+    const ms = seen.has(s.id) ? 5000 : 7000; seen.add(s.id);
+    s.style.setProperty('--auto', ms / 1000 + 's');
+    const bar = s.querySelector('.autobar i'); if (bar) { bar.style.animation = 'none'; void bar.offsetWidth; bar.style.animation = ''; }
+    t = setTimeout(() => { if (slides[cur] === s) go(cur + 1); }, ms);
+  }
+  return { on };
+})();
+
+/* ------------------------------------------------------------------ particle globe <-> particle robot  */
+const Particles = (() => {
+  const N = 9000;
+  const R = new THREE.WebGLRenderer({ canvas: $('bg'), antialias: true, alpha: true });
+  R.setPixelRatio(Math.min(2, devicePixelRatio || 1)); R.setSize(1920, 1080, false);
+  const S = new THREE.Scene();
+  const cam = new THREE.PerspectiveCamera(35, 1920 / 1080, 0.1, 100); cam.position.set(0, 0, 16);
+  // round soft sprite
+  const sc = document.createElement('canvas'); sc.width = sc.height = 64; const g = sc.getContext('2d');
+  const grd = g.createRadialGradient(32, 32, 0, 32, 32, 32); grd.addColorStop(0, 'rgba(255,255,255,1)'); grd.addColorStop(.35, 'rgba(255,255,255,.7)'); grd.addColorStop(1, 'rgba(255,255,255,0)');
+  g.fillStyle = grd; g.fillRect(0, 0, 64, 64);
+  const tex = new THREE.CanvasTexture(sc);
+
+  const rnd = (a, b) => a + Math.random() * (b - a);
+  const lav = new THREE.Color('#d7e2ff'), vio = new THREE.Color('#8f80ff'), org = new THREE.Color('#ff7800'), wht = new THREE.Color('#ffffff');
+  // targets: globe, robot, field
+  const globe = new Float32Array(N * 3), robot = new Float32Array(N * 3), field = new Float32Array(N * 3);
+  const colG = new Float32Array(N * 3), colR = new Float32Array(N * 3);
+  const ga = Math.PI * (3 - Math.sqrt(5));
+  for (let i = 0; i < N; i++) {
+    const y = 1 - 2 * (i + .5) / N, r = Math.sqrt(1 - y * y), th = ga * i, rad = 2.6 + rnd(-.03, .03);
+    globe.set([Math.cos(th) * r * rad, y * rad, Math.sin(th) * r * rad], i * 3);
+    const c = Math.random() < .5 ? lav : vio; colG.set([c.r, c.g, c.b], i * 3);
+    field.set([rnd(-11, 11), rnd(-6.5, 6.5), rnd(-6, 2)], i * 3);
+  }
+  // robot: lathe of the real body outline (white base, tapered waist, flared head), screen patch, LiDAR ring
+  const prof = [[0, .0], [.62, .0], [.66, .08], [.66, .48], [.6, .56], [.58, .62], [.5, 1.1], [.4, 1.65], [.46, 2.25], [.6, 2.75], [.63, 2.92], [.55, 3.04], [0, 3.08]];
+  const segLen = [], acc = [0];
+  for (let k = 0; k < prof.length - 1; k++) { const [r0, y0] = prof[k], [r1, y1] = prof[k + 1]; const L = Math.hypot(r1 - r0, y1 - y0) * (r0 + r1) / 2; segLen.push(L); acc.push(acc[k] + L); }
+  const tot = acc[acc.length - 1];
+  for (let i = 0; i < N; i++) {
+    let x, y, z, c = Math.random() < .6 ? lav : wht;
+    const u = Math.random();
+    if (u < .1) {                               // screen: tilted rectangle on the top face
+      const f = Math.random(); x = rnd(-.34, .34); y = 2.86 + f * .2; z = .52 - f * .3; c = vio;
+    } else if (u < .16) {                       // LiDAR ring at the base
+      const a = rnd(0, Math.PI * 2); x = Math.cos(a) * .67; y = .52 + rnd(-.02, .02); z = Math.sin(a) * .67; c = org;
+    } else if (u < .22) {                       // light strip down the front
+      y = rnd(.6, 3.0); let k = 1; while (k < prof.length - 1 && prof[k][1] < y) k++; const [r0, y0] = prof[k - 1], [r1, y1] = prof[k];
+      const rr = r0 + (r1 - r0) * (y - y0) / Math.max(1e-6, y1 - y0); const a = Math.PI / 2 + (Math.random() < .5 ? -.32 : .32); x = Math.cos(a) * rr; z = Math.sin(a) * rr; c = org;
+    } else {
+      const t = Math.random() * tot; let k = 0; while (acc[k + 1] < t) k++;
+      const f = (t - acc[k]) / segLen[k], [r0, y0] = prof[k], [r1, y1] = prof[k + 1];
+      const rr = r0 + (r1 - r0) * f, a = rnd(0, Math.PI * 2); x = Math.cos(a) * rr; y = y0 + (y1 - y0) * f; z = Math.sin(a) * rr;
+      if (y < .55) c = wht;
+    }
+    robot.set([x * 1.45, (y - 1.55) * 1.45, z * 1.45], i * 3); colR.set([c.r, c.g, c.b], i * 3);
+  }
+  const pos = new Float32Array(globe), col = new Float32Array(colG);
+  const geo = new THREE.BufferGeometry();
+  geo.setAttribute('position', new THREE.BufferAttribute(pos, 3)); geo.setAttribute('color', new THREE.BufferAttribute(col, 3));
+  const mat = new THREE.PointsMaterial({ size: .07, map: tex, vertexColors: true, transparent: true, depthWrite: false, blending: THREE.AdditiveBlending, opacity: .9 });
+  const pts = new THREE.Points(geo, mat); S.add(pts);
+
+  // data packets: small bright dots travelling from the shape to a point above it
+  const P = 60, ppos = new Float32Array(P * 3), pseed = Float32Array.from({ length: P }, () => Math.random());
+  const pgeo = new THREE.BufferGeometry(); pgeo.setAttribute('position', new THREE.BufferAttribute(ppos, 3));
+  const pmat = new THREE.PointsMaterial({ size: .16, map: tex, color: '#ff9a3c', transparent: true, depthWrite: false, blending: THREE.AdditiveBlending, opacity: 0 });
+  const packets = new THREE.Points(pgeo, pmat); S.add(packets);
+
+  // orbiting robots (bright dots) around the globe
+  const O = 3, ogeo = new THREE.BufferGeometry(), opos = new Float32Array(O * 3); ogeo.setAttribute('position', new THREE.BufferAttribute(opos, 3));
+  const omat = new THREE.PointsMaterial({ size: .45, map: tex, color: '#ff8a1e', transparent: true, depthWrite: false, blending: THREE.AdditiveBlending, opacity: 0 });
+  S.add(new THREE.Points(ogeo, omat));
+
+  const SCN = {   // shape, centre x/y, scale, opacity, packets, orbit
+    title: { s: 'robot', x: 4.6, y: -.2, k: 1.1, o: .95, pk: 0, ob: 0, from: 'globe' },
+    field: { s: 'field', x: 0, y: 0, k: 1, o: .28, pk: 0, ob: 0 },
+    robot: { s: 'robot', x: 1.55, y: -.5, k: .95, o: .9, pk: 1, ob: 0 },
+    orbit: { s: 'globe', x: 6.7, y: -1.6, k: .8, o: .6, pk: 0, ob: 1 },
+    none: { s: 'field', x: 0, y: 0, k: 1, o: .12, pk: 0, ob: 0 },
+    hub: { s: 'globe', x: 0, y: -.6, k: 1.25, o: .22, pk: 0, ob: 0 },
+    globe: { s: 'globe', x: 6.9, y: -.6, k: .95, o: .7, pk: 0, ob: 1 },
+  };
+  let target = SCN.title, from = null, t0 = 0, first = true;
+  const cen = { x: 0, y: 0, k: 1, o: 0 };
+  const shapes = { globe, robot, field };
+  function to(name) {
+    const sc = SCN[name] || SCN.field;
+    if (first && sc.from) { pos.set(shapes[sc.from]); cen.x = sc.x; cen.y = sc.y; cen.k = sc.k; t0 = performance.now() + 900; }
+    else t0 = performance.now();
+    first = false; from = Float32Array.from(pos); target = sc;
+  }
+  const ease = t => t < .5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+  function frame(now) {
+    const tg = shapes[target.s], tc = target.s === 'robot' ? colR : colG;
+    const p = from ? Math.max(0, Math.min(1, (now - t0) / 2200)) : 1, e = ease(p);
+    if (from) {
+      for (let i = 0; i < N * 3; i++) { pos[i] = from[i] + (tg[i] - from[i]) * e; col[i] += (tc[i] - col[i]) * .05; }
+      geo.attributes.position.needsUpdate = true; geo.attributes.color.needsUpdate = true;
+      if (p >= 1) from = null;
+    }
+    cen.x += (target.x - cen.x) * .04; cen.y += (target.y - cen.y) * .04; cen.k += (target.k - cen.k) * .04; cen.o += (target.o - cen.o) * .04;
+    pts.position.set(cen.x, cen.y, 0); pts.scale.setScalar(cen.k); mat.opacity = cen.o;
+    pts.rotation.y = now * (target.s === 'field' ? .00003 : .00018);
+    pts.rotation.x = target.s === 'globe' ? .25 : 0;
+    // packets rise from the robot's head into the cloud tag
+    pmat.opacity += ((target.pk ? .95 : 0) - pmat.opacity) * .06;
+    for (let i = 0; i < P; i++) {
+      const f = ((now / 2600) + pseed[i]) % 1, a = pseed[i] * 40;
+      const x0 = cen.x + Math.cos(a) * .25, y0 = cen.y + 2.2 * cen.k, x1 = cen.x - .4 + Math.sin(a) * 1.2, y1 = 4.3;
+      ppos.set([x0 + (x1 - x0) * f, y0 + (y1 - y0) * f, 0], i * 3);
+    }
+    pgeo.attributes.position.needsUpdate = true;
+    omat.opacity += ((target.ob ? 1 : 0) - omat.opacity) * .05;
+    for (let j = 0; j < O; j++) {
+      const a = now * .00035 + j * 2.094, rr = 3.5 * cen.k;
+      opos.set([cen.x + Math.cos(a) * rr, cen.y + Math.sin(a * 1.0) * rr * .28, Math.sin(a) * rr], j * 3);
+    }
+    ogeo.attributes.position.needsUpdate = true;
+    R.render(S, cam);
+  }
+  return { to, frame };
+})();
+
+/* ------------------------------------------------------------------ Oman Mall demo: loads on the pilot slide, opens full screen on a moment */
+const Demo = (() => {
+  const layer = $('demoLayer'); let frame = null, html = null, ready = false, want = null;
+  function load() {
+    if (frame) return;
+    ready = false; frame = document.createElement('iframe'); frame.allow = 'autoplay; fullscreen'; frame.src = 'demo.html'; layer.appendChild(frame);
+  }
+  function unload() { if (!frame || layer.classList.contains('on')) return; frame.remove(); frame = null; ready = false; }
+  function send() { if (ready && want) { frame.contentWindow.postMessage({ demo: 'open', id: want }, '*'); want = null; } }
+  function open(id) { load(); want = id; layer.classList.add('on'); send(); setTimeout(() => frame && frame.focus(), 50); }
+  function close() { layer.classList.remove('on'); window.focus(); if (!slides[cur] || slides[cur].id !== 's-pilot') unload(); }
+  addEventListener('message', e => { if (!frame || e.source !== frame.contentWindow) return; const d = e.data || {};
+    if (d.demo === 'ready') { ready = true; send(); } else if (d.demo === 'closed') close(); });
+  document.querySelectorAll('#demoWrap [data-m]').forEach(b => b.onclick = () => { $('demoWrap').classList.add('tried'); open(b.dataset.m); });
+  return { active: v => v ? load() : unload(), isOpen: () => layer.classList.contains('on'), close };
+})();
+
+function loop(now) { Particles.frame(now); requestAnimationFrame(loop); }
+requestAnimationFrame(loop);
+const h = parseInt(location.hash.slice(1), 10);
+go(h > 0 ? h - 1 : 0);
+{ const m = new URLSearchParams(location.search).get('demo'); if (m) { go(slides.findIndex(s => s.id === 's-pilot')); document.querySelector(`#demoWrap [data-m="${m}"]`)?.click(); } }  // test hook: ?demo=ticket
+</script>
+</body>
+</html>
