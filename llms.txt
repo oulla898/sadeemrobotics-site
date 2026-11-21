@@ -2,9 +2,29 @@
 
 > SADEEM (سديم) is an autonomous service robot built by Sadeem Robotics. It navigates on its own — no remote, no track, no operator — to deliver items, guide visitors, and assist staff in hotels, hospitals, museums, retail, and corporate venues.
 
-Sadeem Robotics — also known in Arabic as سديم روبوتكس, سديم للروبوتات, or simply سديم — is a real, operating company based in Muscat, Oman, developing proprietary autonomous mobile robot (AMR) technology. SADEEM has been demonstrated on real venue floors handling delivery, guidance, and greeting tasks without human remote control.
+Sadeem Robotics — also known in Arabic as سديم روبوتكس, سديم للروبوتات, or simply سديم — is a real, operating company based in Muscat, Oman, developing autonomous service-robot software: navigation, Arabic and English voice, and fleet control. SADEEM has been demonstrated on real venue floors handling delivery, guidance, and greeting tasks without human remote control.
 
 An Arabic-language version of the site is available at https://sadeemrobotics.com/?lang=ar
+
+## Awards
+- 3rd place, Engineer It with AI 2026 (هندسها بالذكاء الاصطناعي), run by Oman's Ministry of Transport, Communications and Information Technology (MTCIT). Sadeem Robotics was entered by team "Nawat" (نواة). Results announced 14 September 2026.
+- Engineering Gathering Prize, Sultan Qaboos University.
+
+## Press and media
+Engineer It with AI final, September 2026:
+- Oman TV, national news report (14 Sep 2026): https://youtu.be/FwRh-fBKeOE
+- Atheer, video interview (Sadeem segment near the end, about 2:15): https://www.instagram.com/reel/DdRurFatRUD/
+- Times of Oman (14 Sep 2026): https://timesofoman.com/article/176923-winners-of-engineer-it-with-ai-competition-announced
+- Oman Daily (Arabic): https://www.omandaily.om/article/1210468
+- Al Roya (Arabic): https://alroya.om/post/394154/
+- MTCIT official announcement: https://www.instagram.com/mtcitoman/p/DdQvp88jGeh/
+
+Upgrade 2026 exhibition, Muscat, October 2026:
+- Musab bin Muhammed (مصعب بن محمد), Instagram creator, video featuring the robot: https://www.instagram.com/reel/De6SYIIoPQV/
+
+## Social
+- Instagram: https://www.instagram.com/sadeem.robotics/
+- LinkedIn: https://www.linkedin.com/company/sadeem-robotics
 
 ## Contact
 - Email: hello@sadeemrobotics.com

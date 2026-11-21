@@ -43,7 +43,76 @@
     "addressLocality": "Muscat",
     "addressCountry": "OM"
   },
-  "sameAs": []
+  "sameAs": ["https://www.instagram.com/sadeem.robotics/", "https://www.linkedin.com/company/sadeem-robotics"],
+  "award": ["3rd place, Engineer It with AI 2026, Ministry of Transport, Communications and Information Technology (Oman)", "Engineering Gathering Prize, Sultan Qaboos University"],
+  "subjectOf": [
+    {
+      "@type": "VideoObject",
+      "name": "Oman TV news report on the Engineer It with AI winners",
+      "url": "https://youtu.be/FwRh-fBKeOE",
+      "publisher": {
+        "@type": "Organization",
+        "name": "Oman TV"
+      },
+      "datePublished": "2026-09-14"
+    },
+    {
+      "@type": "VideoObject",
+      "name": "Atheer interview at the Engineer It with AI final",
+      "url": "https://www.instagram.com/reel/DdRurFatRUD/",
+      "publisher": {
+        "@type": "Organization",
+        "name": "Atheer"
+      }
+    },
+    {
+      "@type": "NewsArticle",
+      "name": "Winners of Engineer It with AI competition announced",
+      "url": "https://timesofoman.com/article/176923-winners-of-engineer-it-with-ai-competition-announced",
+      "publisher": {
+        "@type": "Organization",
+        "name": "Times of Oman"
+      },
+      "datePublished": "2026-09-14"
+    },
+    {
+      "@type": "NewsArticle",
+      "name": "هندسها بالذكاء الاصطناعي: إعلان الفائزين",
+      "url": "https://www.omandaily.om/article/1210468",
+      "publisher": {
+        "@type": "Organization",
+        "name": "Oman Daily"
+      }
+    },
+    {
+      "@type": "NewsArticle",
+      "name": "الاحتفاء بالفرق الفائزة في مسابقة هندسها بالذكاء الاصطناعي",
+      "url": "https://alroya.om/post/394154/",
+      "publisher": {
+        "@type": "Organization",
+        "name": "Al Roya"
+      }
+    },
+    {
+      "@type": "SocialMediaPosting",
+      "name": "MTCIT announces the Engineer It with AI winners",
+      "url": "https://www.instagram.com/mtcitoman/p/DdQvp88jGeh/",
+      "publisher": {
+        "@type": "Organization",
+        "name": "Ministry of Transport, Communications and Information Technology, Oman"
+      },
+      "datePublished": "2026-09-14"
+    },
+    {
+      "@type": "VideoObject",
+      "name": "Musab bin Muhammed at the Upgrade 2026 exhibition",
+      "url": "https://www.instagram.com/reel/De6SYIIoPQV/",
+      "publisher": {
+        "@type": "Organization",
+        "name": "Musab bin Muhammed"
+      }
+    }
+  ]
 }
 </script>
 <script type="application/ld+json">
@@ -62,6 +131,7 @@
 }
 </script>
 
+<link rel="alternate" type="text/markdown" title="LLM guide" href="/llms.txt" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;0,6..72,600;0,6..72,700;0,6..72,800;1,6..72,400&family=Geist:wght@300;400;500;600;700&family=Geist+Mono:wght@400;500&family=Noto+Naskh+Arabic:wght@400;500;600;700&family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet" />
@@ -941,6 +1011,22 @@
     color: var(--ink-2);
   }
 
+  .press-strip {
+    margin-top: 44px;
+    display: flex; flex-wrap: wrap; justify-content: center; align-items: baseline;
+    gap: 10px 28px;
+    font-family: 'Geist Mono', monospace;
+    font-size: 11px; text-transform: uppercase; letter-spacing: 0.16em;
+    color: var(--ink-2); opacity: 0.75;
+  }
+  .press-strip .press-lbl { opacity: 0.7; }
+  .press-strip a { color: inherit; text-decoration: none; border-bottom: 1px solid transparent; transition: border-color .2s, color .2s; }
+  .press-strip a:hover { color: var(--ink); border-bottom-color: var(--rule); }
+  html[lang="ar"] .press-strip { text-transform: none; letter-spacing: 0; font-family: 'Noto Naskh Arabic', 'Geist Mono', monospace; font-size: 13px; }
+  .foot-social { display: flex; gap: 14px; margin-top: 18px; }
+  .foot-social a { color: var(--ink-2); opacity: 0.8; transition: opacity .2s, color .2s; display: inline-flex; }
+  .foot-social a:hover { opacity: 1; color: var(--ink); }
+
   /* ===== CTA ===== */
   .cta-section {
     background: var(--ink);
@@ -1487,6 +1573,7 @@
     SADEEM Model 01 won the Engineering Gathering Prize at Sultan Qaboos University — and it is measured, not promised: <em>1.55 seconds from voice command to action.</em>
   </blockquote>
   <div class="quote-cite">— 16th Engineering Gathering · Sultan Qaboos University</div>
+  <div class="press-strip"><span class="press-lbl">As seen on</span><a href="https://youtu.be/FwRh-fBKeOE" target="_blank" rel="noopener">Oman TV</a><a href="https://www.instagram.com/reel/DdRurFatRUD/" target="_blank" rel="noopener">Atheer</a><a href="https://timesofoman.com/article/176923-winners-of-engineer-it-with-ai-competition-announced" target="_blank" rel="noopener">Times of Oman</a><a href="https://www.instagram.com/reel/De6SYIIoPQV/" target="_blank" rel="noopener">Musab bin Muhammed</a></div>
 </section>
 
 <!-- ===== SPECS ===== -->
@@ -1599,6 +1686,7 @@
     <div class="foot-brand">
       <img src="assets/logo-full.png" alt="Sadeem Robotics" />
       <p>SADEEM — autonomous service robotics, designed and built in Oman. Engineered for daily use, supported locally.</p>
+      <div class="foot-social"><a href="https://www.instagram.com/sadeem.robotics/" target="_blank" rel="noopener" aria-label="Sadeem Robotics on Instagram"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg></a><a href="https://www.linkedin.com/company/sadeem-robotics" target="_blank" rel="noopener" aria-label="Sadeem Robotics on LinkedIn"><svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5zM3 9.75h4v11H3zM9.5 9.75h3.8v1.6h.06c.53-1 1.83-2.06 3.77-2.06 4.03 0 4.77 2.6 4.77 6v5.46h-4v-4.84c0-1.15-.02-2.64-1.6-2.64-1.62 0-1.86 1.26-1.86 2.56v4.92h-4z"/></svg></a></div>
     </div>
     <div class="foot-col">
       <h5>Product</h5>
@@ -1849,6 +1937,11 @@
     "Restaurants": "مطاعم",
     "Museums & retail": "متاحف ومتاجر",
     "Press kit": "ملف صحفي",
+    "As seen on": "ظهرنا في",
+    "Oman TV": "تلفزيون عُمان",
+    "Atheer": "أثير",
+    "Times of Oman": "تايمز أوف عُمان",
+    "Musab bin Muhammed": "مصعب بن محمد",
     "Engineering blog": "مدونة الهندسة",
     "Careers — Muscat": "وظائف — مسقط",
     "© 2026 Sadeem Robotics · Muscat, Oman": "© ٢٠٢٦ سديم روبوتيكس · مسقط، عُمان",
@@ -1875,7 +1968,7 @@
     '.dash-main-head .title', '.dash-pill',
     '.dash-task .tname', '.dash-task .tstat',
     '.tl-step h4', '.tl-step p',
-    'blockquote', 'blockquote em', '.quote-cite',
+    'blockquote', 'blockquote em', '.quote-cite', '.press-strip span', '.press-strip a',
     '.specs-row .key',
     '.cta-text h2', '.cta-text h2 em', '.cta-text p',
     '.cta-btn', '.cta-form label', '.cta-form select option',
