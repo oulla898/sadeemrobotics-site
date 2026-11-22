@@ -46,6 +46,7 @@
   "sameAs": ["https://www.instagram.com/sadeem.robotics/", "https://www.linkedin.com/company/sadeem-robotics"],
   "award": ["3rd place, Engineer It with AI 2026, Ministry of Transport, Communications and Information Technology (Oman)", "Engineering Gathering Prize, Sultan Qaboos University"],
   "subjectOf": [
+    {"@type": "SocialMediaPosting", "name": "Engineering Gathering Prize, Sultan Qaboos University", "url": "https://www.instagram.com/p/DXW_4YojX48/"},
     {
       "@type": "VideoObject",
       "name": "Oman TV news report on the Engineer It with AI winners",
@@ -1011,6 +1012,22 @@
     color: var(--ink-2);
   }
 
+  .recog { text-align: left; max-width: 1240px; padding-bottom: 60px; }
+  .quote-small { padding-top: 60px; max-width: 900px; }
+  .quote-small .quote-mark { font-size: 90px; }
+  .quote-small blockquote { font-size: clamp(24px, 2.8vw, 38px); }
+  .recog-grid { display: grid; grid-template-columns: 0.85fr 1.15fr; gap: 72px; align-items: center; }
+  .recog-photo { margin: 0; }
+  .recog-photo img { width: 100%; aspect-ratio: 4/5; object-fit: cover; border-radius: 24px; display: block; }
+  .recog-photo figcaption { margin-top: 10px; font-family: 'Geist Mono', monospace; font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-2); opacity: 0.6; }
+  .recog-text h2 { font-family: 'Newsreader', serif; font-weight: 400; font-size: clamp(32px, 3.6vw, 52px); line-height: 1.1; letter-spacing: -0.02em; margin: 18px 0 20px; text-wrap: balance; }
+  .recog-text h2 em { font-style: italic; color: var(--rust); }
+  .recog-sub { font-size: 15px; line-height: 1.55; color: var(--ink-2); max-width: 460px; }
+  .recog .press-strip { justify-content: flex-start; }
+  .recog-second { margin-top: 28px; padding-top: 22px; border-top: 1px solid var(--rule); }
+  .recog-second-title { font-family: 'Newsreader', serif; font-size: 22px; line-height: 1.2; color: var(--ink); }
+  .recog-second-sub { margin-top: 6px; font-size: 13px; color: var(--ink-2); }
+  @media (max-width: 1024px) { .recog-grid { grid-template-columns: 1fr; gap: 40px; } .recog-photo { max-width: 460px; } }
   .press-strip {
     margin-top: 44px;
     display: flex; flex-wrap: wrap; justify-content: center; align-items: baseline;
@@ -1567,13 +1584,27 @@
 </section>
 
 <!-- ===== QUOTE ===== -->
-<section class="quote-section">
+<section class="quote-section recog">
+  <div class="recog-grid">
+    <figure class="recog-photo">
+      <img src="assets/mtcit-stand-visit.jpg" alt="Officials from Oman's Ministry of Transport, Communications and Information Technology at the Sadeem Robotics stand, Engineer It with AI 2026" loading="lazy" />
+      <figcaption>Photo: MTCIT</figcaption>
+    </figure>
+    <div class="recog-text">
+      <div class="eyebrow">Recognition</div>
+      <h2>Third in Oman's national <em>AI engineering</em> competition.</h2>
+      <p class="recog-sub">Engineer It with AI 2026 · Ministry of Transport, Communications and Information Technology</p>
+      <div class="press-strip"><span class="press-lbl">As seen on</span><a href="https://youtu.be/FwRh-fBKeOE" target="_blank" rel="noopener">Oman TV</a><a href="https://www.instagram.com/reel/DdRurFatRUD/" target="_blank" rel="noopener">Atheer</a><a href="https://timesofoman.com/article/176923-winners-of-engineer-it-with-ai-competition-announced" target="_blank" rel="noopener">Times of Oman</a><a href="https://www.instagram.com/reel/De6SYIIoPQV/" target="_blank" rel="noopener">Musab bin Muhammed</a></div>
+    </div>
+  </div>
+</section>
+
+<section class="quote-section quote-small">
   <div class="quote-mark">"</div>
   <blockquote>
     SADEEM Model 01 won the Engineering Gathering Prize at Sultan Qaboos University — and it is measured, not promised: <em>1.55 seconds from voice command to action.</em>
   </blockquote>
   <div class="quote-cite">— 16th Engineering Gathering · Sultan Qaboos University</div>
-  <div class="press-strip"><span class="press-lbl">As seen on</span><a href="https://youtu.be/FwRh-fBKeOE" target="_blank" rel="noopener">Oman TV</a><a href="https://www.instagram.com/reel/DdRurFatRUD/" target="_blank" rel="noopener">Atheer</a><a href="https://timesofoman.com/article/176923-winners-of-engineer-it-with-ai-competition-announced" target="_blank" rel="noopener">Times of Oman</a><a href="https://www.instagram.com/reel/De6SYIIoPQV/" target="_blank" rel="noopener">Musab bin Muhammed</a></div>
 </section>
 
 <!-- ===== SPECS ===== -->
@@ -1946,7 +1977,17 @@
     "Careers — Muscat": "وظائف — مسقط",
     "© 2026 Sadeem Robotics · Muscat, Oman": "© ٢٠٢٦ سديم روبوتيكس · مسقط، عُمان",
     "Recipient · Sultan Qaboos University Engineering Gathering Prize · 3rd place, MTCIT Engineer It with AI 2026":
-      "الفائز · جائزة ملتقى الهندسة بجامعة السلطان قابوس · المركز الثالث، مسابقة هندسها بالذكاء الاصطناعي ٢٠٢٦"
+      "الفائز · جائزة ملتقى الهندسة بجامعة السلطان قابوس · المركز الثالث، مسابقة هندسها بالذكاء الاصطناعي ٢٠٢٦",
+    "Engineering Gathering Prize": "جائزة الملتقى الهندسي",
+    "16th Engineering Gathering · Sultan Qaboos University": "الملتقى الهندسي السادس عشر · جامعة السلطان قابوس",
+    "Recognition": "تقدير",
+    "Third in Oman's national": "المركز الثالث في مسابقة عُمان الوطنية",
+    "AI engineering": "لهندسة الذكاء الاصطناعي.",
+    "competition.": "​",
+    "Engineer It with AI 2026 · Ministry of Transport, Communications and Information Technology": "هندسها بالذكاء الاصطناعي ٢٠٢٦ · وزارة النقل والاتصالات وتقنية المعلومات",
+    "Photo: MTCIT": "الصورة: وزارة النقل والاتصالات وتقنية المعلومات",
+    "Response": "الاستجابة",
+    "s · voice to action": "ث · من الأمر الصوتي إلى التنفيذ",
   };
 
   // Snapshot all original English text on load so we can swap back & forth
@@ -1968,8 +2009,8 @@
     '.dash-main-head .title', '.dash-pill',
     '.dash-task .tname', '.dash-task .tstat',
     '.tl-step h4', '.tl-step p',
-    'blockquote', 'blockquote em', '.quote-cite', '.press-strip span', '.press-strip a',
-    '.specs-row .key',
+    'blockquote', 'blockquote em', '.quote-cite', '.press-strip span', '.press-strip a', '.recog .eyebrow', '.recog-text h2', '.recog-text h2 em', '.recog-sub', '.recog-second-title', '.recog-second-sub', '.recog-photo figcaption', '.foot-base a',
+    '.specs-row .key', '.specs-row .unit',
     '.cta-text h2', '.cta-text h2 em', '.cta-text p',
     '.cta-btn', '.cta-form label', '.cta-form select option',
     '.cta-contact div',
