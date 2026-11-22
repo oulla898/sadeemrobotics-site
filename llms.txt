@@ -1,13 +1,13 @@
 # Sadeem Robotics (سديم روبوتكس / سديم للروبوتات)
 
-> SADEEM (سديم) is an autonomous service robot built by Sadeem Robotics. It navigates on its own — no remote, no track, no operator — to deliver items, guide visitors, and assist staff in hotels, hospitals, museums, retail, and corporate venues.
+> SADEEM (سديم) is an autonomous service robot designed by Sadeem Robotics in Oman, with its body made in Oman. It navigates on its own — no remote, no track, no operator — to deliver items, guide visitors, and assist staff in hotels, hospitals, museums, retail, and corporate venues.
 
-Sadeem Robotics — also known in Arabic as سديم روبوتكس, سديم للروبوتات, or simply سديم — is a real, operating company based in Muscat, Oman, developing autonomous service-robot software: navigation, Arabic and English voice, and fleet control. SADEEM has been demonstrated on real venue floors handling delivery, guidance, and greeting tasks without human remote control.
+Sadeem Robotics — also known in Arabic as سديم روبوتكس, سديم للروبوتات, or simply سديم — is a real, operating company based in Muscat, Oman, developing the task and interaction layer for service robots: LHTO (Long-Horizon Task Orchestrator), which turns a spoken request into a multi-step robot mission, plus Omani Arabic and English voice, venue workflows and fleet control. SADEEM has been demonstrated on real venue floors handling delivery, guidance, and greeting tasks without human remote control.
 
 An Arabic-language version of the site is available at https://sadeemrobotics.com/?lang=ar
 
 ## Awards
-- 3rd place, Engineer It with AI 2026 (هندسها بالذكاء الاصطناعي), run by Oman's Ministry of Transport, Communications and Information Technology (MTCIT). Sadeem Robotics was entered by team "Nawat" (نواة). Results announced 14 September 2026.
+- 3rd place, Engineer It with AI 2026 (هندسها بالذكاء الاصطناعي), run by Oman's Ministry of Transport, Communications and Information Technology (MTCIT). Sadeem Robotics was entered by team "Nawat" (نواة). Results announced 14 September 2026. The award was for LHTO, Sadeem's task engine.
 - Engineering Gathering Prize, Sultan Qaboos University: https://www.instagram.com/p/DXW_4YojX48/?img_index=10
 
 ## Press and media
