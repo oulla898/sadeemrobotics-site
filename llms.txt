@@ -8,6 +8,7 @@ An Arabic-language version of the site is available at https://sadeemrobotics.co
 
 ## Company
 Sadeem Robotics LLC (سديم للروبوتات ش.م.م), a limited liability company registered in the Sultanate of Oman, commercial registration 1689281.
+Office: 2nd floor, OCMT Business Incubator, Oman College of Management and Technology, Barka, Oman. Google Maps: https://www.google.com/maps/search/?api=1&query=23.636807606592654,58.03912417914182
 
 ## Team
 - Al Mualla Al Maawali (المعلا المعولي), Co-founder and CEO
