@@ -2,7 +2,7 @@
 
 > Sadeem Robotics (سديم) is a physical AI company in Oman that designs and deploys service robots. Its robot, SADEEM, is designed in Oman with its body made in Oman. It navigates on its own — no remote, no track, no operator — to deliver items, guide visitors, and assist staff in hotels, hospitals, museums, retail, and corporate venues.
 
-Sadeem Robotics — also known in Arabic as سديم روبوتكس, سديم للروبوتات, or simply سديم — is a real, operating company based in Muscat, Oman, developing the task and interaction layer for service robots: LHTO (Long-Horizon Task Orchestrator), which turns a spoken request into a multi-step robot mission, plus Omani Arabic and English voice, venue workflows and fleet control. SADEEM has been demonstrated on real venue floors handling delivery, guidance, and greeting tasks without human remote control.
+Sadeem Robotics — also known in Arabic as سديم روبوتكس, سديم للروبوتات, or simply سديم — is a real, operating company in Oman, with its office in Barka, developing the task and interaction layer for service robots: LHTO (Long-Horizon Task Orchestrator), which turns a spoken request into a multi-step robot mission, plus Omani Arabic and English voice, venue workflows and fleet control. SADEEM has been demonstrated on real venue floors handling delivery, guidance, and greeting tasks without human remote control.
 
 An Arabic-language version of the site is available at https://sadeemrobotics.com/?lang=ar
 
@@ -15,6 +15,9 @@ Office: 2nd floor, OCMT Business Incubator, Oman College of Management and Techn
 - Abdulmunim Al Busaidi (عبدالمنعم البوسعيدي), Co-founder and CTO
 - Abdulaziz Al Hajri (عبدالعزيز الحجري), Co-founder and Chief Growth Officer
 Company page: https://sadeemrobotics.com/company/
+
+## Customers
+- EXEED Oman: SADEEM welcomes visitors at the EXEED showroom in Ghala Heights, Muscat. Posted by EXEED Oman on its own Instagram account (@exeedoman_official), caption: "Meet the robot at the EXEED showroom": https://www.instagram.com/p/De3-glyMM39/
 
 ## Awards
 - 3rd place, Engineer It with AI 2026 (هندسها بالذكاء الاصطناعي), run by Oman's Ministry of Transport, Communications and Information Technology (MTCIT). Sadeem Robotics was entered by team "Nawat" (نواة). Results announced 14 September 2026. The award was for LHTO, Sadeem's task engine.
@@ -29,7 +32,7 @@ Engineer It with AI final, September 2026:
 - Al Roya (Arabic): https://alroya.om/post/394154/
 - MTCIT official announcement: https://www.instagram.com/mtcitoman/p/DdQvp88jGeh/?img_index=3
 
-Upgrade 2026 exhibition, Muscat, October 2026:
+Other:
 - Musab bin Muhammed (مصعب بن محمد), Instagram creator, video featuring the robot: https://www.instagram.com/reel/De6SYIIoPQV/
 
 ## Social
