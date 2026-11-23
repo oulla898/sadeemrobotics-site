@@ -577,6 +577,9 @@
     border-radius: 24px;
     overflow: hidden;
   }
+  .showcase-note { margin-top: 14px; font-size: 13px; color: var(--ink-2); opacity: .75; }
+  .showcase-note a { color: inherit; text-decoration: none; border-bottom: 1px solid var(--rule); }
+  .showcase-note a:hover { border-bottom-color: currentColor; }
   .showcase-main video {
     width: 100%; height: 100%; object-fit: cover;
     display: block;
@@ -1352,12 +1355,15 @@
   </div>
 
   <div class="showcase">
+    <div>
     <div class="showcase-main">
       <video src="assets/showroom-floor.mp4" poster="assets/showroom-floor.jpg" autoplay muted loop playsinline preload="metadata" aria-label="SADEEM moving across a car showroom floor in Muscat"></video>
       <div class="showcase-overlay">
         <span class="showcase-tag">Field footage</span>
         <div class="showcase-caption">On a showroom floor<br/><em style="font-style:italic;color:var(--wood-light)">in Muscat.</em></div>
       </div>
+    </div>
+    <p class="showcase-note"><a href="https://www.instagram.com/p/De3-glyMM39/" target="_blank" rel="noopener">See it on EXEED Oman's Instagram</a></p>
     </div>
     <div class="showcase-side">
       <div class="show-card">
@@ -1834,6 +1840,7 @@
       "لقطات حقيقية من مواقع العمل الفعلية. سديم يتنقل، يُرحّب، ويوصّل — من دون جهاز تحكم، أو مسار، أو شخص يقوده.",
     "Field footage": "لقطات ميدانية",
     "On a showroom floor": "على أرض صالة عرض",
+    "See it on EXEED Oman's Instagram": "شاهده على إنستغرام EXEED عُمان",
     "in Muscat.": "في مسقط.",
     "Display": "الشاشة",
     "Touch & talk": "لمس ومحادثة",
@@ -2013,7 +2020,7 @@
     '.marquee-item',
     '.section-head h2', '.section-head h2 em', '.section-head p',
     '.cap-num', '.cap h3', '.cap p',
-    '.showcase-tag', '.showcase-caption', '.showcase-caption em',
+    '.showcase-tag', '.showcase-note a', '.showcase-caption', '.showcase-caption em',
     '.show-card-label .lbl', '.show-card-label .val',
     '.anatomy-head h2', '.anatomy-head h2 em', '.anatomy-head .eyebrow',
     '.anatomy-item h4', '.anatomy-item p',
