@@ -33,12 +33,6 @@ html,body{margin:0;height:100%;background:var(--bg);color:var(--ink);font:14px/1
 .btn{font:inherit;color:var(--ink);background:transparent;border:1px solid var(--line);border-radius:999px;padding:6px 14px;cursor:pointer}
 .btn:hover{border-color:var(--mute)}
 .btn:disabled{opacity:.35;cursor:default}
-.privacy{position:fixed;inset:auto 0 0 0;margin:auto;max-width:560px;background:#1d150e;border:1px solid var(--line);border-radius:14px 14px 0 0;
-  padding:16px 18px 18px;font-size:13px;color:var(--mute);transform:translateY(105%);transition:transform .25s ease;z-index:5}
-.privacy.on{transform:none}
-.privacy b{color:var(--ink);font-weight:600}
-.privacy .btn{margin-top:10px}
-.linkbtn{background:none;border:0;color:var(--mute);font:inherit;text-decoration:underline;text-underline-offset:3px;cursor:pointer;padding:0}
 .msg{position:fixed;inset:0;display:none;place-items:center;text-align:center;padding:24px}
 .msg.on{display:grid}
 .msg h1{font-weight:500;font-size:20px;margin:0 0 6px}
@@ -62,17 +56,9 @@ html,body{margin:0;height:100%;background:var(--bg);color:var(--ink);font:14px/1
     <button class="btn" id="prev" aria-label="Previous">&larr;</button>
     <div class="dots" id="dots"></div>
     <button class="btn" id="next" aria-label="Next">&rarr;</button>
-    <button class="linkbtn" id="privBtn">Privacy</button>
   </div>
 </div>
 
-<div class="privacy" id="priv" role="dialog" aria-label="Privacy note">
-  <b>This link was made for you.</b> So we know it reached you, the page records when it's opened and how long
-  each slide is on screen (only while this tab is visible), plus a rough device type (phone, tablet or computer)
-  and browser. No IP address, location, keystrokes, mouse movement or cross-site tracking. Questions:
-  <a href="mailto:hello@sadeemrobotics.com" style="color:inherit">hello@sadeemrobotics.com</a>.
-  <br><button class="btn" id="privOk">Got it</button>
-</div>
 
 <div class="msg" id="msg"><div>
   <h1 id="msgH">Opening the deck…</h1>
@@ -198,7 +184,6 @@ html,body{margin:0;height:100%;background:var(--bg);color:var(--ink);font:14px/1
     show(cur); imgs[cur - 1].classList.add("on");
     accrue();
     setInterval(() => flush(false), HEARTBEAT);
-    try { if (!localStorage.getItem("sd_priv")) $("priv").classList.add("on"); } catch (e) { $("priv").classList.add("on"); }
   }
 
   $("prev").onclick = $("tapPrev").onclick = () => show(cur - 1);
@@ -212,8 +197,6 @@ html,body{margin:0;height:100%;background:var(--bg);color:var(--ink);font:14px/1
   addEventListener("touchstart", e => { tx = e.touches[0].clientX; }, { passive: true });
   addEventListener("touchend", e => { if (tx === null) return; const dx = e.changedTouches[0].clientX - tx; tx = null;
     if (Math.abs(dx) > 50) show(cur + (dx < 0 ? 1 : -1)); }, { passive: true });
-  $("privBtn").onclick = () => $("priv").classList.toggle("on");
-  $("privOk").onclick = () => { $("priv").classList.remove("on"); try { localStorage.setItem("sd_priv", "1"); } catch (e) {} };
 
   start();
 })();
