@@ -1,0 +1,222 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow, noarchive, nosnippet">
+<meta name="referrer" content="strict-origin">
+<title>Sadeem Robotics</title>
+<link rel="icon" href="/favicon.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#120d08;--ink:#f3e9da;--mute:#a8957f;--line:#33271b;--hot:#c4623a}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;background:var(--bg);color:var(--ink);font:14px/1.5 "Geist",system-ui,sans-serif;overflow:hidden}
+.app{position:fixed;inset:0;display:grid;grid-template-rows:1fr auto}
+.stage{position:relative;display:grid;place-items:center;padding:min(3vh,28px) min(3vw,28px) 8px;min-height:0}
+.frame{position:relative;max-width:100%;max-height:100%;aspect-ratio:16/9;width:min(100%,calc((100vh - 96px) * 16 / 9));
+  border-radius:10px;overflow:hidden;background:#1d150e;box-shadow:0 20px 60px rgba(0,0,0,.45)}
+.frame img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;opacity:0;transition:opacity .25s ease}
+.frame img.on{opacity:1}
+.hot{position:absolute;display:none;cursor:pointer}
+.hot.on{display:block}
+.nav{position:absolute;top:0;bottom:0;width:22%;border:0;background:transparent;cursor:pointer;z-index:2}
+.nav.prev{left:0}.nav.next{right:0}
+.nav:focus-visible{outline:2px solid var(--hot);outline-offset:-4px}
+.bar{display:flex;align-items:center;gap:14px;padding:10px min(3vw,28px) max(12px,env(safe-area-inset-bottom));color:var(--mute);font-size:12.5px}
+.bar .count{font-variant-numeric:tabular-nums;color:var(--ink);min-width:52px}
+.dots{display:flex;gap:6px;flex:1;justify-content:center;flex-wrap:wrap}
+.dots button{width:22px;height:4px;border-radius:2px;border:0;padding:0;background:var(--line);cursor:pointer}
+.dots button.on{background:var(--hot)}
+.btn{font:inherit;color:var(--ink);background:transparent;border:1px solid var(--line);border-radius:999px;padding:6px 14px;cursor:pointer}
+.btn:hover{border-color:var(--mute)}
+.btn:disabled{opacity:.35;cursor:default}
+.privacy{position:fixed;inset:auto 0 0 0;margin:auto;max-width:560px;background:#1d150e;border:1px solid var(--line);border-radius:14px 14px 0 0;
+  padding:16px 18px 18px;font-size:13px;color:var(--mute);transform:translateY(105%);transition:transform .25s ease;z-index:5}
+.privacy.on{transform:none}
+.privacy b{color:var(--ink);font-weight:600}
+.privacy .btn{margin-top:10px}
+.linkbtn{background:none;border:0;color:var(--mute);font:inherit;text-decoration:underline;text-underline-offset:3px;cursor:pointer;padding:0}
+.msg{position:fixed;inset:0;display:none;place-items:center;text-align:center;padding:24px}
+.msg.on{display:grid}
+.msg h1{font-weight:500;font-size:20px;margin:0 0 6px}
+.msg p{color:var(--mute);margin:0}
+.msg a{color:var(--ink)}
+@media (max-width:640px){.dots{display:none}.bar{justify-content:space-between}.nav{width:30%}}
+</style>
+</head>
+<body>
+<div class="app" id="app" hidden>
+  <div class="stage">
+    <div class="frame" id="frame">
+      <button class="nav prev" id="tapPrev" aria-label="Previous slide"></button>
+      <button class="nav next" id="tapNext" aria-label="Next slide"></button>
+      <a class="hot" id="hotExeed" data-slide="7" href="https://www.instagram.com/p/De3-glyMM39/" target="_blank" rel="noopener"
+         style="left:3.8%;top:22.1%;width:15.7%;height:51.2%;z-index:3" aria-label="Watch EXEED Oman's video"></a>
+    </div>
+  </div>
+  <div class="bar">
+    <span class="count" id="count">1 / 1</span>
+    <button class="btn" id="prev" aria-label="Previous">&larr;</button>
+    <div class="dots" id="dots"></div>
+    <button class="btn" id="next" aria-label="Next">&rarr;</button>
+    <button class="linkbtn" id="privBtn">Privacy</button>
+  </div>
+</div>
+
+<div class="privacy" id="priv" role="dialog" aria-label="Privacy note">
+  <b>This link was made for you.</b> So we know it reached you, the page records when it's opened and how long
+  each slide is on screen (only while this tab is visible), plus a rough device type (phone, tablet or computer)
+  and browser. No IP address, location, keystrokes, mouse movement or cross-site tracking. Questions:
+  <a href="mailto:hello@sadeemrobotics.com" style="color:inherit">hello@sadeemrobotics.com</a>.
+  <br><button class="btn" id="privOk">Got it</button>
+</div>
+
+<div class="msg" id="msg"><div>
+  <h1 id="msgH">Opening the deck…</h1>
+  <p id="msgP"></p>
+</div></div>
+
+<script src="config.js"></script>
+<script>
+(() => {
+  const C = window.DECK_CFG;
+  const $ = id => document.getElementById(id);
+  const token = new URLSearchParams(location.search).get("r") || "";
+  const HEARTBEAT = 15000, IDLE = 5 * 60 * 1000;
+  const uuid = () => crypto.randomUUID ? crypto.randomUUID()
+    : "10000000-1000-4000-8000-100000000000".replace(/[018]/g, c => (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16));
+
+  let visitor = null;
+  try { visitor = localStorage.getItem("sd_vid"); if (!visitor) { visitor = uuid(); localStorage.setItem("sd_vid", visitor); } }
+  catch (e) { visitor = uuid(); }
+  const session = uuid();
+
+  function msg(h, p) { $("msgH").textContent = h; $("msgP").innerHTML = p || ""; $("msg").classList.add("on"); }
+
+  async function rpc(fn, body, keepalive) {
+    const r = await fetch(`${C.supabaseUrl}/rest/v1/rpc/${fn}`, {
+      method: "POST", keepalive: !!keepalive,
+      headers: { "Content-Type": "application/json", apikey: C.anonKey },
+      body: JSON.stringify(body),
+    });
+    if (!r.ok) throw new Error(fn + " " + r.status);
+    return r.status === 204 ? null : r.json();
+  }
+
+  function coarseDevice() {
+    const ua = navigator.userAgent;
+    const os = /iPhone|iPad|iPod/.test(ua) ? "iOS" : /Android/.test(ua) ? "Android" : /Mac OS X/.test(ua) ? "macOS"
+      : /Windows/.test(ua) ? "Windows" : /CrOS/.test(ua) ? "ChromeOS" : /Linux/.test(ua) ? "Linux" : "Other";
+    const browser = /Edg\//.test(ua) ? "Edge" : /OPR\//.test(ua) ? "Opera" : /SamsungBrowser/.test(ua) ? "Samsung"
+      : /Firefox\//.test(ua) ? "Firefox" : /CriOS|Chrome\//.test(ua) ? "Chrome" : /Safari\//.test(ua) ? "Safari" : "Other";
+    const tablet = /iPad|Tablet/.test(ua) || (/Android/.test(ua) && !/Mobile/.test(ua)) || (os === "macOS" && navigator.maxTouchPoints > 1);
+    const device = tablet ? "tablet" : /Mobi|iPhone|Android/.test(ua) ? "mobile" : "desktop";
+    return { device, browser, os: tablet && os === "macOS" ? "iPadOS" : os };
+  }
+
+  // ---------- visible-time accounting ----------
+  let cur = 1, total = 1, counting = false, segStart = 0, lastActive = Date.now();
+  const pending = {};                                    // slide -> visible ms not yet sent
+  const active = () => document.visibilityState === "visible" && Date.now() - lastActive < IDLE;
+
+  function accrue() {
+    const now = performance.now();
+    if (counting) pending[cur] = (pending[cur] || 0) + Math.round(now - segStart);
+    segStart = now;
+    counting = active();
+  }
+  function flush(keepalive) {
+    accrue();
+    const slices = Object.entries(pending).filter(([, ms]) => ms >= 250).map(([s, ms]) => ({ s: +s, ms: Math.min(ms, 120000) }));
+    for (const k in pending) delete pending[k];
+    if (slices.length) rpc("deck_log", { p_session: session, p_slices: slices }, keepalive).catch(() => {});
+  }
+  // activity is only a timestamp (did someone touch the page in the last 5 min?); nothing about what they did is kept
+  ["keydown", "pointerdown", "wheel", "touchstart"].forEach(ev =>
+    addEventListener(ev, () => { const was = active(); lastActive = Date.now(); if (!was) accrue(); }, { passive: true }));
+  document.addEventListener("visibilitychange", () => {
+    if (document.visibilityState === "hidden") flush(true); else accrue();
+  });
+  addEventListener("pagehide", () => flush(true));
+
+  // ---------- viewer ----------
+  let imgs = [];
+  function show(n) {
+    n = Math.max(1, Math.min(total, n));
+    if (n === cur && imgs[n - 1].classList.contains("on")) return;
+    accrue();
+    imgs[cur - 1].classList.remove("on");
+    cur = n;
+    const im = imgs[cur - 1];
+    if (!im.src) im.src = im.dataset.src;
+    im.classList.add("on");
+    [cur, cur + 1].forEach(k => { const x = imgs[k]; if (x && !x.src) x.src = x.dataset.src; });
+    $("count").textContent = `${cur} / ${total}`;
+    $("prev").disabled = cur === 1; $("next").disabled = cur === total;
+    [...$("dots").children].forEach((d, i) => d.classList.toggle("on", i === cur - 1));
+    document.querySelectorAll(".hot").forEach(h => h.classList.toggle("on", +h.dataset.slide === cur));
+    history.replaceState(null, "", `?r=${encodeURIComponent(token)}#${cur}`);
+  }
+
+  async function start() {
+    if (!token) return msg("This deck opens from a personal link.", "Ask whoever shared it with you for yours.");
+    msg("Opening the deck…");
+    let d;
+    try {
+      const dev = coarseDevice();
+      let ref = null; try { ref = document.referrer ? new URL(document.referrer).origin : null; } catch (e) {}
+      d = await rpc("deck_open", {
+        p_token: token, p_session: session, p_visitor: visitor, p_referrer: ref,
+        p_device: dev.device, p_browser: dev.browser, p_os: dev.os,
+        p_lang: navigator.language || null, p_tz: Intl.DateTimeFormat().resolvedOptions().timeZone || null,
+      });
+    } catch (e) {
+      return msg("The deck didn't load.", 'Refresh to try again, or write to <a href="mailto:hello@sadeemrobotics.com">hello@sadeemrobotics.com</a>.');
+    }
+    if (!d || !d.ok) return msg("This link isn't active any more.", 'Write to <a href="mailto:hello@sadeemrobotics.com">hello@sadeemrobotics.com</a> and we\'ll send a fresh one.');
+
+    document.title = d.title + " · Sadeem Robotics";
+    total = d.count;
+    const base = `${C.supabaseUrl}/storage/v1/object/public/${C.bucket}/${d.folder}/`;
+    const frame = $("frame");
+    for (let i = 1; i <= total; i++) {
+      const im = document.createElement("img");
+      im.alt = `Slide ${i}`; im.dataset.src = base + i + "." + d.ext; im.decoding = "async"; im.draggable = false;
+      frame.insertBefore(im, $("tapPrev"));
+      imgs.push(im);
+      const dot = document.createElement("button"); dot.setAttribute("aria-label", `Slide ${i}`);
+      dot.onclick = () => show(i); $("dots").appendChild(dot);
+    }
+    $("msg").classList.remove("on");
+    $("app").hidden = false;
+    const startAt = parseInt(location.hash.slice(1), 10) || 1;
+    cur = Math.max(1, Math.min(total, startAt));
+    counting = false; segStart = performance.now();
+    show(cur); imgs[cur - 1].classList.add("on");
+    accrue();
+    setInterval(() => flush(false), HEARTBEAT);
+    try { if (!localStorage.getItem("sd_priv")) $("priv").classList.add("on"); } catch (e) { $("priv").classList.add("on"); }
+  }
+
+  $("prev").onclick = $("tapPrev").onclick = () => show(cur - 1);
+  $("next").onclick = $("tapNext").onclick = () => show(cur + 1);
+  addEventListener("keydown", e => {
+    if (["ArrowRight", "PageDown", " "].includes(e.key)) { e.preventDefault(); show(cur + 1); }
+    if (["ArrowLeft", "PageUp"].includes(e.key)) { e.preventDefault(); show(cur - 1); }
+    if (e.key === "Home") show(1); if (e.key === "End") show(total);
+  });
+  let tx = null;
+  addEventListener("touchstart", e => { tx = e.touches[0].clientX; }, { passive: true });
+  addEventListener("touchend", e => { if (tx === null) return; const dx = e.changedTouches[0].clientX - tx; tx = null;
+    if (Math.abs(dx) > 50) show(cur + (dx < 0 ? 1 : -1)); }, { passive: true });
+  $("privBtn").onclick = () => $("priv").classList.toggle("on");
+  $("privOk").onclick = () => { $("priv").classList.remove("on"); try { localStorage.setItem("sd_priv", "1"); } catch (e) {} };
+
+  start();
+})();
+</script>
+</body>
+</html>

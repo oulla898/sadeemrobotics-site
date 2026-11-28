@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow, noarchive">
+<meta name="referrer" content="no-referrer">
+<title>Deck links</title>
+<link rel="icon" href="/favicon.ico">
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Geist+Mono:wght@400&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f6f1e8;--card:#fffdf8;--ink:#24170b;--mute:#7e6a59;--line:#e6dacb;--hot:#b4441a;--bar:#d9a77f}
+@media (prefers-color-scheme:dark){:root{--bg:#15100a;--card:#201710;--ink:#f3e9da;--mute:#ad9a86;--line:#382a1d;--hot:#f07b4a;--bar:#8a5a38}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.5 "Geist",system-ui,sans-serif}
+main{max-width:1080px;margin:0 auto;padding:28px 20px 60px}
+h1{font-weight:600;font-size:22px;margin:0 0 4px}
+h2{font-weight:600;font-size:15px;margin:28px 0 10px}
+.mute{color:var(--mute)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px}
+table{width:100%;border-collapse:collapse;font-variant-numeric:tabular-nums}
+th,td{text-align:left;padding:9px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-weight:500;color:var(--mute);font-size:12px}
+tr.pick{cursor:pointer}
+tr.pick:hover td{background:color-mix(in srgb,var(--line) 40%,transparent)}
+tr.sel td{background:color-mix(in srgb,var(--hot) 10%,transparent)}
+.num{text-align:right}
+input,button{font:inherit}
+input{background:var(--card);color:var(--ink);border:1px solid var(--line);border-radius:8px;padding:8px 10px;min-width:240px}
+button{background:var(--ink);color:var(--bg);border:0;border-radius:8px;padding:8px 14px;cursor:pointer}
+button.ghost{background:transparent;color:var(--ink);border:1px solid var(--line)}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+code{font:12px "Geist Mono",monospace}
+.bars{display:grid;grid-template-columns:70px 1fr 70px;gap:6px 10px;align-items:center}
+.bars i{display:block;height:14px;border-radius:3px;background:var(--bar)}
+.off{opacity:.5}
+#out{margin-top:8px}
+</style>
+</head>
+<body>
+<main>
+  <div class="row" style="justify-content:space-between">
+    <div><h1>Deck links</h1><div class="mute">Who opened the deck, and how long each slide was on screen (visible tab only).</div></div>
+    <button class="ghost" id="logout" hidden>Sign out</button>
+  </div>
+
+  <section id="login" class="card" style="margin-top:20px" hidden>
+    <p style="margin-top:0">Sign in with your admin email. We'll send a one-time link.</p>
+    <div class="row"><input id="email" type="email" placeholder="you@sadeemrobotics.com" autocomplete="email"><button id="send">Send link</button></div>
+    <p id="loginMsg" class="mute"></p>
+  </section>
+
+  <section id="dash" hidden>
+    <h2>New link</h2>
+    <div class="card">
+      <div class="row">
+        <input id="recipient" placeholder="Who is it for? e.g. Al Jabr, partner">
+        <button id="create">Create link</button>
+      </div>
+      <div id="out" class="mute"></div>
+    </div>
+
+    <h2>Links</h2>
+    <div class="card" style="padding:0;overflow:auto"><table id="links"></table></div>
+
+    <div id="detail" hidden>
+      <h2 id="dTitle"></h2>
+      <div class="card"><div class="bars" id="dwell"></div></div>
+      <h2>Opens</h2>
+      <div class="card" style="padding:0;overflow:auto"><table id="sessions"></table></div>
+    </div>
+  </section>
+</main>
+
+<script src="../config.js"></script>
+<script type="module">
+import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm";
+const C = window.DECK_CFG;
+const sb = createClient(C.supabaseUrl, C.anonKey);
+const $ = id => document.getElementById(id);
+const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+const dur = ms => { const s = Math.round((ms || 0) / 1000); return s < 60 ? `${s}s` : s < 3600 ? `${Math.floor(s / 60)}m ${s % 60}s` : `${Math.floor(s / 3600)}h ${Math.floor(s % 3600 / 60)}m`; };
+const when = t => t ? new Date(t).toLocaleString([], { dateStyle: "medium", timeStyle: "short" }) : "–";
+const deckUrl = tok => `${location.origin}${location.pathname.replace(/stats\/?(index\.html)?$/, "")}?r=${tok}`;
+let selected = null;
+
+async function boot() {
+  const { data: { session } } = await sb.auth.getSession();
+  $("login").hidden = !!session; $("dash").hidden = !session; $("logout").hidden = !session;
+  if (session) loadLinks();
+}
+sb.auth.onAuthStateChange(() => boot());
+
+$("send").onclick = async () => {
+  const email = $("email").value.trim(); if (!email) return;
+  const { error } = await sb.auth.signInWithOtp({ email, options: { shouldCreateUser: false, emailRedirectTo: location.href.split("#")[0] } });
+  $("loginMsg").textContent = error ? error.message : "Check your inbox for the sign-in link.";
+};
+$("logout").onclick = () => sb.auth.signOut();
+
+$("create").onclick = async () => {
+  const recipient = $("recipient").value.trim(); if (!recipient) return;
+  const { data: decks } = await sb.from("decks").select("id").order("created_at", { ascending: false }).limit(1);
+  if (!decks?.length) return $("out").textContent = "No deck uploaded yet.";
+  const { data, error } = await sb.from("deck_links").insert({ recipient, deck_id: decks[0].id }).select("token").single();
+  if (error) return $("out").textContent = error.message;
+  const url = deckUrl(data.token);
+  $("out").innerHTML = `Link for <b>${esc(recipient)}</b>: <code>${esc(url)}</code> <button class="ghost" id="cp">Copy</button>`;
+  $("cp").onclick = () => navigator.clipboard.writeText(url);
+  $("recipient").value = ""; loadLinks();
+};
+
+async function loadLinks() {
+  const { data, error } = await sb.from("deck_link_summary").select("*").order("last_open", { ascending: false, nullsFirst: false });
+  if (error) { $("links").innerHTML = `<tr><td>${esc(error.message)}</td></tr>`; return; }
+  if (!data.length) { $("links").innerHTML = `<tr><td class="mute">No links yet. If you just signed in and expected some, check your email is in deck_admins.</td></tr>`; return; }
+  $("links").innerHTML = `<tr><th>Recipient</th><th class="num">Opens</th><th class="num">Devices</th><th class="num">Time on slides</th><th class="num">Furthest</th><th>Last open</th><th></th></tr>` +
+    data.map(r => `<tr class="pick ${r.active ? "" : "off"} ${r.token === selected ? "sel" : ""}" data-t="${esc(r.token)}">
+      <td>${esc(r.recipient)}<div class="mute"><code>${esc(r.token)}</code></div></td>
+      <td class="num">${r.opens}</td><td class="num">${r.visitors}</td><td class="num">${dur(r.visible_ms)}</td>
+      <td class="num">${r.furthest_slide ?? "–"}</td><td>${when(r.last_open)}</td>
+      <td class="row" style="justify-content:flex-end">
+        <button class="ghost" data-copy="${esc(r.token)}">Copy link</button>
+        <button class="ghost" data-tog="${esc(r.token)}" data-on="${r.active}">${r.active ? "Turn off" : "Turn on"}</button></td></tr>`).join("");
+  $("links").querySelectorAll("tr.pick").forEach(tr => tr.onclick = e => {
+    const b = e.target.closest("button");
+    if (b?.dataset.copy) return navigator.clipboard.writeText(deckUrl(b.dataset.copy));
+    if (b?.dataset.tog) return sb.from("deck_links").update({ active: b.dataset.on !== "true" }).eq("token", b.dataset.tog).then(loadLinks);
+    selected = tr.dataset.t; loadDetail(data.find(r => r.token === selected)); loadLinks();
+  });
+}
+
+async function loadDetail(link) {
+  $("detail").hidden = false;
+  $("dTitle").textContent = `${link.recipient}: time per slide`;
+  const [{ data: dw }, { data: ss }] = await Promise.all([
+    sb.from("deck_slide_dwell").select("*").eq("token", link.token).order("slide"),
+    sb.from("deck_sessions").select("*").eq("token", link.token).order("opened_at", { ascending: false }).limit(200),
+  ]);
+  const max = Math.max(1, ...(dw || []).map(r => r.visible_ms));
+  $("dwell").innerHTML = (dw || []).length ? dw.map(r => `<span>Slide ${r.slide}</span><i style="width:${(100 * r.visible_ms / max).toFixed(1)}%"></i><span class="num">${dur(r.visible_ms)}</span>`).join("")
+    : `<span class="mute" style="grid-column:1/-1">Not opened yet.</span>`;
+  $("sessions").innerHTML = `<tr><th>Opened</th><th class="num">On screen</th><th class="num">Tab open</th><th class="num">Slides seen</th><th>Device</th><th>Came from</th><th>Device id</th></tr>` +
+    (ss || []).map(s => `<tr><td>${when(s.opened_at)}</td><td class="num">${dur(s.visible_ms)}</td><td class="num">${dur(s.wall_seconds * 1000)}</td>
+      <td class="num">${s.slides_seen} (to ${s.max_slide})</td><td>${esc(s.device)} · ${esc(s.browser)} · ${esc(s.os)}<div class="mute">${esc(s.tz || "")}</div></td>
+      <td>${esc(s.referrer || "direct")}</td><td><code>${esc(String(s.visitor_id).slice(0, 8))}</code></td></tr>`).join("");
+}
+
+boot();
+</script>
+</body>
+</html>
